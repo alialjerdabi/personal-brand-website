@@ -11,14 +11,6 @@ export interface CallToAction {
   href: string;
 }
 
-export interface HeroContent {
-  eyebrow: string;
-  headline: string;
-  subheadline: string;
-  primaryCta: CallToAction;
-  secondaryCta: CallToAction;
-}
-
 export interface ProblemContent {
   heading: string;
   description: string;
@@ -79,7 +71,6 @@ export interface FinalCtaContent {
 }
 
 export interface HomepageContent {
-  hero: HeroContent;
   problem: ProblemContent;
   solutions: SolutionsContent;
   projects: ProjectsContent;
@@ -89,15 +80,6 @@ export interface HomepageContent {
 }
 
 export const homepageContent: HomepageContent = {
-  hero: {
-    eyebrow: "Branding · Websites · AI Automation",
-    headline: "Businesses grow faster when everything works toward the same goal.",
-    subheadline:
-      "I partner with corporate businesses, technology companies, and luxury brands to connect branding, digital presence, and AI systems into one strategy for measurable growth.",
-    primaryCta: { label: "Book a Discovery Call", href: "#contact" },
-    secondaryCta: { label: "Explore Solutions", href: "#solutions" },
-  },
-
   problem: {
     heading: "Effort is rarely the problem. Disconnection is.",
     description:

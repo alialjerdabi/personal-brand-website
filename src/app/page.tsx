@@ -6,14 +6,15 @@ import ProcessSection from "@/components/sections/ProcessSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import CTASection from "@/components/sections/CTASection";
 import { homepageContent } from "@/data/homepage";
+import { heroContent } from "@/data/hero";
 
 export default function Home() {
-  const { hero, problem, solutions, projects, process, testimonials, finalCta } =
+  const { problem, solutions, projects, process, testimonials, finalCta } =
     homepageContent;
 
   return (
     <main>
-      <HeroSection content={hero} />
+      <HeroSection content={heroContent} />
       <ProblemSection content={problem} />
       <SolutionsSection content={solutions} />
       <ProjectsSection content={projects} />
