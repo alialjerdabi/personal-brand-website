@@ -1,12 +1,11 @@
 /**
  * Hero section content.
  *
- * The hero demonstrates the "connected systems" philosophy through one
- * flagship client viewed through three lenses — branding, websites, and
- * AI automation (see docs/hero-spec.md and the approved creative
- * direction: One Client, Three Lenses). Content lives here, separated
- * from components, so lenses, clients, and copy can evolve — or be
- * CMS-sourced — without touching the UI.
+ * The hero opens the One Client → Three Lenses story with three service
+ * cards — Branding, Websites, AI Automation — each carrying a short list
+ * of work proof (approved hero redesign, 2026-07-14). Content lives
+ * here, separated from components, so services, proof lists, and copy
+ * can evolve — or be CMS-sourced — without touching the UI.
  */
 
 import type { CallToAction } from "@/data/homepage";
@@ -16,19 +15,13 @@ export interface HeroAsset {
   alt: string;
 }
 
-export interface HeroLens {
+export interface HeroService {
   id: string;
   name: string;
-  /** One line of evidence: what this lens proves about the flagship work. */
-  proof: string;
+  /** Short work-proof lines revealed inside the card. */
+  proofs: string[];
   asset: HeroAsset;
-}
-
-export interface HeroFlagship {
-  client: string;
-  sector: string;
-  /** The storytelling bridge above the demonstration. */
-  tagline: string;
+  href: string;
 }
 
 export interface HeroStatus {
@@ -40,61 +33,69 @@ export interface HeroStatus {
 
 export interface HeroContent {
   identity: string;
-  disciplines: string;
-  contactCta: CallToAction;
+  navLinks: CallToAction[];
+  navCta: CallToAction;
   headline: string;
   positioning: string;
   cta: CallToAction;
-  workLabel: string;
-  flagship: HeroFlagship;
-  lenses: HeroLens[];
+  services: HeroService[];
   status: HeroStatus;
 }
 
 export const heroContent: HeroContent = {
-  identity: "Ali Aljardabi",
-  disciplines: "Branding · Websites · AI Automation",
-  contactCta: { label: "Let's talk", href: "#contact" },
+  identity: "Ali Aljardabi.",
+  navLinks: [
+    { label: "The story", href: "#problem" },
+    { label: "The work", href: "#work" },
+    { label: "Contact", href: "#contact" },
+  ],
+  navCta: { label: "Book a Call", href: "#contact" },
   headline: "Growth is a system.",
   positioning:
     "I partner with corporate businesses, technology companies, and luxury brands to connect branding, digital presence, and AI systems into one strategy for measurable growth.",
   cta: { label: "Book a Discovery Call", href: "#contact" },
-  workLabel: "Selected Work",
-  flagship: {
-    client: "Petrolas",
-    sector: "Clean energy",
-    tagline: "One client. Three connected systems.",
-  },
-  lenses: [
+  services: [
     {
       id: "branding",
       name: "Branding",
-      proof:
-        "A complete identity system — one mark, one voice, and every touchpoint saying the same thing.",
+      proofs: [
+        "Petrolas — full identity system",
+        "Positioning, voice & messaging",
+        "Guidelines carried to every touchpoint",
+      ],
       asset: {
         src: "/hero/petrolas-branding.jpg",
         alt: "Petrolas-branded blue safety helmet held in a gloved hand against a dark background",
       },
+      href: "#work",
     },
     {
       id: "websites",
       name: "Websites",
-      proof:
-        "The same system carried into digital — web, social, and campaigns speaking one language.",
+      proofs: [
+        "Petrolas — digital platform",
+        "Journeys built to qualify enquiries",
+        "One identity, carried into code",
+      ],
       asset: {
         src: "/hero/petrolas-digital.jpg",
         alt: "Phone on a stone plinth showing Petrolas digital brand content in the identity's visual language",
       },
+      href: "#work",
     },
     {
       id: "ai-automation",
       name: "AI Automation",
-      proof:
-        "Smart systems in the brand's own words — operations designed to work toward the same goal.",
+      proofs: [
+        "Petrolas — operations automation",
+        "Enquiry handling & follow-ups",
+        "Hours returned to growth",
+      ],
       asset: {
         src: "/hero/petrolas-systems.jpg",
         alt: "Petrolas construction hoarding with connected circuit-line graphics reading Smart systems, sustainable energy",
       },
+      href: "#work",
     },
   ],
   status: {
