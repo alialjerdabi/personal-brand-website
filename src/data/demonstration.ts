@@ -18,6 +18,15 @@ export interface DemonstrationChapter {
   /** The chain link: how this lens feeds the next (empty for the last). */
   handoff: string;
   plate: HeroAsset;
+  /**
+   * CSS object-position for the plate's detail crop. Interim device:
+   * until dedicated case-study assets exist, Act III reframes the
+   * shared imagery as closer, wider crops so the demonstration reads
+   * as opening the case study rather than repeating the hero.
+   */
+  plateFocus: string;
+  /** Case-file caption: client · lens · deliverable. */
+  plateCaption: string;
 }
 
 export interface DemonstrationContent {
@@ -47,8 +56,10 @@ export const demonstrationContent: DemonstrationContent = {
       handoff: "The identity became the language the website speaks.",
       plate: {
         src: "/hero/petrolas-branding.jpg",
-        alt: "Petrolas-branded blue safety helmet held in a gloved hand against a dark background",
+        alt: "Close crop of the Petrolas mark on a blue safety helmet, held in a gloved hand",
       },
+      plateFocus: "42% 62%",
+      plateCaption: "Petrolas · Branding · Identity system",
     },
     {
       id: "websites",
@@ -59,8 +70,10 @@ export const demonstrationContent: DemonstrationContent = {
       handoff: "The website became the voice the automation writes in.",
       plate: {
         src: "/hero/petrolas-digital.jpg",
-        alt: "Phone on a stone plinth showing Petrolas digital brand content in the identity's visual language",
+        alt: "Detail of the Petrolas digital interface on a phone screen, set on a stone plinth",
       },
+      plateFocus: "50% 28%",
+      plateCaption: "Petrolas · Websites · Digital platform",
     },
     {
       id: "ai-automation",
@@ -71,8 +84,10 @@ export const demonstrationContent: DemonstrationContent = {
       handoff: "",
       plate: {
         src: "/hero/petrolas-systems.jpg",
-        alt: "Petrolas construction hoarding with connected circuit-line graphics reading Smart systems, sustainable energy",
+        alt: "Close view of the Petrolas circuit-line graphics reading Smart systems, sustainable energy",
       },
+      plateFocus: "24% 55%",
+      plateCaption: "Petrolas · AI Automation · Operations system",
     },
   ],
   closing: "Three lenses. One system. A business where everything points the same way.",

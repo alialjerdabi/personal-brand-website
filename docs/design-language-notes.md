@@ -31,6 +31,29 @@ Working notes during Phase 1 (see docs/roadmap.md). Every value recorded here ha
 - Service cards: three portrait cards (rounded-2xl — first radius in the system; interactive cards are rounded, proof plates stay square-edged), flex row h-26/30rem. Resting: image + bottom gradient + mono index top-left + vertical service name ([writing-mode:vertical-rl] rotate-180). Hover/focus-within: card grows flex 1→1.9 (contained layout animation — documented exception to transform-only, 500ms ease-out), image scales 1.05, vertical label fades, panel with horizontal name + hairline + proof lines rises in (400ms).
 - Mobile: cards stack full-width h-64, proof always visible, nothing hover-gated. Pure CSS states — no JS.
 
+## Reference-derived refinements (2026-07-15)
+
+- Act III plates are detail crops, not repeats: shared imagery reframed via data-driven `plateFocus` (object-position) + scale-125 + wider 16/10 aspect on lg, with a mono case-file caption strip inside the frame (client · lens · deliverable). Interim until dedicated per-lens assets exist.
+- Footer anatomy (Act V close): statement + oversized email + quiet sitemap on dark ground → full-bleed wordmark (text-[12.5vw], the signature close) → hairline bottom bar: mono copyright/location left, thesis right. The last line of the page is the first line it said.
+- Availability dot: emerald-400, 6px, inside the nav pill only — the sole functional color on the site; it means "live/available" and nothing else ever uses it decoratively.
+- Scroll cue: mono "[ scroll ]" in the hero status row, aria-hidden — square brackets are the system register's way of marking an instruction rather than content.
+
+## Capabilities block (2026-07-15, Symbol-derived, user-directed)
+
+- Placement: between Act II and Act III — capability list → partner strip → work preview.
+- Capability list: mono index + line, ghost zinc-300 resting → ink + 4px translate-x on hover (200ms). Same focus grammar as the hero lens list and Act II: attention = ink, everything else recedes.
+- Partner marquee: 45s linear loop of hairline-bordered tiles, two track copies at translateX(-50%), pause on hover, static under reduced motion, white gradient masks at edges. DOCUMENTED EXCEPTION to "nothing loops" — user-directed. Partner names are PLACEHOLDERS; replace before launch.
+- Work preview card: cover pans left (-25%) while reveal frame slides in from right (700ms ease-out), pure CSS group-hover/focus-visible. Open-slot card: hairline border, bottom-anchored mono label + statement, border→ink on hover ("honest CTA instead of fake second project").
+- Wordmark sizing rule: full-bleed display type is sized in stepped rem per breakpoint, NEVER vw — vw type ignores browser zoom and breaks hierarchy (Ali caught this). Steps: 3.4/6/7.5/10/12.5/15rem.
+
+## Services page + revisions (2026-07-15, later)
+
+- Marquee rule: half the track must exceed any real viewport — 8 list copies (track ~10000px), loop at -50%. Duration scales with track (90s) to keep the same visual speed.
+- Capabilities are 7 links into /services#slug; rows get hover ink+nudge plus an appearing → glyph; keyboard focus adds underline (color-only focus is insufficient).
+- /services page: h1 statement → sticky mono side nav (lg+) → numbered chapters (scope-of-work list · question · importance · approach) → 3-tile placeholder asset row ([ asset ] mono tiles, Reveal entrance) awaiting real media.
+- Project grid asymmetry: 12-col, spans 7/5 then 5/7 with lg:mt-14 offsets on the right column — stagger via margins, never transforms (keeps flow honest). Placeholder case-study cards keep the pan animation with typographic layers until assets arrive; placeholders are NOT links (no dead clicks).
+- NO css scroll-behavior:smooth — multi-second glides on a long document are worse UX than instant jumps (verified in-browser). Eased scrolling only via the future Lenis trial with controlled duration.
+
 ## Color relationships
 
 - Light ground: surface white · ink zinc-950 · muted zinc-500 · faint zinc-400 · hairline zinc-200.

@@ -48,15 +48,19 @@ export default function DemonstrationSection({ content }: DemonstrationSectionPr
                     }`}
                   >
                     <div className="border border-white/10 bg-white/[0.02] p-3 sm:p-4">
-                      <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-900">
+                      <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-900 lg:aspect-[16/10]">
                         <Image
                           src={chapter.plate.src}
                           alt={chapter.plate.alt}
                           fill
                           sizes="(min-width: 1024px) 55vw, 100vw"
-                          className="object-cover"
+                          style={{ objectPosition: chapter.plateFocus }}
+                          className="scale-125 object-cover"
                         />
                       </div>
+                      <p className="pt-3 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+                        {chapter.plateCaption}
+                      </p>
                     </div>
                   </div>
 

@@ -33,7 +33,7 @@ export default function HeroSection({ content }: { content: HeroContent }) {
               </a>
             ))}
           </nav>
-          <CTAButton cta={content.navCta} variant="primary" size="sm" />
+          <CTAButton cta={content.navCta} variant="primary" size="sm" dot />
         </header>
 
         <div className="mt-14 grid gap-12 sm:mt-16 lg:mt-20 lg:grid-cols-[minmax(0,26rem)_1fr] lg:items-center lg:gap-16">
@@ -57,10 +57,15 @@ export default function HeroSection({ content }: { content: HeroContent }) {
           </div>
         </div>
 
-        <p className="entrance-5 mt-12 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400 lg:mt-14">
-          {content.status.location} · <LocalTime timeZone={content.status.timeZone} /> ·{" "}
-          {content.status.availability}
-        </p>
+        <div className="entrance-5 mt-12 flex items-baseline justify-between gap-6 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400 lg:mt-14">
+          <p>
+            {content.status.location} · <LocalTime timeZone={content.status.timeZone} /> ·{" "}
+            {content.status.availability}
+          </p>
+          <p aria-hidden="true" className="shrink-0 text-zinc-400">
+            [ scroll ]
+          </p>
+        </div>
       </Container>
     </section>
   );

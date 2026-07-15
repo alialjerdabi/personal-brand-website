@@ -5,6 +5,8 @@ interface CTAButtonProps {
   cta: CallToAction;
   variant?: "primary" | "secondary" | "inverted";
   size?: "md" | "sm";
+  /** Availability signal: a small live dot before the label. */
+  dot?: boolean;
 }
 
 const baseClasses =
@@ -27,12 +29,18 @@ const variantClasses = {
  * Confident, non-aggressive call to action
  * (see creative-direction.md, Calls to Action).
  */
-export default function CTAButton({ cta, variant = "primary", size = "md" }: CTAButtonProps) {
+export default function CTAButton({ cta, variant = "primary", size = "md", dot = false }: CTAButtonProps) {
   return (
     <Link
       href={cta.href}
       className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]}`}
     >
+      {dot && (
+        <span
+          aria-hidden="true"
+          className="mr-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400"
+        />
+      )}
       {cta.label}
     </Link>
   );

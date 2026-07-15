@@ -1,9 +1,11 @@
 import HeroSection from "@/components/sections/HeroSection";
 import TensionSection from "@/components/sections/TensionSection";
+import CapabilitiesSection from "@/components/sections/CapabilitiesSection";
 import DemonstrationSection from "@/components/sections/DemonstrationSection";
 import CTASection from "@/components/sections/CTASection";
 import { heroContent } from "@/data/hero";
 import { tensionContent } from "@/data/tension";
+import { capabilitiesContent } from "@/data/capabilities";
 import { demonstrationContent } from "@/data/demonstration";
 import { finalCta } from "@/data/homepage";
 
@@ -19,6 +21,7 @@ export default function Home() {
     <main id="main">
       <HeroSection content={heroContent} />
       <TensionSection content={tensionContent} />
+      <CapabilitiesSection content={capabilitiesContent} />
       <DemonstrationSection content={demonstrationContent} />
       <CTASection content={finalCta} />
     </main>

@@ -46,6 +46,7 @@ export const heroContent: HeroContent = {
   identity: "Ali Aljardabi.",
   navLinks: [
     { label: "The story", href: "#problem" },
+    { label: "Services", href: "/services" },
     { label: "The work", href: "#work" },
     { label: "Contact", href: "#contact" },
   ],

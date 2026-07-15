@@ -21,11 +21,12 @@ html {
   scroll-padding-top: 5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/*
+ * No CSS smooth scrolling: on a document this long, native smooth
+ * anchor jumps glide for seconds and are easily interrupted —
+ * instant jumps are the better UX (verified 2026-07-15). Controlled-
+ * duration eased scrolling is the Lenis trial's job, if adopted.
+ */
 
 body {
   background: var(--background);
@@ -37,6 +38,17 @@ body {
 ::selection {
   background: var(--foreground);
   color: var(--background);
+}
+
+/*
+ * Partner strip marquee (user-directed exception to the no-loop rule,
+ * 2026-07-15): slow, pausable on hover, and static under reduced motion.
+ * The track holds two copies of the list; -50% loops seamlessly.
+ */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /*
