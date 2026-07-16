@@ -16,7 +16,7 @@ export default function TensionSection({ content }: TensionSectionProps) {
     <section
       id="problem"
       aria-labelledby="tension-heading"
-      className="overflow-x-clip bg-white py-28 sm:py-40"
+      className="overflow-x-clip bg-white pb-28 pt-14 sm:pb-40 sm:pt-20"
     >
       <Container>
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">

@@ -1,4 +1,6 @@
+import EditorialIntro from "@/components/ui/EditorialIntro";
 import HeroSection from "@/components/sections/HeroSection";
+import SystemThread from "@/components/sections/hero/SystemThread";
 import TensionSection from "@/components/sections/TensionSection";
 import CapabilitiesSection from "@/components/sections/CapabilitiesSection";
 import DemonstrationSection from "@/components/sections/DemonstrationSection";
@@ -19,8 +21,17 @@ import { finalCta } from "@/data/homepage";
 export default function Home() {
   return (
     <main id="main">
-      <HeroSection content={heroContent} />
-      <TensionSection content={tensionContent} />
+      <EditorialIntro intro={heroContent.intro} />
+      {/*
+        Acts I–II share one wrapper: the hero's system row (SystemThread)
+        is sticky within it — the L-cut. It docks at the viewport top
+        while the story plays and releases when this wrapper ends.
+      */}
+      <div className="relative">
+        <HeroSection content={heroContent} />
+        <SystemThread status={heroContent.status} />
+        <TensionSection content={tensionContent} />
+      </div>
       <CapabilitiesSection content={capabilitiesContent} />
       <DemonstrationSection content={demonstrationContent} />
       <CTASection content={finalCta} />

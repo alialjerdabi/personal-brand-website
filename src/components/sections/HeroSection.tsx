@@ -1,7 +1,6 @@
 import Container from "@/components/layout/Container";
 import CTAButton from "@/components/ui/CTAButton";
 import ServiceCards from "@/components/sections/hero/ServiceCards";
-import LocalTime from "@/components/sections/hero/LocalTime";
 import type { HeroContent } from "@/data/hero";
 
 /**
@@ -15,7 +14,7 @@ export default function HeroSection({ content }: { content: HeroContent }) {
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="bg-white pb-20 pt-6 sm:pt-8 lg:pb-24"
+      className="bg-white pb-8 pt-6 sm:pt-8 lg:pb-10"
     >
       <Container>
         <header className="entrance-1 flex items-center justify-between gap-6">
@@ -57,15 +56,6 @@ export default function HeroSection({ content }: { content: HeroContent }) {
           </div>
         </div>
 
-        <div className="entrance-5 mt-12 flex items-baseline justify-between gap-6 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400 lg:mt-14">
-          <p>
-            {content.status.location} · <LocalTime timeZone={content.status.timeZone} /> ·{" "}
-            {content.status.availability}
-          </p>
-          <p aria-hidden="true" className="shrink-0 text-zinc-400">
-            [ scroll ]
-          </p>
-        </div>
       </Container>
     </section>
   );

@@ -31,7 +31,15 @@ export interface HeroStatus {
   availability: string;
 }
 
+export interface HeroIntro {
+  /** Statement halves; the image chip sits between them. */
+  pre: string;
+  post: string;
+  chip: HeroAsset;
+}
+
 export interface HeroContent {
+  intro: HeroIntro;
   identity: string;
   navLinks: CallToAction[];
   navCta: CallToAction;
@@ -43,6 +51,14 @@ export interface HeroContent {
 }
 
 export const heroContent: HeroContent = {
+  intro: {
+    pre: "Growth",
+    post: "is a system.",
+    chip: {
+      src: "/hero/petrolas-branding.jpg",
+      alt: "",
+    },
+  },
   identity: "Ali Aljardabi.",
   navLinks: [
     { label: "The story", href: "#problem" },

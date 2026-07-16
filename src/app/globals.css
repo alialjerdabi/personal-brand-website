@@ -52,6 +52,63 @@ body {
 }
 
 /*
+ * Editorial loading intro (approved 2026-07-16): a grey field with the
+ * thesis as a small centered statement, then a white architectural
+ * frame expands from the center and becomes the page. Transform +
+ * opacity only; ends in visibility:hidden via CSS fill so the page is
+ * never gated on JavaScript. Skipped entirely under reduced motion.
+ */
+@keyframes intro-backdrop {
+  0%,
+  86% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes intro-statement {
+  0% {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+  8%,
+  50% {
+    opacity: 1;
+    transform: none;
+  }
+  66%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+@keyframes intro-frame {
+  0%,
+  36% {
+    transform: scale(0.14);
+    opacity: 0;
+  }
+  44% {
+    opacity: 1;
+  }
+  88%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #editorial-intro {
+    display: none;
+  }
+}
+
+/*
  * Hero entrance: a single restrained rise on first paint, staggered via
  * .entrance-1..5 to establish reading order through timing. CSS-only —
  * no JS, no layout shift (transform/opacity), skipped entirely under
@@ -87,5 +144,27 @@ body {
   }
   .entrance-5 {
     animation-delay: 320ms;
+  }
+
+  /*
+   * While the editorial intro is present, the hero entrance waits and
+   * settles in as the frame completes — content arriving inside the
+   * architecture. (When the intro is skipped, the node is removed
+   * before paint and the normal delays apply.)
+   */
+  body:has(#editorial-intro) .entrance-1 {
+    animation-delay: 1900ms;
+  }
+  body:has(#editorial-intro) .entrance-2 {
+    animation-delay: 1980ms;
+  }
+  body:has(#editorial-intro) .entrance-3 {
+    animation-delay: 2060ms;
+  }
+  body:has(#editorial-intro) .entrance-4 {
+    animation-delay: 2140ms;
+  }
+  body:has(#editorial-intro) .entrance-5 {
+    animation-delay: 2220ms;
   }
 }

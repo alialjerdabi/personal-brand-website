@@ -54,6 +54,23 @@ Working notes during Phase 1 (see docs/roadmap.md). Every value recorded here ha
 - Project grid asymmetry: 12-col, spans 7/5 then 5/7 with lg:mt-14 offsets on the right column — stagger via margins, never transforms (keeps flow honest). Placeholder case-study cards keep the pan animation with typographic layers until assets arrive; placeholders are NOT links (no dead clicks).
 - NO css scroll-behavior:smooth — multi-second glides on a long document are worse UX than instant jumps (verified in-browser). Eased scrolling only via the future Lenis trial with controlled duration.
 
+## Editorial loading intro (approved 2026-07-16)
+
+- Sequence (~2.45s total): grey field (zinc-100) + small centered thesis with inline image chip (0–1.6s) → white architectural frame scales from center 0.14→1 (0.9–2.15s, cubic-bezier(0.2,0.7,0.2,1)) → backdrop fades/hides (2.1–2.45s) → hero entrance settles in (delays 1.9–2.22s via body:has(#editorial-intro) override).
+- Frame trick: the frame is oversized (-inset-16) so its rounded corners exit the viewport at full scale — radius "vanishes" without animating border-radius; page bg is white, so the frame literally becomes the page.
+- Never gate the page on JS: all choreography is CSS keyframes ending in visibility:hidden (fill forwards); the React component only handles once-per-session skip (sessionStorage, hidden pre-paint via layout-effect DOM mutation — NOT setState, per react-hooks/set-state-in-effect) and unmount.
+- Reduced motion: #editorial-intro { display: none } — intro simply doesn't exist.
+- Image-in-headline experiment (queue item 7) lives HERE — the intro statement's chip — one placement only, per the rule. Don't add a second elsewhere.
+- Verification note: sub-3s animations can't be caught by pane screenshots; verify by pausing/seeking via el.getAnimations() on an injected preview clone.
+
+## The L-cut (Act I → Act II boundary, approved concept B, 2026-07-16)
+
+- Acts I–II share one wrapper in page.tsx; the hero's system row (SystemThread) is `sm:sticky top-0` within it — it docks at the viewport top as the story begins, rides over the fragments, and releases when the wrapper (Act II) ends. Film-editor logic: the previous scene's live element carries over the new scene.
+- Docked surface: hairline + bg-white/90 + backdrop-blur-sm, toggled by a 1px sentinel + IntersectionObserver (CSS has no :stuck). Sentinel observers must attach unconditionally — never gate effects on viewport width at mount (a resize can't re-run the effect; this bug shipped and was caught in verification). Width-dependent behavior belongs in CSS (sm:-scoped classes).
+- Foundation (concept A): hero pb collapsed to 8/10, Act II pt to 14/20 — the story's opener is in frame while the hero is still alive on all common viewports.
+- This row is the embryo of the persistent conversion bar (queue item 5): when that lands, the row condenses into it rather than a new element appearing.
+- Mobile: row stays in flow (no pinned chrome at small heights); the overlap there is composition only.
+
 ## Color relationships
 
 - Light ground: surface white · ink zinc-950 · muted zinc-500 · faint zinc-400 · hairline zinc-200.
