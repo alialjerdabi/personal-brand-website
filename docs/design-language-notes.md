@@ -58,7 +58,8 @@ Working notes during Phase 1 (see docs/roadmap.md). Every value recorded here ha
 
 - Sequence (~2.45s total): grey field (zinc-100) + small centered thesis with inline image chip (0–1.6s) → white architectural frame scales from center 0.14→1 (0.9–2.15s, cubic-bezier(0.2,0.7,0.2,1)) → backdrop fades/hides (2.1–2.45s) → hero entrance settles in (delays 1.9–2.22s via body:has(#editorial-intro) override).
 - Frame trick: the frame is oversized (-inset-16) so its rounded corners exit the viewport at full scale — radius "vanishes" without animating border-radius; page bg is white, so the frame literally becomes the page.
-- Never gate the page on JS: all choreography is CSS keyframes ending in visibility:hidden (fill forwards); the React component only handles once-per-session skip (sessionStorage, hidden pre-paint via layout-effect DOM mutation — NOT setState, per react-hooks/set-state-in-effect) and unmount.
+- Never gate the page on JS: all choreography is CSS keyframes ending in visibility:hidden (fill forwards); the React component only handles the route-return skip and unmount.
+- Replay policy (Ali, 2026-07-16): the intro is an INEVITABLE ENTRY — it plays on every full page load, and skips only client-side route returns (module-scope flag, NOT sessionStorage). The flag is set on COMPLETION, never on mount: setting it on mount made StrictMode's dev double-mount skip the intro instantly (the "0.2s glitch" Ali caught). Rule: completion flags belong in completion callbacks.
 - Reduced motion: #editorial-intro { display: none } — intro simply doesn't exist.
 - Image-in-headline experiment (queue item 7) lives HERE — the intro statement's chip — one placement only, per the rule. Don't add a second elsewhere.
 - Verification note: sub-3s animations can't be caught by pane screenshots; verify by pausing/seeking via el.getAnimations() on an injected preview clone.
