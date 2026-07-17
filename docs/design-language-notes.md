@@ -64,6 +64,36 @@ Working notes during Phase 1 (see docs/roadmap.md). Every value recorded here ha
 - Image-in-headline experiment (queue item 7) lives HERE — the intro statement's chip — one placement only, per the rule. Don't add a second elsewhere.
 - Verification note: sub-3s animations can't be caught by pane screenshots; verify by pausing/seeking via el.getAnimations() on an injected preview clone.
 
+## Act III restaged — The Assembly (2026-07-17, later; supersedes the staircase composition)
+
+- Apple-silicon staging (Ali's brief: "how would Apple explain one chip vs four"): name the villain in the intro (handovers), then ONE object — a vertical spine (chassis) with three machined modules docked onto it. Benefits attributed to unity itself, cause→effect.
+- Modules: square-edged hairline-framed plates (machined, non-interactive — rounded corners remain reserved for interactive cards), engraved mono header ("Module 01 · Brand Strategy"), outcome headline, support, then spec lines under a hairline: "Output · <outcome noun>" / "Feeds · <what it hands downstream>". NO invented numbers — spec slots accept real figures when they exist.
+- Entry: one docking sequence (650ms beats, translate-x 12px + opacity, spine ink draws down scaleY), IO-armed below-fold only, SSR = fully assembled, reduced-motion/no-JS complete. Never scroll-scrubbed.
+- Kill criterion watched during build: if modules read as "cards," revert to typographic staircase — verdict: the spine + ticks + engraving keep them reading as spec plates, not cards.
+
+## Act III redesigned — The Philosophy (2026-07-17, Ali's direction)
+
+- The dark act no longer showcases work (that lives in Capabilities' #work grid + hero cards); it explains WHY connected systems win. Purely typographic — zero images — which is now its distinction against the image-rich acts around it.
+- Three pillars (Brand Strategy / Digital Experience / Systems Engineering), each: accumulating mono formula ("Strategy" → "Strategy → Experience" → full chain) — the diagram is TYPOGRAPHIC, no SVG furniture; outcome headline in business language; one support paragraph; hairline handoff connector.
+- Composition: staircase indents (lg:ml-0/12%/24%) = accumulation made visible; the loop block RETURNS to the left edge = the feedback loop performed by layout. Full-loop formula "Strategy → Experience → Systems → Strategy → …" + closing "It compounds." (does not collide with Act IV's mantra).
+- No new motion — existing Reveal only. Stillness is this act's confidence.
+- Anchors rehomed: #work now = Capabilities' project grid (Container gained an id prop); the dark act is #philosophy. All existing #work links (nav, hero cards, footer) land on actual work.
+
+## Act IV — Method + Partner (2026-07-16)
+
+- Placement: light-ground exhale between Act III (dark) and Act V (dark) — restores the light/dark act rhythm from landing-experience.md.
+- Method rail: four steps on one shared border-t rail, mono index + title + one-liner, grid 1→2→4 columns. Skimmable in ~15s by design; no cards, no icons.
+- Rail ignition (refined 2026-07-16, reference-inspired, vocabulary ours): on viewport entry, an ink line draws along the existing hairline (scaleX, origin-left, 450ms/beat, 550ms cadence) and each step ignites ghost→ink as the line reaches its column — time made visible, causality legible. NO nodes/circles: the hairline is the system, the mono number is the node. Below lg the line is hidden; ignition order alone organizes. SSR default = fully inked (no-JS/reduced-motion complete); ghost armed post-mount only for below-fold viewers.
+- Partner closing mantra: "One person. One system. One direction." — appears exactly ONCE on the site (deliberately not echoed into Act V; one mantra, one place).
+- Partner coda: portrait slot (MediaCycler, single placeholder frame — static until Ali's photo, then cycle-ready), "You'd work with me. Directly." + no-handovers statement, mono facts line with a second LocalTime instance (the live-clock grammar now appears in Act I's thread and Act IV's coda — same fact, two narrative moments).
+- The homepage narrative is now structurally complete: Acts I–V all present. Remaining Phase 3 scope: persistent conversion bar (condense the SystemThread row — do NOT add a new element).
+
+## Media cycling + resting card (2026-07-16, Ali's final hero edits)
+
+- MediaCycler (ui/MediaCycler.tsx) is THE image-transition grammar: current frame pans up (−6%) and settles to 80% as it exits; next frame grows from that same 80% to full. 650ms transform/opacity transitions, 2000ms cadence (Ali proposed 1s; 2s adopted — faster reads as urgency next to the headline). Cycling pauses while hovered (text never sits on a moving image), never runs under reduced motion, and single-frame arrays don't cycle — data-ready for assets (frames: image | placeholder union in hero.ts).
+- Hero card resting state: while #hero-cards is neither hovered nor focus-within, the FIRST card holds the expanded pose (pure CSS in globals.css via :not(:hover):not(:focus-within) + data-card-label/data-card-panel hooks) — the row is never dead, and it yields naturally to any interaction. The old hover-zoom (scale-105) was removed: zoom + cycling on one image is motion soup.
+- Intro chip cycles through the three Petrolas images at 1500ms; intro→hero handoff tightened (entrance delays 1700–2020ms) so the hero is settled as the backdrop finishes.
+
 ## The L-cut (Act I → Act II boundary, approved concept B, 2026-07-16)
 
 - Acts I–II share one wrapper in page.tsx; the hero's system row (SystemThread) is `sm:sticky top-0` within it — it docks at the viewport top as the story begins, rides over the fragments, and releases when the wrapper (Act II) ends. Film-editor logic: the previous scene's live element carries over the new scene.

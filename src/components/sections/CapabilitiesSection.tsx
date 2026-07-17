@@ -166,7 +166,7 @@ export default function CapabilitiesSection({ content }: CapabilitiesSectionProp
         />
       </div>
 
-      <Container className="mt-20">
+      <Container id="work" className="mt-20 scroll-mt-20">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
           {content.projectsLabel}
         </p>

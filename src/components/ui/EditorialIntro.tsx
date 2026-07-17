@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import Image from "next/image";
+import MediaCycler from "@/components/ui/MediaCycler";
 import type { HeroIntro } from "@/data/hero";
 
 const INTRO_DURATION_MS = 2450;
@@ -69,7 +69,12 @@ export default function EditorialIntro({ intro }: EditorialIntroProps) {
       <p className="absolute inset-0 flex items-center justify-center gap-3 px-6 text-lg font-medium tracking-tight text-zinc-950 [animation:intro-statement_2450ms_cubic-bezier(0.2,0.7,0.2,1)_both] sm:text-xl">
         {intro.pre}
         <span className="relative inline-block h-6 w-11 shrink-0 overflow-hidden rounded-lg sm:h-7 sm:w-12">
-          <Image src={intro.chip.src} alt="" fill sizes="48px" className="object-cover" />
+          <MediaCycler
+            frames={intro.chips}
+            sizes="48px"
+            intervalMs={1500}
+            className="absolute inset-0"
+          />
         </span>
         {intro.post}
       </p>

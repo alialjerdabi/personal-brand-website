@@ -153,18 +153,36 @@ body {
    * before paint and the normal delays apply.)
    */
   body:has(#editorial-intro) .entrance-1 {
-    animation-delay: 1900ms;
+    animation-delay: 1700ms;
   }
   body:has(#editorial-intro) .entrance-2 {
-    animation-delay: 1980ms;
+    animation-delay: 1780ms;
   }
   body:has(#editorial-intro) .entrance-3 {
-    animation-delay: 2060ms;
+    animation-delay: 1860ms;
   }
   body:has(#editorial-intro) .entrance-4 {
-    animation-delay: 2140ms;
+    animation-delay: 1940ms;
   }
   body:has(#editorial-intro) .entrance-5 {
-    animation-delay: 2220ms;
+    animation-delay: 2020ms;
+  }
+}
+
+/*
+ * Hero cards resting state: while the row is untouched, the first card
+ * holds the expanded pose so the row is never dead — it yields the
+ * moment any card is hovered or focused, then returns.
+ */
+@media (min-width: 640px) {
+  #hero-cards:not(:hover):not(:focus-within) > li:first-child {
+    flex-grow: 1.9;
+  }
+  #hero-cards:not(:hover):not(:focus-within) > li:first-child [data-card-label] {
+    opacity: 0;
+  }
+  #hero-cards:not(:hover):not(:focus-within) > li:first-child [data-card-panel] {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

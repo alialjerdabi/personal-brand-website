@@ -15,12 +15,21 @@ export interface HeroAsset {
   alt: string;
 }
 
+/**
+ * One frame of a cycling media slot: a real image, or a typographic
+ * placeholder holding the animation ready until assets arrive.
+ */
+export type CycleFrame =
+  | { kind: "image"; src: string; alt: string }
+  | { kind: "placeholder"; label: string };
+
 export interface HeroService {
   id: string;
   name: string;
   /** Short work-proof lines revealed inside the card. */
   proofs: string[];
-  asset: HeroAsset;
+  /** Cycling media frames; a single frame means no cycling yet. */
+  media: CycleFrame[];
   href: string;
 }
 
@@ -32,10 +41,10 @@ export interface HeroStatus {
 }
 
 export interface HeroIntro {
-  /** Statement halves; the image chip sits between them. */
+  /** Statement halves; the cycling image chip sits between them. */
   pre: string;
   post: string;
-  chip: HeroAsset;
+  chips: CycleFrame[];
 }
 
 export interface HeroContent {
@@ -54,10 +63,11 @@ export const heroContent: HeroContent = {
   intro: {
     pre: "Growth",
     post: "is a system.",
-    chip: {
-      src: "/hero/petrolas-branding.jpg",
-      alt: "",
-    },
+    chips: [
+      { kind: "image", src: "/hero/petrolas-branding.jpg", alt: "" },
+      { kind: "image", src: "/hero/petrolas-digital.jpg", alt: "" },
+      { kind: "image", src: "/hero/petrolas-systems.jpg", alt: "" },
+    ],
   },
   identity: "Ali Aljardabi.",
   navLinks: [
@@ -80,10 +90,15 @@ export const heroContent: HeroContent = {
         "Positioning, voice & messaging",
         "Guidelines carried to every touchpoint",
       ],
-      asset: {
-        src: "/hero/petrolas-branding.jpg",
-        alt: "Petrolas-branded blue safety helmet held in a gloved hand against a dark background",
-      },
+      media: [
+        {
+          kind: "image",
+          src: "/hero/petrolas-branding.jpg",
+          alt: "Petrolas-branded blue safety helmet held in a gloved hand against a dark background",
+        },
+        { kind: "placeholder", label: "[ asset 02 ]" },
+        { kind: "placeholder", label: "[ asset 03 ]" },
+      ],
       href: "#work",
     },
     {
@@ -94,10 +109,13 @@ export const heroContent: HeroContent = {
         "Journeys built to qualify enquiries",
         "One identity, carried into code",
       ],
-      asset: {
-        src: "/hero/petrolas-digital.jpg",
-        alt: "Phone on a stone plinth showing Petrolas digital brand content in the identity's visual language",
-      },
+      media: [
+        {
+          kind: "image",
+          src: "/hero/petrolas-digital.jpg",
+          alt: "Phone on a stone plinth showing Petrolas digital brand content in the identity's visual language",
+        },
+      ],
       href: "#work",
     },
     {
@@ -108,10 +126,13 @@ export const heroContent: HeroContent = {
         "Enquiry handling & follow-ups",
         "Hours returned to growth",
       ],
-      asset: {
-        src: "/hero/petrolas-systems.jpg",
-        alt: "Petrolas construction hoarding with connected circuit-line graphics reading Smart systems, sustainable energy",
-      },
+      media: [
+        {
+          kind: "image",
+          src: "/hero/petrolas-systems.jpg",
+          alt: "Petrolas construction hoarding with connected circuit-line graphics reading Smart systems, sustainable energy",
+        },
+      ],
       href: "#work",
     },
   ],
