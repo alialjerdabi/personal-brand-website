@@ -64,12 +64,38 @@ Working notes during Phase 1 (see docs/roadmap.md). Every value recorded here ha
 - Image-in-headline experiment (queue item 7) lives HERE — the intro statement's chip — one placement only, per the rule. Don't add a second elsewhere.
 - Verification note: sub-3s animations can't be caught by pane screenshots; verify by pausing/seeking via el.getAnimations() on an injected preview clone.
 
+## COBALT ENTERS THE SYSTEM (2026-07-17, Ali's direction — second functional color)
+
+- #255DFF ("cobalt"), used ONLY where it means CONNECTION between disciplines: the "Impact metrics" label, the stitch lines + dots tying proof to consequence, and the loop formula's arrows. Emerald = availability; cobalt = system connection. NOTHING else is colored — no headings, no buttons, no decoration. If a third color ever appears, something has gone wrong.
+
+## Act III — Blueprint stack, SCROLL-SCRUBBED (2026-07-18, revision on Ali's direction)
+
+- The deal is no longer entry-triggered beats: sheet poses are a PURE FUNCTION of scroll position — assemble scrolling down, disassemble in reverse scrolling up, freeze exactly at any point. Nothing autoplays. Desktop: stage pins via position:sticky (native scroll, never hijacked) across a lg:h-[260vh] runway; per-sheet windows: settle = easeOutCubic(clamp((p − k·0.22)/0.30)); lift 5rem→0, over-rotation +4°→pose, opacity via settled·1.6. Mobile: no pin — each sheet settles by its own viewport position (Act II grammar). rAF + ref mutation, zero re-renders.
+- SSR default = assembled; JS only ever moves sheets when motion is allowed. Deep-linking mid-runway computes the correct frozen state instantly (purity property).
+- Motion inventory correction: the page now has TWO scroll-scrubbed acts (II convergence, III stack) — both user-directed; entry-beat grammar remains only in Act IV's rail.
+
+## Act III — Blueprint stack (2026-07-18, staging; superseded interaction — see scroll-scrubbed revision above)
+
+- Namma-reference bones in our register: four light sheets (bg-zinc-100, rounded-lg — the "sheet" radius register between square plates and rounded-2xl cards; shadow-2xl black/40 for lift off the dark desk) dealt one by one, each overlapping the last down-right until one layered stack. Rotations drafting-table only: −2 / 1.4 / −1 / 0.8 deg. Undealt pose: +3deg extra rotation + 2.5rem down + transparent; settle 600ms cubic-bezier(0.22,1,0.36,1), 600ms beats, entry-triggered (IO, −20% margin), NEVER scroll-scrubbed.
+- Sheet anatomy: mono stage header → statement → support → cobalt-arrow connection line ("→ Feeds Stage 0X · …") → dashed drafting frame ([ metric module ] — reserved for Ali's future metric animations) → giant base title (cropped by the next sheet, Namma's device). Payoff sheet: wider (58%), lands last on top, absorbs the loop close (cobalt formula, "It compounds.", larger [ compound metrics ] frame, full "Growth System" title visible).
+- Desktop geometry: absolute within lg:h-[66rem] wrapper; lefts 0/14/28/36%, tops 0/6/12/20rem, widths 54/54/54/58%, z ascending. Mobile: flow stack, −mt-6 overlaps, same rotations, no absolute.
+- Gauge/proof/metrics module system retired from this act (lives in git; ruler-tick gauge grammar remains the canonical data-viz language for the FUTURE metric modules that fill the drafting frames).
+- SSR/no-JS/reduced-motion: stack fully dealt.
+
+## Act III — Expansion staging (2026-07-17, latest; supersedes gauge-only version)
+
+- Per Ali's animation sheet (adapted, not copied): each module runs its own entry sequence — clip-path expansion (inset 62%→0, 400ms, paint-only so text NEVER reflows mid-motion), proof plate scales in at center (400ms), impact metrics dock from right (350ms, +380ms), blue stitches draw + lock (350ms, staggered 120ms). Ease everywhere: cubic-bezier(0.22,1,0.36,1) from the sheet.
+- Module anatomy (lg): narrative+gauge | proof plate (Petrolas image, mono case-file caption) | impact metrics (Output / Feeds / Inherits — the Inherits row is the cause→effect ledger). Proof imagery RETURNS to this act with a job: evidence at the instrument's center, not gallery.
+- Per-module IO triggering (each expands as IT enters), spine ink fills per started module; loop close = "One growth system" + full gauge + blue-arrow formula. SSR/no-JS/reduced-motion: fully locked state.
+- Lint lesson recorded: derive locked-vs-animating from an `armed` prop (effectivePhase = armed ? phase : LOCKED) instead of resetting state in effects.
+
 ## Act III restaged — The Assembly (2026-07-17, later; supersedes the staircase composition)
 
 - Apple-silicon staging (Ali's brief: "how would Apple explain one chip vs four"): name the villain in the intro (handovers), then ONE object — a vertical spine (chassis) with three machined modules docked onto it. Benefits attributed to unity itself, cause→effect.
 - Modules: square-edged hairline-framed plates (machined, non-interactive — rounded corners remain reserved for interactive cards), engraved mono header ("Module 01 · Brand Strategy"), outcome headline, support, then spec lines under a hairline: "Output · <outcome noun>" / "Feeds · <what it hands downstream>". NO invented numbers — spec slots accept real figures when they exist.
 - Entry: one docking sequence (650ms beats, translate-x 12px + opacity, spine ink draws down scaleY), IO-armed below-fold only, SSR = fully assembled, reduced-motion/no-JS complete. Never scroll-scrubbed.
 - Kill criterion watched during build: if modules read as "cards," revert to typographic staircase — verdict: the spine + ticks + engraving keep them reading as spec plates, not cards.
+- Instrument gauge (added 2026-07-17, Ali's "visual payoff" brief): each module's plate splits narrative-left / instrument-panel-right (lg); the panel = "System strength" label + a ruler of 24 hairline ticks (every 6th taller) whose inked count grows 8→16→24 across modules + honest stage caption ("Stage 02 · Inherits Stage 01") + specs. NO invented percentages — accumulation is shown structurally; caption slots accept real figures later. On dock, ticks sweep in at 15ms/tick (needle sweep, not animation). Loop close reuses the full gauge captioned "All stages engaged". This is the site's data-viz grammar: ruler ticks + mono captions, never bars/charts/color.
 
 ## Act III redesigned — The Philosophy (2026-07-17, Ali's direction)
 
