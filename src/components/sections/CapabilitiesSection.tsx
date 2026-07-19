@@ -8,13 +8,11 @@ interface CapabilitiesSectionProps {
 }
 
 /**
- * How many copies of the partner list the marquee track carries. The
- * animation loops at -50%, so the first half of the track (copies / 2)
- * must be wider than any real viewport — eight copies of six tiles
- * keeps the strip seamless past 4K.
+ * Reverted 2026-07-20 (Ali preferred the original over the full-measure
+ * feature): back to a real card that also renders "in production"
+ * placeholders as honest, non-linking states — the mid-story break is
+ * the asymmetric grid itself, not one enlarged image.
  */
-const MARQUEE_COPIES = 8;
-
 function ShowcaseCard({ project }: { project: ShowcaseProject }) {
   const media = (
     <span
@@ -82,21 +80,20 @@ function ShowcaseCard({ project }: { project: ShowcaseProject }) {
 
 /**
  * Capabilities block (between Acts II and III): the service list linking
- * into the services page, the partner strip as a slow pausable marquee,
- * and the selected-work grid — asymmetric column spans and offsets on a
- * consistent 12-column grid and gap. All states are pure CSS.
+ * into the services page, then the work proof — asymmetric 12-column
+ * grid (Petrolas + two in-production placeholders + open slot). The
+ * partner marquee stays dark until real names exist (2026-07-20; data
+ * slot remains). All states are pure CSS.
+ *
+ * Seam rhythm (2026-07-20): tight bottom — this act compresses into the
+ * dark climax that follows (pairs with PhilosophySection's pt).
  */
 export default function CapabilitiesSection({ content }: CapabilitiesSectionProps) {
-  const marqueePartners = Array.from(
-    { length: MARQUEE_COPIES },
-    () => content.partners
-  ).flat();
-
   return (
     <section
       id="capabilities"
       aria-labelledby="capabilities-heading"
-      className="overflow-x-clip bg-white py-28 sm:py-36"
+      className="overflow-x-clip bg-white pb-16 pt-20 sm:pb-20 sm:pt-24"
     >
       <Container>
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
@@ -139,34 +136,7 @@ export default function CapabilitiesSection({ content }: CapabilitiesSectionProp
         </ul>
       </Container>
 
-      <Container className="mt-20">
-        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
-          {content.partnersLabel}
-        </p>
-      </Container>
-      <div className="relative mt-6">
-        <ul className="flex w-max motion-safe:animate-[marquee_90s_linear_infinite] motion-safe:hover:[animation-play-state:paused]">
-          {marqueePartners.map((partner, index) => (
-            <li
-              key={`${partner}-${index}`}
-              aria-hidden={index >= content.partners.length}
-              className="mr-4 flex h-20 w-48 shrink-0 items-center justify-center rounded-xl border border-zinc-200 px-6 text-sm font-medium uppercase tracking-[0.12em] text-zinc-500"
-            >
-              {partner}
-            </li>
-          ))}
-        </ul>
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent"
-        />
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent"
-        />
-      </div>
-
-      <Container id="work" className="mt-20 scroll-mt-20">
+      <Container id="work" className="mt-24 scroll-mt-20 sm:mt-28">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
           {content.projectsLabel}
         </p>

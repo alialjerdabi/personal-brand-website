@@ -9,14 +9,19 @@ interface CTASectionProps {
 /**
  * Stand-in for Act V — The Invitation (rebuilt properly in Phase 3,
  * see docs/roadmap.md). Kept in the page's editorial voice: left-aligned,
- * flat dark ground, act-opener eyebrow, hairline act divider.
+ * flat dark ground, act-opener eyebrow.
+ *
+ * Composed with SiteFooter as ONE close (2026-07-20): no hairline above
+ * (the light→dark ground change is the divider) and a short bottom, so
+ * the ask flows straight into the email/wordmark/thesis sequence — the
+ * page ends once, not twice.
  */
 export default function CTASection({ content }: CTASectionProps) {
   return (
     <section
       id="contact"
       aria-labelledby="cta-heading"
-      className="border-t border-white/10 bg-zinc-950 py-28 text-white sm:py-36"
+      className="bg-zinc-950 pb-16 pt-20 text-white sm:pb-20 sm:pt-28"
     >
       <Container>
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">

@@ -1,10 +1,12 @@
 /**
- * Act III — The Philosophy (blueprint-stack staging, 2026-07-18): four
- * editorial sheets dealt onto the dark ground one by one — Strategy,
- * Experience, Systems, and the Growth System payoff — each overlapping
- * the last until they form one layered stack. Placeholder zones hold
- * space for Ali's future metric animations. Outcome language only;
- * never invented numbers.
+ * Act III — The Philosophy (blueprint-stack staging, 2026-07-18; ending
+ * rebuilt 2026-07-20 per Ali's direction): three editorial sheets dealt
+ * onto the dark ground one by one — Strategy, Experience, Systems —
+ * each overlapping the last until they form one layered stack. Once
+ * settled, all three continue moving upward together and off-stage,
+ * revealing a full-screen editorial payoff underneath (see `payoff`).
+ * Placeholder zones on the three cards hold space for Ali's future
+ * metric animations. Outcome language only; never invented numbers.
  */
 
 export interface GrowthCard {
@@ -16,11 +18,18 @@ export interface GrowthCard {
   support: string;
   /** Connection line — the arrow renders in cobalt (blue = connection). */
   connection?: string;
-  /** Payoff card only: the full loop formula (arrows render cobalt). */
-  formula?: string;
-  /** Payoff card only: the act's last words. */
-  closing?: string;
   placeholderLabel: string;
+}
+
+/**
+ * The act's closing moment (2026-07-20): no fourth card, no diagram, no
+ * metrics — the three cards clear the stage and this is what's left.
+ * Headline renders at display scale, full-bleed; caption stays small,
+ * lighter weight, in cobalt (the site's connection color) beneath it.
+ */
+export interface PhilosophyPayoff {
+  headline: string;
+  caption: string;
 }
 
 export interface PhilosophyContent {
@@ -28,6 +37,7 @@ export interface PhilosophyContent {
   heading: string;
   intro: string;
   cards: GrowthCard[];
+  payoff: PhilosophyPayoff;
 }
 
 export const philosophyContent: PhilosophyContent = {
@@ -63,15 +73,9 @@ export const philosophyContent: PhilosophyContent = {
       connection: "Feeds Stage 01 · everything it learns",
       placeholderLabel: "[ metric module ]",
     },
-    {
-      stage: "Stage 04 · One growth system",
-      title: "Growth System",
-      statement:
-        "What the systems learn feeds the strategy. Three services would stop there — one system doesn't:",
-      support: "",
-      formula: "Strategy → Experience → Systems → Strategy → …",
-      closing: "It compounds.",
-      placeholderLabel: "[ compound metrics — coming soon ]",
-    },
   ],
+  payoff: {
+    headline: "One system.",
+    caption: "Everything compounds.",
+  },
 };

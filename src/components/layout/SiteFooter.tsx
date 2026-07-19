@@ -10,10 +10,14 @@ interface SiteFooterProps {
  * full-bleed wordmark as the signature — the page ends the way a
  * letter does. The thesis is the last line, so the last thing read
  * is the first thing said (see docs/landing-experience.md, Act V).
+ *
+ * No hairline above and a short top (2026-07-20): on the homepage the
+ * footer continues CTASection's dark ground as one composed close; on
+ * light-ended pages the ground change itself is the divider.
  */
 export default function SiteFooter({ content }: SiteFooterProps) {
   return (
-    <footer aria-label="Site footer" className="overflow-x-clip border-t border-white/10 bg-zinc-950 pt-20 text-white sm:pt-24">
+    <footer aria-label="Site footer" className="overflow-x-clip bg-zinc-950 pt-12 text-white sm:pt-14">
       <Container>
         <div className="grid gap-12 sm:grid-cols-2 sm:gap-8">
           <p className="max-w-sm text-base leading-7 text-zinc-400">
@@ -23,9 +27,13 @@ export default function SiteFooter({ content }: SiteFooterProps) {
             <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500">
               {content.emailLabel}
             </p>
+            {/*
+              Display scale (2026-07-20): the email is the close's
+              working CTA — it must not whisper next to the wordmark.
+            */}
             <a
               href={`mailto:${content.email}`}
-              className="mt-3 inline-block break-all text-xl font-medium tracking-tight text-white underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none sm:text-2xl"
+              className="mt-3 inline-block break-all text-2xl font-medium tracking-tight text-white underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none sm:text-3xl lg:text-4xl"
             >
               {content.email}
             </a>

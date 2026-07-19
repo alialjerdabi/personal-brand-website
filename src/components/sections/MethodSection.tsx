@@ -15,13 +15,18 @@ interface MethodSectionProps {
  * editorial line on a shared rail (skimmable in fifteen seconds); the
  * partner coda puts a person behind the method before the page asks
  * for anything (see docs/landing-experience.md, Act IV).
+ *
+ * Seam rhythm (2026-07-20): generous top — the page's largest breath,
+ * the exhale after the dark act's climax (pairs with PhilosophySection's
+ * pb) — and a tighter bottom, so the momentum of the method carries
+ * straight into the invitation.
  */
 export default function MethodSection({ content }: MethodSectionProps) {
   return (
     <section
       id="method"
       aria-labelledby="method-heading"
-      className="bg-white py-28 sm:py-36"
+      className="bg-white pb-20 pt-28 sm:pb-24 sm:pt-40"
     >
       <Container>
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
