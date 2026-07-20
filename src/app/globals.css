@@ -28,6 +28,22 @@ html {
  * duration eased scrolling is the Lenis trial's job, if adopted.
  */
 
+/*
+ * Services page exception (2026-07-20): chapter-to-chapter distances
+ * on this page are short, so native smooth anchor scrolling reads as
+ * calm and quick rather than the multi-second glide rejected above —
+ * scoped to this one page via a class toggled by SmoothAnchorScroll.tsx
+ * only while it's mounted, so the homepage's instant-jump rule is
+ * completely untouched. Reduced-motion users get the browser's default
+ * instant jump automatically — the class only has an effect inside
+ * this media query, no JS branching needed for that part.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.services-smooth-scroll {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

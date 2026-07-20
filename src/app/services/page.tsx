@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
 import CTAButton from "@/components/ui/CTAButton";
+import SmoothAnchorScroll from "@/components/sections/services/SmoothAnchorScroll";
 import { servicesPageContent } from "@/data/services";
 import type { ServiceDetail } from "@/data/services";
 import type { ChapterProps } from "@/components/sections/services/chapterProps";
@@ -56,7 +57,8 @@ export default function ServicesPage() {
 
   return (
     <main id="main" className="bg-white">
-      <Container>
+      <SmoothAnchorScroll />
+      <Container size="wide">
         <header className="flex items-center justify-between gap-6 pt-6 sm:pt-8">
           <Link
             href="/"
