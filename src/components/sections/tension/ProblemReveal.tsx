@@ -35,6 +35,7 @@ const BRIDGE_SPAN = 0.12;
 
 const INK: [number, number, number] = [9, 9, 11]; // zinc-950 — the current thought
 const PAST: [number, number, number] = [113, 113, 122]; // zinc-500 — receded, still legible
+const COBALT = "#255DFF"; // connection color — reserved for "Nothing works together." only
 
 function mixColor(t: number): string {
   const r = Math.round(INK[0] + (PAST[0] - INK[0]) * t);
@@ -183,6 +184,9 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
                 turnRefs.current[index] = el;
               }}
               className={rideItem}
+              // "Everything works." stays ink; "Nothing works together." —
+              // the last line — turns cobalt (2026-07-20, Ali's direction).
+              style={index === turnLines.length - 1 ? { color: COBALT } : undefined}
             >
               {line}
             </span>

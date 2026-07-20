@@ -16,7 +16,7 @@ export default function HeroSection({ content }: { content: HeroContent }) {
       aria-labelledby="hero-heading"
       className="bg-white pb-8 pt-6 sm:pt-8 lg:pb-10"
     >
-      <Container>
+      <Container size="wide">
         <header className="entrance-1 flex items-center justify-between gap-6">
           <p className="text-base font-semibold tracking-tight text-zinc-950">
             {content.identity}

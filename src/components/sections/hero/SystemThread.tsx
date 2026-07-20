@@ -48,7 +48,7 @@ export default function SystemThread({ status }: SystemThreadProps) {
             : "border-transparent"
         }`}
       >
-        <Container>
+        <Container size="wide">
           <div className="entrance-5 flex items-baseline justify-between gap-6 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400">
             <p>
               {status.location} · <LocalTime timeZone={status.timeZone} /> ·{" "}

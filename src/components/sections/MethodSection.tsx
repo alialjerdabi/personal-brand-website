@@ -28,7 +28,7 @@ export default function MethodSection({ content }: MethodSectionProps) {
       aria-labelledby="method-heading"
       className="bg-white pb-20 pt-28 sm:pb-24 sm:pt-40"
     >
-      <Container>
+      <Container size="wide">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
           {content.eyebrow}
         </p>

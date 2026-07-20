@@ -34,7 +34,7 @@ export default function PhilosophySection({ content }: PhilosophySectionProps) {
       aria-labelledby="philosophy-heading"
       className="overflow-x-clip bg-zinc-950 pb-32 pt-24 text-white sm:pb-48 sm:pt-32"
     >
-      <Container>
+      <Container size="wide">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
           {content.eyebrow}
         </p>

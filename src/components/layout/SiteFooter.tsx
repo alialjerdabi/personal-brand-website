@@ -66,7 +66,7 @@ export default function SiteFooter({ content }: SiteFooterProps) {
       </p>
 
       <div className="border-t border-white/10">
-        <Container>
+        <Container size="wide">
           <div className="flex flex-col gap-2 py-5 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
             <p>
               © {new Date().getFullYear()} {content.wordmark} · {content.location}

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import Container from "@/components/layout/Container";
+import CapabilitiesListInteractive from "@/components/sections/capabilities/CapabilitiesListInteractive";
 import type { CapabilitiesContent, ShowcaseProject } from "@/data/capabilities";
 
 interface CapabilitiesSectionProps {
@@ -87,6 +87,10 @@ function ShowcaseCard({ project }: { project: ShowcaseProject }) {
  *
  * Seam rhythm (2026-07-20): tight bottom — this act compresses into the
  * dark climax that follows (pairs with PhilosophySection's pt).
+ *
+ * The capability list itself is CapabilitiesListInteractive.tsx (2026-07-20,
+ * isolated hover-preview experiment — see its own doc comment) rather
+ * than an inline `<ul>`; its markup/classes are unchanged from before.
  */
 export default function CapabilitiesSection({ content }: CapabilitiesSectionProps) {
   return (
@@ -95,7 +99,7 @@ export default function CapabilitiesSection({ content }: CapabilitiesSectionProp
       aria-labelledby="capabilities-heading"
       className="overflow-x-clip bg-white pb-16 pt-20 sm:pb-20 sm:pt-24"
     >
-      <Container>
+      <Container size="wide">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
           {content.eyebrow}
         </p>
@@ -109,34 +113,10 @@ export default function CapabilitiesSection({ content }: CapabilitiesSectionProp
           {content.description}
         </p>
 
-        <ul className="mt-12 border-t border-zinc-200">
-          {content.capabilities.map((capability, index) => (
-            <li key={capability.slug} className="border-b border-zinc-200">
-              <Link
-                href={`/services#${capability.slug}`}
-                className="group flex items-baseline justify-between gap-6 py-4 focus-visible:outline-none"
-              >
-                <span className="flex items-baseline gap-6">
-                  <span className="font-mono text-xs text-zinc-300">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="inline-block text-2xl font-medium tracking-tight text-zinc-300 underline-offset-8 motion-safe:transition-[color,transform] motion-safe:duration-200 group-hover:translate-x-1 group-hover:text-zinc-950 group-focus-visible:translate-x-1 group-focus-visible:text-zinc-950 group-focus-visible:underline sm:text-3xl">
-                    {capability.name}
-                  </span>
-                </span>
-                <span
-                  aria-hidden="true"
-                  className="font-mono text-sm text-zinc-300 opacity-0 motion-safe:transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
-                >
-                  →
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <CapabilitiesListInteractive capabilities={content.capabilities} />
       </Container>
 
-      <Container id="work" className="mt-24 scroll-mt-20 sm:mt-28">
+      <Container id="work" size="wide" className="mt-24 scroll-mt-20 sm:mt-28">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
           {content.projectsLabel}
         </p>

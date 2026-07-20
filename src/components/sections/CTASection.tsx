@@ -23,7 +23,7 @@ export default function CTASection({ content }: CTASectionProps) {
       aria-labelledby="cta-heading"
       className="bg-zinc-950 pb-16 pt-20 text-white sm:pb-20 sm:pt-28"
     >
-      <Container>
+      <Container size="wide">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
           {content.eyebrow}
         </p>

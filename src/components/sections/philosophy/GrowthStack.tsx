@@ -187,7 +187,7 @@ export default function GrowthStack({ cards, eyebrow, heading, payoff }: GrowthS
   return (
     <div ref={runwayRef} className="relative lg:h-[230vh]">
       <div className="lg:sticky lg:top-[max(2rem,calc(50vh-27rem))] lg:h-[54rem]">
-        <Container>
+        <Container size="wide">
           <div ref={echoRef} aria-hidden="true" className="hidden lg:block">
             <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
               {eyebrow}

@@ -23,7 +23,7 @@ export default function TensionSection({ content }: TensionSectionProps) {
       aria-labelledby="tension-heading"
       className="overflow-x-clip bg-white pb-32 pt-14 sm:pb-48 sm:pt-20"
     >
-      <Container>
+      <Container size="wide">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
           {content.eyebrow}
         </p>
