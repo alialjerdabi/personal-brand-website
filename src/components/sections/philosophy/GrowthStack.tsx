@@ -19,9 +19,9 @@ const COBALT = "#255DFF";
  * left-strip reveal.
  */
 const SHEET_POSE = [
-  { rotate: -2, layout: "lg:absolute lg:left-0 lg:top-0 lg:w-[64%]" },
-  { rotate: 1.4, layout: "lg:absolute lg:left-[11%] lg:top-[6.5rem] lg:w-[64%]" },
-  { rotate: -1, layout: "lg:absolute lg:left-[22%] lg:top-[13rem] lg:w-[64%]" },
+  { rotate: -2, layout: "lg:absolute lg:left-0 lg:top-0 lg:w-[64%]", rotateClass: "lg:rotate-[-2deg]" },
+  { rotate: 1.4, layout: "lg:absolute lg:left-[11%] lg:top-[6.5rem] lg:w-[64%]", rotateClass: "lg:rotate-[1.4deg]" },
+  { rotate: -1, layout: "lg:absolute lg:left-[22%] lg:top-[13rem] lg:w-[64%]", rotateClass: "lg:rotate-[-1deg]" },
 ];
 
 /** Per-sheet scrub window: start of settle within overall progress. */
@@ -134,9 +134,14 @@ export default function GrowthStack({ cards, eyebrow, heading, payoff }: GrowthS
 
         const lift = (1 - settled) * 5;
         const overRotate = (1 - settled) * 4;
-        el.style.transform = `translateY(${lift.toFixed(3)}rem) rotate(${(
-          pose.rotate + overRotate
-        ).toFixed(3)}deg)`;
+        // Rotation is desktop-only (see SHEET_POSE.rotateClass) — the
+        // drafting-table tilt reads as an intentional diagonal cascade
+        // there, but at full mobile width it just collides with the
+        // next card. JS must not re-add what the base CSS removes.
+        const rotatePart = desktop
+          ? ` rotate(${(pose.rotate + overRotate).toFixed(3)}deg)`
+          : "";
+        el.style.transform = `translateY(${lift.toFixed(3)}rem)${rotatePart}`;
         el.style.opacity = (clamp01(settled * 1.6) * (1 - exitProgress)).toFixed(3);
       });
 
@@ -199,11 +204,8 @@ export default function GrowthStack({ cards, eyebrow, heading, payoff }: GrowthS
                   ref={(el) => {
                     cardRefs.current[index] = el;
                   }}
-                  style={{
-                    zIndex: index + 1,
-                    transform: `rotate(${pose.rotate}deg)`,
-                  }}
-                  className={`relative -mt-6 w-full will-change-transform first:mt-0 lg:mt-0 ${pose.layout}`}
+                  style={{ zIndex: index + 1 }}
+                  className={`relative mt-6 w-full rotate-0 will-change-transform first:mt-0 lg:mt-0 ${pose.rotateClass} ${pose.layout}`}
                 >
                   <article className="rounded-lg bg-zinc-100 p-6 text-zinc-950 shadow-2xl shadow-black/40 sm:p-8">
                     <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500">
@@ -242,7 +244,7 @@ export default function GrowthStack({ cards, eyebrow, heading, payoff }: GrowthS
                       </span>
                     </span>
 
-                    <p className="mt-5 text-4xl font-semibold leading-[0.9] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+                    <p className="mt-5 text-3xl font-semibold leading-[0.9] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
                       {card.title}
                     </p>
                   </article>

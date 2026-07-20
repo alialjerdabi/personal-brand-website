@@ -1,9 +1,18 @@
+import type { ComponentType } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
 import CTAButton from "@/components/ui/CTAButton";
-import Reveal from "@/components/ui/Reveal";
 import { servicesPageContent } from "@/data/services";
+import type { ServiceDetail } from "@/data/services";
+import type { ChapterProps } from "@/components/sections/services/chapterProps";
+import Consulting from "@/components/sections/services/chapters/Consulting";
+import Rebranding from "@/components/sections/services/chapters/Rebranding";
+import StrategyPositioning from "@/components/sections/services/chapters/StrategyPositioning";
+import WebAppDesign from "@/components/sections/services/chapters/WebAppDesign";
+import AiAutomatedSystems from "@/components/sections/services/chapters/AiAutomatedSystems";
+import MarketingProduction from "@/components/sections/services/chapters/MarketingProduction";
+import GraphicDesign from "@/components/sections/services/chapters/GraphicDesign";
 
 export const metadata: Metadata = {
   title: "Services — Ali Aljardabi",
@@ -11,12 +20,36 @@ export const metadata: Metadata = {
     "Consulting, branding, strategy, web and app design, AI automation, marketing production, and graphic design — seven disciplines working as one growth system.",
 };
 
+/** Slug → chapter layout. Each service gets its own composition (see
+ * docs/design-language-notes.md, "Services page rebuilt as editorial
+ * chapters") instead of one template repeated seven times. */
+const CHAPTERS: Record<string, ComponentType<ChapterProps>> = {
+  consulting: Consulting,
+  rebranding: Rebranding,
+  "strategy-positioning": StrategyPositioning,
+  "web-app-design": WebAppDesign,
+  "ai-automated-systems": AiAutomatedSystems,
+  "marketing-production": MarketingProduction,
+  "graphic-design": GraphicDesign,
+};
+
+function renderChapter(service: ServiceDetail, index: number, scopeLabel: string, assetLabel: string) {
+  const Chapter = CHAPTERS[service.slug];
+  if (!Chapter) return null;
+  return (
+    <Chapter key={service.slug} service={service} index={index} scopeLabel={scopeLabel} assetLabel={assetLabel} />
+  );
+}
+
 /**
- * The services page: every discipline as a numbered chapter — why it
- * matters to the business, how the process runs with clients — with a
- * sticky side navigation on desktop (layout foundation adapted from
- * the approved symbolstudio.pl services reference). Media rows are
- * animated placeholders until real assets arrive.
+ * The services page: every discipline as its own editorial chapter —
+ * why it matters to the business, how the process runs with clients —
+ * with a sticky side navigation on desktop (layout foundation adapted
+ * from the approved symbolstudio.pl services reference). Rebuilt
+ * 2026-07-20 (Ali's direction) so each chapter has one dominant visual
+ * idea instead of a single template repeated seven times — see the
+ * chapter components under components/sections/services/. Media rows
+ * are still animated placeholders until real assets arrive.
  */
 export default function ServicesPage() {
   const content = servicesPageContent;
@@ -79,76 +112,9 @@ export default function ServicesPage() {
           </aside>
 
           <div>
-            {content.services.map((service, index) => (
-              <article
-                key={service.slug}
-                id={service.slug}
-                aria-labelledby={`service-${service.slug}`}
-                className="scroll-mt-16 border-t border-zinc-200 py-16 first:border-t-0 first:pt-0 sm:py-20"
-              >
-                <p className="flex items-baseline gap-5">
-                  <span className="font-mono text-xs text-zinc-400">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    id={`service-${service.slug}`}
-                    className="text-3xl font-semibold tracking-[-0.02em] text-zinc-950 sm:text-4xl"
-                  >
-                    {service.name}
-                  </span>
-                </p>
-
-                <div className="mt-10 gap-10 lg:grid lg:grid-cols-12">
-                  <div className="lg:col-span-4">
-                    <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
-                      {content.scopeLabel}
-                    </p>
-                    <ul className="mt-4 space-y-2">
-                      {service.scope.map((item) => (
-                        <li key={item} className="flex gap-3 text-sm leading-6 text-zinc-600">
-                          <span aria-hidden="true" className="text-zinc-300">
-                            –
-                          </span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mt-10 lg:col-span-8 lg:mt-0">
-                    <h3 className="max-w-lg text-xl font-medium leading-snug tracking-tight text-zinc-950 sm:text-2xl">
-                      {service.question}
-                    </h3>
-                    <p className="mt-6 max-w-xl text-base leading-7 text-zinc-600">
-                      {service.importance}
-                    </p>
-                    <p className="mt-4 max-w-xl text-base leading-7 text-zinc-600">
-                      {service.approach}
-                    </p>
-                  </div>
-                </div>
-
-                <Reveal className="mt-12">
-                  <div className="grid grid-cols-2 gap-4 lg:grid-cols-[2fr_1fr_1fr]">
-                    <div className="col-span-2 flex aspect-[16/10] items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 lg:col-span-1 lg:aspect-auto">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-300">
-                        {content.assetLabel}
-                      </span>
-                    </div>
-                    <div className="flex aspect-[4/3] items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-300">
-                        {content.assetLabel}
-                      </span>
-                    </div>
-                    <div className="flex aspect-[4/3] items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-300">
-                        {content.assetLabel}
-                      </span>
-                    </div>
-                  </div>
-                </Reveal>
-              </article>
-            ))}
+            {content.services.map((service, index) =>
+              renderChapter(service, index, content.scopeLabel, content.assetLabel)
+            )}
           </div>
         </div>
       </Container>

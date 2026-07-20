@@ -40,7 +40,7 @@ export default function PhilosophySection({ content }: PhilosophySectionProps) {
         </p>
         <h2
           id="philosophy-heading"
-          className="mt-6 max-w-3xl text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl"
+          className="mt-6 max-w-3xl text-3xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl"
         >
           {content.heading}
         </h2>
