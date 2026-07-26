@@ -27,7 +27,7 @@ export const footerContent: FooterContent = {
   links: [
     { label: "The story", href: "/#problem" },
     { label: "Services", href: "/services" },
-    { label: "The work", href: "/#work" },
+    { label: "The work", href: "/work" },
     { label: "Contact", href: "/#contact" },
   ],
   wordmark: "Ali Aljardabi",

@@ -14,11 +14,30 @@ interface MediaCyclerProps {
   pauseOnHover?: boolean;
   /** Preload the first frame (above-the-fold slots). */
   preloadFirst?: boolean;
+  /**
+   * Externally controlled autoplay gate — when a parent group arbitrates
+   * which one of several cyclers may run (e.g. hero/HeroCardGroupContext.tsx,
+   * capabilities/WorkGridContext.tsx). Omitted entirely (undefined)
+   * preserves this component's original always-on-unless-hovered
+   * behavior for callers that don't participate in a group. Explicit
+   * `false` resets to the first frame rather than freezing mid-cycle,
+   * so a deactivated card is always found at rest.
+   */
+  playing?: boolean;
+  /**
+   * Crossfade/pan duration in ms — defaults to the original approved
+   * 650ms for existing callers (Method's partner portrait, Services'
+   * AssetTile). A parent driving `playing` from a faster-paced group
+   * (e.g. the hero cards) may pass a shorter value; it governs both the
+   * per-frame CSS transition and the bookkeeping timeout that returns a
+   * departed frame to its idle pose, so the two stay in lockstep.
+   */
+  crossfadeMs?: number;
   /** Placeholder frame surface, tuned per ground. */
   placeholderClassName?: string;
 }
 
-const CYCLE_TRANSITION_MS = 650;
+const DEFAULT_CROSSFADE_MS = 650;
 
 /**
  * The approved image-cycle choreography (2026-07-16): the current frame
@@ -36,11 +55,28 @@ export default function MediaCycler({
   intervalMs = 2000,
   pauseOnHover = false,
   preloadFirst = false,
-  placeholderClassName = "bg-zinc-900 text-white/40",
+  playing,
+  crossfadeMs = DEFAULT_CROSSFADE_MS,
+  placeholderClassName = "bg-ground-inverted text-white/40",
 }: MediaCyclerProps) {
   const [cycle, setCycle] = useState({ active: 0, leaving: -1 });
   const [mounted, setMounted] = useState(false);
   const pausedRef = useRef(false);
+
+  // A deactivated card (playing → false) settles back to its first frame
+  // through the SAME crossfade as a normal cycle tick (current frame
+  // marked "leaving", frame 0 becomes active) rather than snapping —
+  // the asset must never replace instantly, only ever fade. Adjusted
+  // during render rather than in an effect (React's documented pattern
+  // for resetting state in response to a prop change) so it takes effect
+  // in the same commit the group hands playback to a different card.
+  const [prevPlaying, setPrevPlaying] = useState(playing);
+  if (playing !== prevPlaying) {
+    setPrevPlaying(playing);
+    if (playing === false) {
+      setCycle((current) => (current.active === 0 ? current : { active: 0, leaving: current.active }));
+    }
+  }
 
   // Entry: the first frame pans up into place as the section loads.
   useEffect(() => {
@@ -50,6 +86,7 @@ export default function MediaCycler({
 
   useEffect(() => {
     if (frames.length < 2) return;
+    if (playing === false) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const interval = setInterval(() => {
@@ -60,21 +97,20 @@ export default function MediaCycler({
       }));
     }, intervalMs);
     return () => clearInterval(interval);
-  }, [frames.length, intervalMs]);
+  }, [frames.length, intervalMs, playing]);
 
   // Return the departed frame to the idle pose once its exit finishes.
   useEffect(() => {
     if (cycle.leaving < 0) return;
     const timer = setTimeout(
       () => setCycle((current) => ({ ...current, leaving: -1 })),
-      CYCLE_TRANSITION_MS
+      crossfadeMs
     );
     return () => clearTimeout(timer);
-  }, [cycle]);
+  }, [cycle, crossfadeMs]);
 
   const layerClass = (index: number) => {
-    const base =
-      "absolute inset-0 motion-safe:transition-[transform,opacity] motion-safe:duration-[650ms] motion-safe:ease-out";
+    const base = "absolute inset-0 motion-safe:transition-[transform,opacity] motion-safe:ease-out";
     if (index === cycle.active) {
       return `${base} ${
         mounted ? "translate-y-0 scale-100 opacity-100" : "translate-y-[4%] scale-100 opacity-0"
@@ -97,6 +133,7 @@ export default function MediaCycler({
           key={frame.kind === "image" ? frame.src : `${frame.label}-${index}`}
           aria-hidden={index !== cycle.active}
           className={layerClass(index)}
+          style={{ transitionDuration: `${crossfadeMs}ms` }}
         >
           {frame.kind === "image" ? (
             <Image

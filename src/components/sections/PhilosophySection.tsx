@@ -32,7 +32,7 @@ export default function PhilosophySection({ content }: PhilosophySectionProps) {
     <section
       id="philosophy"
       aria-labelledby="philosophy-heading"
-      className="overflow-x-clip bg-zinc-950 pb-32 pt-24 text-white sm:pb-48 sm:pt-32"
+      className="overflow-x-clip bg-ground-inverted pb-32 pt-24 text-ink-on-inverted sm:pb-48 sm:pt-32"
     >
       <Container size="wide">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">

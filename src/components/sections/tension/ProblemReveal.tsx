@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
+import { THEME_CHANGE_EVENT } from "@/lib/theme";
 
 interface ProblemRevealProps {
   lead: string;
@@ -33,14 +34,36 @@ const TURN_STAGGER = 0.04;
 const BRIDGE_GAP = 0.05;
 const BRIDGE_SPAN = 0.12;
 
-const INK: [number, number, number] = [9, 9, 11]; // zinc-950 — the current thought
-const PAST: [number, number, number] = [113, 113, 122]; // zinc-500 — receded, still legible
-const COBALT = "#255DFF"; // connection color — reserved for "Nothing works together." only
+const ACCENT = "var(--accent)"; // connection color — reserved for "Nothing works together." only
 
-function mixColor(t: number): string {
-  const r = Math.round(INK[0] + (PAST[0] - INK[0]) * t);
-  const g = Math.round(INK[1] + (PAST[1] - INK[1]) * t);
-  const b = Math.round(INK[2] + (PAST[2] - INK[2]) * t);
+type Rgb = [number, number, number];
+
+/**
+ * Ink/muted endpoints for the fragment recede-color mix, read from the
+ * theme's own CSS variables (see globals.css's --foreground-rgb /
+ * --foreground-muted-rgb) rather than hardcoded — this interpolation
+ * runs via direct `el.style.color` mutation every scroll frame, which
+ * a CSS variable reference alone can't animate between (the browser
+ * only recomputes `var()` at style-resolution time, not mid-JS-loop),
+ * so the actual numbers have to be read once and kept in sync with
+ * the active theme instead.
+ */
+function readInkColors(): { ink: Rgb; past: Rgb } {
+  const style = getComputedStyle(document.documentElement);
+  const parse = (name: string, fallback: Rgb): Rgb => {
+    const parts = style.getPropertyValue(name).trim().split(/\s+/).map(Number);
+    return parts.length === 3 && parts.every((n) => !Number.isNaN(n)) ? (parts as Rgb) : fallback;
+  };
+  return {
+    ink: parse("--foreground-rgb", [24, 24, 27]),
+    past: parse("--foreground-muted-rgb", [113, 113, 122]),
+  };
+}
+
+function mixColor(ink: Rgb, past: Rgb, t: number): string {
+  const r = Math.round(ink[0] + (past[0] - ink[0]) * t);
+  const g = Math.round(ink[1] + (past[1] - ink[1]) * t);
+  const b = Math.round(ink[2] + (past[2] - ink[2]) * t);
   return `rgb(${r} ${g} ${b})`;
 }
 
@@ -81,12 +104,15 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
   const fragRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const turnRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const bridgeRef = useRef<HTMLSpanElement | null>(null);
+  const colorsRef = useRef<{ ink: Rgb; past: Rgb }>({ ink: [24, 24, 27], past: [113, 113, 122] });
 
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const heading = headingRef.current;
     const bridgeEl = bridgeRef.current;
     if (!heading || !bridgeEl) return;
+
+    colorsRef.current = readInkColors();
 
     const fragStarts = fragments.map((_, index) => index * FRAG_STEP);
     const lastFragEnd = fragStarts[fragStarts.length - 1] + FRAG_SPAN;
@@ -117,7 +143,7 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
 
         const recedeStart = index < fragStarts.length - 1 ? fragStarts[index + 1] : turnStart;
         const recede = easeOutCubic(clamp01((progress - recedeStart) / FRAG_RECEDE_SPAN));
-        el.style.color = mixColor(recede);
+        el.style.color = mixColor(colorsRef.current.ink, colorsRef.current.past, recede);
       });
 
       turnLines.forEach((_, index) => {
@@ -137,14 +163,24 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
       if (frame === 0) frame = requestAnimationFrame(update);
     };
 
+    // Re-reads the ink/muted endpoints on theme toggle and re-applies
+    // immediately, so already-painted fragment colors correct at once
+    // rather than waiting for the next scroll event to happen to fire.
+    const onThemeChange = () => {
+      colorsRef.current = readInkColors();
+      update();
+    };
+
     update();
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
+    window.addEventListener(THEME_CHANGE_EVENT, onThemeChange);
 
     return () => {
       if (frame !== 0) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
+      window.removeEventListener(THEME_CHANGE_EVENT, onThemeChange);
     };
   }, [fragments, turnLines]);
 
@@ -156,7 +192,7 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
       <h2
         ref={headingRef}
         id="tension-heading"
-        className="text-xl font-medium tracking-tight text-zinc-500 sm:text-2xl"
+        className="text-xl font-medium tracking-tight text-foreground-muted sm:text-2xl"
       >
         {lead}
       </h2>
@@ -168,7 +204,12 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
               ref={(el) => {
                 fragRefs.current[index] = el;
               }}
-              className={`${rideItem} text-3xl font-medium leading-tight tracking-tight text-zinc-950 sm:text-5xl`}
+              // theme-transition-none: this span's color is already
+              // driven imperatively every scroll frame (see mixColor
+              // above) — the global theme-toggle transition (globals.css)
+              // would otherwise fight that per-frame mutation and make
+              // the scroll-tied recede lag behind the actual scroll.
+              className={`${rideItem} theme-transition-none text-3xl font-medium leading-tight tracking-tight text-foreground sm:text-5xl`}
             >
               {fragment}
             </span>
@@ -176,7 +217,7 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
         ))}
       </ul>
 
-      <p className="mt-28 max-w-4xl text-3xl font-semibold leading-[1.08] tracking-[-0.03em] text-zinc-950 sm:mt-36 sm:text-5xl lg:text-6xl">
+      <p className="mt-28 max-w-4xl text-3xl font-semibold leading-[1.08] tracking-[-0.03em] text-foreground sm:mt-36 sm:text-5xl lg:text-6xl">
         {turnLines.map((line, index) => (
           <span key={line} className={mask}>
             <span
@@ -185,8 +226,9 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
               }}
               className={rideItem}
               // "Everything works." stays ink; "Nothing works together." —
-              // the last line — turns cobalt (2026-07-20, Ali's direction).
-              style={index === turnLines.length - 1 ? { color: COBALT } : undefined}
+              // the last line — turns the accent color (2026-07-20, Ali's
+              // direction; recolored blue→orange 2026-07-22).
+              style={index === turnLines.length - 1 ? { color: ACCENT } : undefined}
             >
               {line}
             </span>
@@ -197,7 +239,7 @@ export default function ProblemReveal({ lead, fragments, turnLines, bridge }: Pr
       <span className={`mt-8 max-w-md ${mask}`}>
         <span
           ref={bridgeRef}
-          className={`${rideItem} text-lg leading-8 text-zinc-500 sm:text-xl`}
+          className={`${rideItem} text-lg leading-8 text-foreground-muted sm:text-xl`}
         >
           {bridge}
         </span>

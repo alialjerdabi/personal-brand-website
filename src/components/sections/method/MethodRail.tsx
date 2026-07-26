@@ -59,11 +59,11 @@ export default function MethodRail({ steps }: MethodRailProps) {
   }, [steps.length]);
 
   return (
-    <div ref={rootRef} className="relative border-t border-zinc-200">
+    <div ref={rootRef} className="relative border-t border-border">
       <span
         aria-hidden="true"
         style={{ transform: `scaleX(${litCount / steps.length})` }}
-        className="absolute -top-px left-0 hidden h-px w-full origin-left bg-zinc-950 lg:block motion-safe:transition-transform motion-safe:duration-[450ms] motion-safe:ease-out"
+        className="absolute -top-px left-0 hidden h-px w-full origin-left bg-foreground lg:block motion-safe:transition-transform motion-safe:duration-[450ms] motion-safe:ease-out"
       />
       <ol className="grid gap-x-8 gap-y-10 pt-8 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => {
@@ -73,14 +73,14 @@ export default function MethodRail({ steps }: MethodRailProps) {
               <p className="flex items-baseline gap-4">
                 <span
                   className={`font-mono text-xs motion-safe:transition-colors motion-safe:duration-300 ${
-                    lit ? "text-zinc-950" : "text-zinc-300"
+                    lit ? "text-foreground" : "text-foreground-faint"
                   }`}
                 >
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span
                   className={`text-lg font-medium tracking-tight motion-safe:transition-colors motion-safe:duration-300 ${
-                    lit ? "text-zinc-950" : "text-zinc-300"
+                    lit ? "text-accent" : "text-foreground-faint"
                   }`}
                 >
                   {step.title}
@@ -88,7 +88,7 @@ export default function MethodRail({ steps }: MethodRailProps) {
               </p>
               <p
                 className={`mt-3 text-sm leading-6 motion-safe:transition-colors motion-safe:duration-300 ${
-                  lit ? "text-zinc-500" : "text-zinc-300"
+                  lit ? "text-foreground-muted" : "text-foreground-faint"
                 }`}
               >
                 {step.line}

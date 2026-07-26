@@ -1,24 +1,117 @@
 @import "tailwindcss";
 
 /*
- * One theme, two grounds: the site is a single light-theme experience
- * whose dark passages (Act III, Act V) are narrative chapter marks,
- * not an OS-level dark mode. See docs/landing-experience.md.
+ * True dark mode (2026-07-23, Ali's direction): a first-class second
+ * theme, not an inversion trick. `data-theme` on <html> is the switch
+ * (set by an inline bootstrap script in layout.tsx before paint, and
+ * by ThemeToggle.tsx thereafter) — no attribute defaults to light.
+ * Every semantic token below has a light value here and a dark
+ * override in the `[data-theme="dark"]` block; components consume the
+ * tokens (bg-surface, text-foreground-muted, etc.) and never hardcode
+ * the zinc scale directly. See docs/design-language-notes.md.
  */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 :root {
   --background: #ffffff;
+  --surface: #fafafa;
+  --surface-hover: #f4f4f5;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
   --foreground: #18181b;
+  --foreground-muted: #71717a;
+  --foreground-faint: #a1a1aa;
+  /* Space-separated r g b triplets for JS that needs to interpolate
+     (see tension/ProblemReveal.tsx) — kept in sync with the hex values
+     above by hand, since there are only two themes. */
+  --foreground-rgb: 24 24 27;
+  --foreground-muted-rgb: 113 113 122;
+
+  /*
+   * The "dark act" ground (Philosophy, final CTA, Footer, the two dark
+   * Services chapters, hero service cards, capabilities preview card)
+   * — a deliberate light→dark storytelling beat, independent of the
+   * page theme. In Dark Mode it blends via elevation (a shade lighter
+   * than --background) rather than staying a stark contrast, so the
+   * "chapter" still reads through depth, not a jarring color swing.
+   */
+  --ground-inverted: #09090b;
+  --ink-on-inverted: #ffffff;
+
+  /*
+   * The site's one accent color (2026-07-22, Ali's direction — replaces
+   * cobalt everywhere, including the narrative "connection" color in
+   * Act II's turn-line and Act III's loop-close/connector arrows; see
+   * design-language-notes.md). Fixed across both themes — Ali's
+   * direction is that the accent itself doesn't get themed.
+   */
+  --accent: #ff5a1f;
+}
+
+:root[data-theme="dark"] {
+  --background: #0a0a0a;
+  --surface: #141414;
+  --surface-hover: #1c1c1c;
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.14);
+  --foreground: #f4f4f5;
+  --foreground-muted: #a1a1aa;
+  --foreground-faint: #71717a;
+  --foreground-rgb: 244 244 245;
+  --foreground-muted-rgb: 161 161 170;
+
+  --ground-inverted: #1a1a1a;
+  --ink-on-inverted: #ffffff;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-faint: var(--foreground-faint);
+  --color-ground-inverted: var(--ground-inverted);
+  --color-ink-on-inverted: var(--ink-on-inverted);
+  --color-accent: var(--accent);
   --font-sans: var(--font-schibsted);
   --font-mono: var(--font-geist-mono);
 }
 
 html {
   scroll-padding-top: 5rem;
+}
+
+/*
+ * Theme transition (2026-07-23): color interpolation on toggle should
+ * feel premium, never flash. Universal selector deliberately used —
+ * its specificity (0,0,0) is lower than any class selector, so every
+ * component that already declares its own transition-colors (for
+ * hover/focus states, e.g. MethodRail, CapabilitiesListInteractive)
+ * keeps that exact timing untouched; this only fills in the gap for
+ * otherwise-static elements (section backgrounds, borders) that would
+ * snap instantly. Excluded via .theme-transition-none where an element
+ * drives its own color imperatively every animation frame (see
+ * tension/ProblemReveal.tsx) — a CSS transition fighting a per-frame
+ * style mutation would make scroll-tied color lag behind the scroll.
+ * Skipped entirely under reduced motion, matching this codebase's
+ * existing motion-safe discipline everywhere else.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    transition:
+      background-color 200ms ease-out,
+      color 200ms ease-out,
+      border-color 200ms ease-out;
+  }
+
+  /* Higher specificity than the universal rule above — deliberately
+     opts an element out where it drives its own color every frame. */
+  .theme-transition-none {
+    transition: none;
+  }
 }
 
 /*
@@ -186,19 +279,11 @@ body {
 }
 
 /*
- * Hero cards resting state: while the row is untouched, the first card
- * holds the expanded pose so the row is never dead — it yields the
- * moment any card is hovered or focused, then returns.
+ * Hero cards' resting/expanded state (2026-07-26) no longer lives here —
+ * it's driven by the `data-active` attribute set from
+ * HeroCardGroupContext's single `activeId`, via Tailwind's
+ * data-[active=true]/group-data-[active=true] variants directly on
+ * ServiceCards.tsx, so layout and MediaCycler playback share one source
+ * of truth instead of this rule and the JS state independently agreeing
+ * by coincidence.
  */
-@media (min-width: 640px) {
-  #hero-cards:not(:hover):not(:focus-within) > li:first-child {
-    flex-grow: 1.9;
-  }
-  #hero-cards:not(:hover):not(:focus-within) > li:first-child [data-card-label] {
-    opacity: 0;
-  }
-  #hero-cards:not(:hover):not(:focus-within) > li:first-child [data-card-panel] {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}

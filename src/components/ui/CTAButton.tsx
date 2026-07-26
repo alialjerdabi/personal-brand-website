@@ -10,7 +10,7 @@ interface CTAButtonProps {
 }
 
 const baseClasses =
-  "inline-flex items-center justify-center rounded-full font-semibold tracking-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/20 focus-visible:ring-offset-2";
+  "inline-flex items-center justify-center rounded-full font-semibold tracking-tight transition-[color,background-color,border-color,opacity] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2";
 
 const sizeClasses = {
   md: "h-12 px-6 text-base",
@@ -18,10 +18,13 @@ const sizeClasses = {
 } as const;
 
 const variantClasses = {
-  primary:
-    "bg-zinc-950 text-white shadow-sm shadow-zinc-950/10 hover:bg-zinc-800",
+  primary: "bg-foreground text-background shadow-sm shadow-foreground/10 hover:opacity-85",
   secondary:
-    "border border-zinc-300 text-zinc-950 hover:border-zinc-950 hover:bg-zinc-950/[0.03]",
+    "border border-border-strong text-foreground hover:border-foreground hover:bg-foreground/[0.03]",
+  // Deliberately theme-independent: this variant exists specifically
+  // to sit on the site's always-dark "inverted" grounds (CTASection),
+  // so it stays a light pill regardless of site theme, same as those
+  // grounds' own --ink-on-inverted text.
   inverted: "bg-white text-zinc-950 hover:bg-zinc-100",
 } as const;
 

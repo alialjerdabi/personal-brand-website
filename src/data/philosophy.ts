@@ -16,7 +16,7 @@ export interface GrowthCard {
   title: string;
   statement: string;
   support: string;
-  /** Connection line — the arrow renders in cobalt (blue = connection). */
+  /** Connection line — the arrow renders in the accent color (means connection). */
   connection?: string;
   placeholderLabel: string;
 }
@@ -25,7 +25,7 @@ export interface GrowthCard {
  * The act's closing moment (2026-07-20): no fourth card, no diagram, no
  * metrics — the three cards clear the stage and this is what's left.
  * Headline renders at display scale, full-bleed; caption stays small,
- * lighter weight, in cobalt (the site's connection color) beneath it.
+ * lighter weight, in the accent color (the site's connection color) beneath it.
  */
 export interface PhilosophyPayoff {
   headline: string;

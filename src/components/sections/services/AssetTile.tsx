@@ -29,7 +29,7 @@ export default function AssetTile({ label, dark = false, className = "" }: Asset
   return (
     <div
       className={`relative overflow-hidden rounded-xl border ${
-        dark ? "border-white/15 bg-white/[0.03]" : "border-zinc-200 bg-zinc-50"
+        dark ? "border-white/15 bg-white/[0.03]" : "border-border bg-surface"
       } ${className}`.trim()}
     >
       <MediaCycler
@@ -37,7 +37,7 @@ export default function AssetTile({ label, dark = false, className = "" }: Asset
         sizes="(min-width: 1024px) 50vw, 100vw"
         pauseOnHover
         className="absolute inset-0"
-        placeholderClassName={`bg-transparent ${dark ? "text-zinc-500" : "text-zinc-300"}`}
+        placeholderClassName={`bg-transparent ${dark ? "text-zinc-500" : "text-foreground-faint"}`}
       />
     </div>
   );

@@ -21,7 +21,7 @@ export default function CTASection({ content }: CTASectionProps) {
     <section
       id="contact"
       aria-labelledby="cta-heading"
-      className="bg-zinc-950 pb-16 pt-20 text-white sm:pb-20 sm:pt-28"
+      className="bg-ground-inverted pb-16 pt-20 text-ink-on-inverted sm:pb-20 sm:pt-28"
     >
       <Container size="wide">
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">

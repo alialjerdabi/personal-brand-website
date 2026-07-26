@@ -17,7 +17,7 @@ interface SiteFooterProps {
  */
 export default function SiteFooter({ content }: SiteFooterProps) {
   return (
-    <footer aria-label="Site footer" className="overflow-x-clip bg-zinc-950 pt-12 text-white sm:pt-14">
+    <footer aria-label="Site footer" className="overflow-x-clip bg-ground-inverted pt-12 text-ink-on-inverted sm:pt-14">
       <Container>
         <div className="grid gap-12 sm:grid-cols-2 sm:gap-8">
           <p className="max-w-sm text-base leading-7 text-zinc-400">
@@ -33,7 +33,7 @@ export default function SiteFooter({ content }: SiteFooterProps) {
             */}
             <a
               href={`mailto:${content.email}`}
-              className="mt-3 inline-block break-all text-2xl font-medium tracking-tight text-white underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none sm:text-3xl lg:text-4xl"
+              className="mt-3 inline-block break-all text-2xl font-medium tracking-tight text-ink-on-inverted underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none sm:text-3xl lg:text-4xl"
             >
               {content.email}
             </a>
@@ -42,7 +42,7 @@ export default function SiteFooter({ content }: SiteFooterProps) {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-zinc-400 transition-colors hover:text-white focus-visible:text-white focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-none"
+                  className="text-sm text-zinc-400 transition-colors hover:text-accent focus-visible:text-accent focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-none"
                 >
                   {link.label}
                 </a>
@@ -60,7 +60,7 @@ export default function SiteFooter({ content }: SiteFooterProps) {
       */}
       <p
         aria-hidden="true"
-        className="mt-16 select-none whitespace-nowrap px-3 text-center text-[3.4rem] font-semibold leading-[0.85] tracking-[-0.04em] text-white sm:mt-20 sm:text-[6rem] md:text-[7.5rem] lg:text-[10rem] xl:text-[12.5rem] 2xl:text-[15rem]"
+        className="mt-16 select-none whitespace-nowrap px-3 text-center text-[3.4rem] font-semibold leading-[0.85] tracking-[-0.04em] text-ink-on-inverted sm:mt-20 sm:text-[6rem] md:text-[7.5rem] lg:text-[10rem] xl:text-[12.5rem] 2xl:text-[15rem]"
       >
         {content.wordmark}
       </p>

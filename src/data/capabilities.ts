@@ -6,24 +6,10 @@
  * symbolstudio.pl reference, 2026-07-15).
  */
 
-import type { HeroAsset } from "@/data/hero";
-
 export interface CapabilityLink {
   name: string;
   /** Anchor on the /services page. */
   slug: string;
-}
-
-export interface ShowcaseProject {
-  title: string;
-  tag: string;
-  /** Placeholder cards keep the pan animation but carry no assets yet. */
-  placeholder: boolean;
-  /** Taller media box on large screens, for the asymmetric grid. */
-  tall: boolean;
-  cover?: HeroAsset;
-  reveal?: HeroAsset;
-  href?: string;
 }
 
 export interface OpenSlotCard {
@@ -41,7 +27,6 @@ export interface CapabilitiesContent {
   /** PLACEHOLDER names — replace with real collaborations before launch. */
   partners: string[];
   projectsLabel: string;
-  projects: ShowcaseProject[];
   openSlot: OpenSlotCard;
 }
 
@@ -62,35 +47,6 @@ export const capabilitiesContent: CapabilitiesContent = {
   partnersLabel: "Selected collaborations",
   partners: ["Petrolas", "Northwind", "Meridian", "Atlas & Co", "Vela Energy", "Orbit Labs"],
   projectsLabel: "From the work",
-  projects: [
-    {
-      title: "Petrolas",
-      tag: "Branding → Websites → AI",
-      placeholder: false,
-      tall: false,
-      cover: {
-        src: "/hero/petrolas-branding.jpg",
-        alt: "Petrolas-branded blue safety helmet held in a gloved hand against a dark background",
-      },
-      reveal: {
-        src: "/hero/petrolas-digital.jpg",
-        alt: "Phone on a stone plinth showing Petrolas digital brand content in the identity's visual language",
-      },
-      href: "#work",
-    },
-    {
-      title: "Case study 02",
-      tag: "In production",
-      placeholder: true,
-      tall: true,
-    },
-    {
-      title: "Case study 03",
-      tag: "In production",
-      placeholder: true,
-      tall: false,
-    },
-  ],
   openSlot: {
     label: "Open slot · Q3",
     title: "The next case study could be yours.",

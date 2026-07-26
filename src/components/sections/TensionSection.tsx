@@ -21,10 +21,10 @@ export default function TensionSection({ content }: TensionSectionProps) {
     <section
       id="problem"
       aria-labelledby="tension-heading"
-      className="overflow-x-clip bg-white pb-32 pt-14 sm:pb-48 sm:pt-20"
+      className="overflow-x-clip bg-background pb-32 pt-14 sm:pb-48 sm:pt-20"
     >
       <Container size="wide">
-        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-foreground-faint">
           {content.eyebrow}
         </p>
 

@@ -22,15 +22,15 @@ export default function ServiceCopy({
     <div className={className}>
       <h3
         className={`max-w-lg text-xl font-medium leading-snug tracking-tight sm:text-2xl ${
-          dark ? "text-white" : "text-zinc-950"
+          dark ? "text-ink-on-inverted" : "text-foreground"
         }`}
       >
         {question}
       </h3>
-      <p className={`mt-6 max-w-xl text-base leading-7 ${dark ? "text-zinc-400" : "text-zinc-600"}`}>
+      <p className={`mt-6 max-w-xl text-base leading-7 ${dark ? "text-zinc-400" : "text-foreground-muted"}`}>
         {importance}
       </p>
-      <p className={`mt-4 max-w-xl text-base leading-7 ${dark ? "text-zinc-400" : "text-zinc-600"}`}>
+      <p className={`mt-4 max-w-xl text-base leading-7 ${dark ? "text-zinc-400" : "text-foreground-muted"}`}>
         {approach}
       </p>
     </div>

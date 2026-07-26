@@ -64,9 +64,9 @@ export default function EditorialIntro({ intro }: EditorialIntroProps) {
       ref={rootRef}
       id="editorial-intro"
       aria-hidden="true"
-      className="fixed inset-0 z-40 bg-zinc-100 [animation:intro-backdrop_2450ms_ease_forwards]"
+      className="fixed inset-0 z-40 bg-surface [animation:intro-backdrop_2450ms_ease_forwards]"
     >
-      <p className="absolute inset-0 flex items-center justify-center gap-3 px-6 text-lg font-medium tracking-tight text-zinc-950 [animation:intro-statement_2450ms_cubic-bezier(0.2,0.7,0.2,1)_both] sm:text-xl">
+      <p className="absolute inset-0 flex items-center justify-center gap-3 px-6 text-lg font-medium tracking-tight text-foreground [animation:intro-statement_2450ms_cubic-bezier(0.2,0.7,0.2,1)_both] sm:text-xl">
         {intro.pre}
         <span className="relative inline-block h-6 w-11 shrink-0 overflow-hidden rounded-lg sm:h-7 sm:w-12">
           <MediaCycler
@@ -78,7 +78,7 @@ export default function EditorialIntro({ intro }: EditorialIntroProps) {
         </span>
         {intro.post}
       </p>
-      <div className="absolute -inset-16 rounded-[3rem] bg-white [animation:intro-frame_2450ms_cubic-bezier(0.2,0.7,0.2,1)_both]" />
+      <div className="absolute -inset-16 rounded-[3rem] bg-background [animation:intro-frame_2450ms_cubic-bezier(0.2,0.7,0.2,1)_both]" />
     </div>
   );
 }

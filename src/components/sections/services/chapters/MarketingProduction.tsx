@@ -15,7 +15,7 @@ export default function MarketingProduction({ service, index, scopeLabel, assetL
     <article
       id={service.slug}
       aria-labelledby={`service-${service.slug}`}
-      className="scroll-mt-16 border-t border-zinc-200 py-16 sm:py-20"
+      className="scroll-mt-16 border-t border-border py-16 sm:py-20"
     >
       <ChapterIndex index={index} name={service.name} id={`service-${service.slug}`} />
 

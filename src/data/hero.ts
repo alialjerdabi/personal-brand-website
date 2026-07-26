@@ -73,7 +73,7 @@ export const heroContent: HeroContent = {
   navLinks: [
     { label: "The story", href: "#problem" },
     { label: "Services", href: "/services" },
-    { label: "The work", href: "#work" },
+    { label: "The work", href: "/work" },
     { label: "Contact", href: "#contact" },
   ],
   navCta: { label: "Book a Call", href: "#contact" },
@@ -99,7 +99,7 @@ export const heroContent: HeroContent = {
         { kind: "placeholder", label: "[ asset 02 ]" },
         { kind: "placeholder", label: "[ asset 03 ]" },
       ],
-      href: "#work",
+      href: "/work/petrolas",
     },
     {
       id: "websites",
@@ -116,7 +116,7 @@ export const heroContent: HeroContent = {
           alt: "Phone on a stone plinth showing Petrolas digital brand content in the identity's visual language",
         },
       ],
-      href: "#work",
+      href: "/work/petrolas",
     },
     {
       id: "ai-automation",
@@ -133,7 +133,7 @@ export const heroContent: HeroContent = {
           alt: "Petrolas construction hoarding with connected circuit-line graphics reading Smart systems, sustainable energy",
         },
       ],
-      href: "#work",
+      href: "/work/petrolas",
     },
   ],
   status: {

@@ -26,19 +26,19 @@ export default function MethodSection({ content }: MethodSectionProps) {
     <section
       id="method"
       aria-labelledby="method-heading"
-      className="bg-white pb-20 pt-28 sm:pb-24 sm:pt-40"
+      className="bg-background pb-20 pt-28 sm:pb-24 sm:pt-40"
     >
       <Container size="wide">
-        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
+        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-foreground-faint">
           {content.eyebrow}
         </p>
         <h2
           id="method-heading"
-          className="mt-6 max-w-2xl text-3xl font-semibold leading-[1.08] tracking-[-0.03em] text-zinc-950 sm:text-4xl"
+          className="mt-6 max-w-2xl text-3xl font-semibold leading-[1.08] tracking-[-0.03em] text-foreground sm:text-4xl"
         >
           {content.heading}
         </h2>
-        <p className="mt-5 max-w-xl text-lg leading-8 text-zinc-500">
+        <p className="mt-5 max-w-xl text-lg leading-8 text-foreground-muted">
           {content.intro}
         </p>
 
@@ -47,31 +47,31 @@ export default function MethodSection({ content }: MethodSectionProps) {
         </div>
 
         <Reveal className="mt-24 sm:mt-28">
-          <div className="grid gap-10 border-t border-zinc-200 pt-14 lg:grid-cols-12 lg:items-center">
+          <div className="grid gap-10 border-t border-border pt-14 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-3">
-              <span className="relative block aspect-[4/5] max-w-52 overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50">
+              <span className="relative block aspect-[4/5] max-w-52 overflow-hidden rounded-2xl border border-border bg-surface">
                 <MediaCycler
                   frames={content.partner.portrait}
                   sizes="(min-width: 1024px) 20vw, 50vw"
                   className="absolute inset-0"
-                  placeholderClassName="bg-zinc-50 text-zinc-300"
+                  placeholderClassName="bg-surface text-foreground-faint"
                 />
               </span>
             </div>
             <div className="lg:col-span-9">
-              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
+              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-foreground-faint">
                 {content.partner.eyebrow}
               </p>
-              <h3 className="mt-5 text-2xl font-semibold tracking-[-0.02em] text-zinc-950 sm:text-3xl">
+              <h3 className="mt-5 text-2xl font-semibold tracking-[-0.02em] text-foreground sm:text-3xl">
                 {content.partner.heading}
               </h3>
-              <p className="mt-5 max-w-xl text-base leading-7 text-zinc-600">
+              <p className="mt-5 max-w-xl text-base leading-7 text-foreground-muted">
                 {content.partner.statement}
               </p>
-              <p className="mt-6 text-lg font-medium tracking-tight text-zinc-950">
+              <p className="mt-6 text-lg font-medium tracking-tight text-foreground">
                 {content.partner.closing}
               </p>
-              <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400">
+              <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-foreground-faint">
                 {content.partner.location} ·{" "}
                 <LocalTime timeZone={content.partner.timeZone} /> ·{" "}
                 {content.partner.availability}

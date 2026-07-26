@@ -15,13 +15,13 @@ interface ChapterIndexProps {
 export default function ChapterIndex({ index, name, id, dark = false, className = "" }: ChapterIndexProps) {
   return (
     <p className={`flex items-baseline gap-5 ${className}`.trim()}>
-      <span className={`font-mono text-xs ${dark ? "text-zinc-500" : "text-zinc-400"}`}>
+      <span className={`font-mono text-xs ${dark ? "text-zinc-500" : "text-foreground-faint"}`}>
         {String(index + 1).padStart(2, "0")}
       </span>
       <span
         id={id}
         className={`text-3xl font-semibold tracking-[-0.02em] sm:text-4xl ${
-          dark ? "text-white" : "text-zinc-950"
+          dark ? "text-ink-on-inverted" : "text-foreground"
         }`}
       >
         {name}

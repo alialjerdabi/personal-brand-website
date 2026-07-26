@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import Container from "@/components/layout/Container";
 import type { GrowthCard, PhilosophyPayoff } from "@/data/philosophy";
 
-/** Blue means connection — arrows and connection glyphs only. */
-const COBALT = "#255DFF";
+/** The accent color means connection — arrows and connection glyphs only. */
+const ACCENT = "var(--accent)";
 
 /**
  * Final resting pose per sheet: drafting-table restraint (±2°), each
@@ -66,10 +66,10 @@ interface GrowthStackProps {
  * so animating it moves the whole assembled group as one unit without
  * disturbing the cards' positions relative to each other) and fades
  * them out, while a full-bleed editorial close — "One system." at
- * display scale, "Everything compounds." in cobalt beneath it — fades
+ * display scale, "Everything compounds." in the accent color beneath it — fades
  * in underneath. This is a pure function of scroll like everything
  * else in this act: scrolling up brings the cards back exactly as it
- * left them.
+ * left them. (Accent recolored blue→orange 2026-07-22.)
  *
  * The payoff breaks out of the section's reading column to be
  * genuinely full-bleed (`motion-safe:lg:absolute motion-safe:lg:inset-0`
@@ -192,7 +192,7 @@ export default function GrowthStack({ cards, eyebrow, heading, payoff }: GrowthS
             <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
               {eyebrow}
             </p>
-            <p className="mt-2 text-xl font-semibold tracking-[-0.02em] text-white">{heading}</p>
+            <p className="mt-2 text-xl font-semibold tracking-[-0.02em] text-ink-on-inverted">{heading}</p>
           </div>
           <ol ref={stackRef} className="relative mt-6 lg:h-[48rem]">
             {cards.map((card, index) => {
@@ -207,6 +207,14 @@ export default function GrowthStack({ cards, eyebrow, heading, payoff }: GrowthS
                   style={{ zIndex: index + 1 }}
                   className={`relative mt-6 w-full rotate-0 will-change-transform first:mt-0 lg:mt-0 ${pose.rotateClass} ${pose.layout}`}
                 >
+                  {/*
+                    Deliberately hardcoded, not tokenized (2026-07-23):
+                    this is a fixed "paper on a dark table" card — light
+                    regardless of site theme, same as the dark ground it
+                    sits on is dark regardless of site theme. Every zinc-*
+                    class in this article is calibrated against ITS OWN
+                    always-light surface, not the page background.
+                  */}
                   <article className="rounded-lg bg-zinc-100 p-6 text-zinc-950 shadow-2xl shadow-black/40 sm:p-8">
                     <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500">
                       {card.stage}
@@ -226,7 +234,7 @@ export default function GrowthStack({ cards, eyebrow, heading, payoff }: GrowthS
                     )}
                     {card.connection && (
                       <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
-                        <span aria-hidden="true" style={{ color: COBALT }}>
+                        <span aria-hidden="true" style={{ color: ACCENT }}>
                           →{" "}
                         </span>
                         {card.connection}
@@ -269,7 +277,7 @@ export default function GrowthStack({ cards, eyebrow, heading, payoff }: GrowthS
           </p>
           <p
             className="mt-10 text-lg font-normal tracking-tight sm:mt-12 sm:text-xl"
-            style={{ color: COBALT }}
+            style={{ color: ACCENT }}
           >
             {payoff.caption}
           </p>

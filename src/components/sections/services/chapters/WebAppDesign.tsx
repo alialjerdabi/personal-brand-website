@@ -17,7 +17,7 @@ export default function WebAppDesign({ service, index, scopeLabel, assetLabel }:
     <article
       id={service.slug}
       aria-labelledby={`service-${service.slug}`}
-      className="scroll-mt-16 rounded-2xl bg-zinc-950 px-6 py-16 text-white sm:px-10 sm:py-20"
+      className="scroll-mt-16 rounded-2xl bg-ground-inverted px-6 py-16 text-ink-on-inverted sm:px-10 sm:py-20"
     >
       <ChapterIndex index={index} name={service.name} id={`service-${service.slug}`} dark />
 

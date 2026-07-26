@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/layout/Container";
 import CTAButton from "@/components/ui/CTAButton";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import SmoothAnchorScroll from "@/components/sections/services/SmoothAnchorScroll";
 import { servicesPageContent } from "@/data/services";
 import type { ServiceDetail } from "@/data/services";
@@ -56,32 +57,33 @@ export default function ServicesPage() {
   const content = servicesPageContent;
 
   return (
-    <main id="main" className="bg-white">
+    <main id="main" className="bg-background">
       <SmoothAnchorScroll />
       <Container size="wide">
         <header className="flex items-center justify-between gap-6 pt-6 sm:pt-8">
           <Link
             href="/"
-            className="text-base font-semibold tracking-tight text-zinc-950 focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-none"
+            className="text-base font-semibold tracking-tight text-foreground focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-none"
           >
             {content.identity}
           </Link>
           <div className="flex items-center gap-6">
             <Link
               href="/"
-              className="hidden text-sm text-zinc-500 transition-colors hover:text-zinc-950 focus-visible:text-zinc-950 focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-none sm:block"
+              className="hidden text-sm text-foreground-muted transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:underline focus-visible:underline-offset-4 focus-visible:decoration-accent focus-visible:outline-none sm:block"
             >
               ← {content.backLabel}
             </Link>
+            <ThemeToggle />
             <CTAButton cta={content.navCta} variant="primary" size="sm" dot />
           </div>
         </header>
 
         <div className="mt-20 sm:mt-24">
-          <h1 className="max-w-4xl text-4xl font-semibold leading-[1.02] tracking-[-0.03em] text-zinc-950 sm:text-6xl lg:text-7xl">
+          <h1 className="max-w-4xl text-4xl font-semibold leading-[1.02] tracking-[-0.03em] text-foreground sm:text-6xl lg:text-7xl">
             {content.heading}
           </h1>
-          <p className="mt-7 max-w-xl text-lg leading-8 text-zinc-500 sm:text-xl">
+          <p className="mt-7 max-w-xl text-lg leading-8 text-foreground-muted sm:text-xl">
             {content.intro}
           </p>
         </div>
@@ -92,7 +94,7 @@ export default function ServicesPage() {
               aria-label="Services"
               className="sticky top-10"
             >
-              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-400">
+              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-foreground-faint">
                 {content.navLabel}
               </p>
               <ul className="mt-5 space-y-2.5">
@@ -100,9 +102,9 @@ export default function ServicesPage() {
                   <li key={service.slug}>
                     <a
                       href={`#${service.slug}`}
-                      className="flex items-baseline gap-3 text-sm text-zinc-500 transition-colors hover:text-zinc-950 focus-visible:text-zinc-950 focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-none"
+                      className="flex items-baseline gap-3 text-sm text-foreground-muted transition-colors hover:text-accent focus-visible:text-accent focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-none"
                     >
-                      <span className="font-mono text-[10px] text-zinc-300">
+                      <span className="font-mono text-[10px] text-foreground-faint">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       {service.name}
