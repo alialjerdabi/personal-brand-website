@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Schibsted_Grotesk, Geist_Mono } from "next/font/google";
-import SiteFooter from "@/components/layout/SiteFooter";
-import { footerContent } from "@/data/footer";
 import "./globals.css";
 
 const schibstedGrotesk = Schibsted_Grotesk({
@@ -55,7 +53,6 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
-        <SiteFooter content={footerContent} />
       </body>
     </html>
   );

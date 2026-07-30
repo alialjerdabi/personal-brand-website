@@ -46,6 +46,24 @@
    * direction is that the accent itself doesn't get themed.
    */
   --accent: #ff5a1f;
+
+  /*
+   * Mask direction prototype (/lab) — art-directed grounds, deliberately
+   * theme-independent like --ground-inverted already is. This direction
+   * composes a fixed light/dark rhythm (dark hero + work, light services,
+   * dark close); letting the site theme invert that would destroy the
+   * rhythm, not preserve it. Two grounds, each with its own ink set.
+   */
+  --lab-ground: #000000;
+  --lab-surface: #0d0d0f;
+  --lab-ink: #f4f4f2;
+  --lab-ink-muted: #8b8b90;
+  --lab-rule: rgb(255 255 255 / 0.14);
+
+  --lab-paper: #f2f2ef;
+  --lab-paper-ink: #0b0b0d;
+  --lab-paper-muted: #6b6b70;
+  --lab-paper-rule: rgb(0 0 0 / 0.14);
 }
 
 :root[data-theme="dark"] {
@@ -76,6 +94,15 @@
   --color-ground-inverted: var(--ground-inverted);
   --color-ink-on-inverted: var(--ink-on-inverted);
   --color-accent: var(--accent);
+  --color-lab-ground: var(--lab-ground);
+  --color-lab-surface: var(--lab-surface);
+  --color-lab-ink: var(--lab-ink);
+  --color-lab-ink-muted: var(--lab-ink-muted);
+  --color-lab-rule: var(--lab-rule);
+  --color-lab-paper: var(--lab-paper);
+  --color-lab-paper-ink: var(--lab-paper-ink);
+  --color-lab-paper-muted: var(--lab-paper-muted);
+  --color-lab-paper-rule: var(--lab-paper-rule);
   --font-sans: var(--font-schibsted);
   --font-mono: var(--font-geist-mono);
 }
@@ -287,3 +314,87 @@ body {
  * of truth instead of this rule and the JS state independently agreeing
  * by coincidence.
  */
+
+/*
+ * ============================================================
+ * MASK DIRECTION PROTOTYPE (/lab)
+ * ============================================================
+ *
+ * The aperture: the site's one signature mechanic. Oversized words are
+ * not set over imagery, they are cut out of it — the letterform becomes
+ * a window onto the work. The text stays real text in the DOM (selectable,
+ * readable by assistive tech, indexable); only its fill is an image.
+ *
+ * The image is passed in as a custom property rather than an inline
+ * `background-image` so the @supports fallback below can cleanly win:
+ * anywhere background-clip:text is unsupported, the word simply renders
+ * as solid ink and the composition still reads.
+ */
+.aperture {
+  background-image: var(--aperture-image);
+  background-size: cover;
+  background-position: var(--aperture-position, 50% 50%);
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Letterforms crop the image hard; a hair of extra weight keeps the
+     counters open enough for the fill to actually be legible as an image. */
+  -webkit-text-stroke: 0.5px transparent;
+}
+
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .aperture {
+    background-image: none;
+    color: inherit;
+  }
+}
+
+/*
+ * The work rail scrolls horizontally on its own; a permanent scrollbar
+ * under a row of covers reads as a bug rather than an affordance. The
+ * arrow controls and the counter carry the affordance instead, and the
+ * container stays keyboard-focusable, so nothing is hidden from anyone
+ * who isn't using a mouse.
+ */
+.lab-rail {
+  scrollbar-width: none;
+}
+
+.lab-rail::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * Loader failsafe. The overlay is server-rendered so there is no flash of
+ * hero before it mounts — which means it must be able to clear itself
+ * without JavaScript ever running. This animation is the only thing
+ * guaranteeing that: it ends in visibility:hidden regardless. When GSAP
+ * is available it cancels this animation on the first frame and drives
+ * the real sequence instead (see lab/MaskLoader.tsx).
+ */
+@keyframes lab-loader-failsafe {
+  0%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+#mask-loader {
+  animation: lab-loader-failsafe 3.4s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+/*
+ * Reduced motion: no loading sequence at all. The brief's "immediate
+ * fallback" — the overlay is removed from the box tree before paint, so
+ * these visitors land directly on the composition.
+ */
+@media (prefers-reduced-motion: reduce) {
+  #mask-loader {
+    display: none;
+  }
+}
