@@ -25,44 +25,53 @@ function ProjectCard({
       alt={project.cover.alt}
       fill
       preload={index === 0}
-      sizes="(max-width: 640px) 72vw, (max-width: 1024px) 40vw, 23vw"
+      sizes="(max-width: 640px) 76vw, (max-width: 1024px) 44vw, 26vw"
       className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
     />
   ) : (
     /*
-     * A real engagement whose cover art does not exist yet. Designed as a
-     * deliberate state rather than a grey box — and never filled with a
+     * A real engagement whose cover art does not exist yet — and never a
      * borrowed image, which would misrepresent one client's work as
      * another's.
+     *
+     * Solid accent rather than an empty outlined box. A bordered
+     * placeholder reads as a gap in the portfolio; a full orange field
+     * reads as a decision, and turns the shortest part of the rail into
+     * the boldest thing on it. The name sets large in black on top.
      */
-    <span className="flex h-full w-full flex-col justify-between border border-lab-rule p-5">
-      <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-accent">
+    <span
+      aria-hidden="true"
+      className="flex h-full w-full flex-col justify-between bg-accent p-5 text-lab-ground"
+    >
+      <span className="font-mono text-[10px] uppercase tracking-[0.28em]">
         {String(index + 1).padStart(2, "0")}
       </span>
-      <span className="text-2xl font-semibold leading-tight tracking-[-0.03em] text-lab-ink/70">
+      <span className="text-[clamp(1.75rem,3.2vw,3rem)] font-semibold uppercase leading-[0.92] tracking-[-0.04em]">
         {project.name}
-      </span>
-      <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-lab-ink-muted">
-        {pendingLabel}
       </span>
     </span>
   );
 
+  /*
+   * The caption carries the name once, for everyone. On a pending card
+   * the orange field repeats it as artwork, so that copy is aria-hidden —
+   * otherwise a screen reader reads "Delivery Point" twice per card.
+   */
   const body = (
     <>
       <span className="relative block aspect-[368/500] w-full overflow-hidden bg-lab-surface">
         {media}
       </span>
       <span className="mt-4 flex items-baseline justify-between gap-4">
-        <span className="text-base font-medium tracking-tight text-lab-ink transition-colors group-hover:text-accent">
+        <span className="text-xl font-semibold uppercase tracking-[-0.02em] text-lab-ink sm:text-2xl">
           {project.name}
         </span>
-        <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.28em] text-lab-ink-muted">
-          {project.year}
+        <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.28em] text-accent">
+          {project.cover ? project.year : pendingLabel}
         </span>
       </span>
       {project.disciplines.length > 0 && (
-        <span className="mt-1.5 block font-mono text-[10px] uppercase tracking-[0.28em] text-accent">
+        <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.28em] text-accent">
           {project.disciplines.join(" · ")}
         </span>
       )}
@@ -70,26 +79,22 @@ function ProjectCard({
   );
 
   /*
-   * Sized against BOTH axes. A cover measured only in vw is correct on a
-   * phone and far too tall on a 1280×720 laptop, where it pushed the
-   * lobby 71px off its own screen — and a lobby that doesn't fit one
-   * screen isn't a lobby.
+   * Sized against BOTH axes, because a lobby that doesn't fit one screen
+   * isn't a lobby. Height left for the cover is:
    *
-   * The height term subtracts the chrome (header, descriptor, rule, the
-   * bottom bar, the card's own caption) and converts what's left into a
-   * width through the 368:500 cover ratio — rather than a flat svh
-   * percentage, which under-sizes tall screens because the chrome above
-   * and below the rail does not grow with viewport height.
+   *   100svh − fixed chrome − the masthead
+   *
+   * and the masthead is the reason this isn't a flat constant: it is set
+   * edge to edge, so its height grows with viewport WIDTH (0.78 line
+   * height ÷ 7.16 ratio ≈ 10.9vw). Subtracting only a constant was
+   * correct at the width it was tuned against and 27px over at the next
+   * one. What's left converts to a width through the 368:500 cover ratio.
    */
   const shell =
-    "group block w-[min(72vw,calc((100svh-400px)*0.736))] min-w-[180px] max-w-[368px] shrink-0 snap-start sm:w-[min(40vw,calc((100svh-400px)*0.736))] lg:w-[min(23vw,calc((100svh-400px)*0.736))]";
+    "group block w-[min(76vw,calc((100svh-310px-10.9vw)*0.736))] min-w-[170px] max-w-[400px] shrink-0 snap-start sm:w-[min(44vw,calc((100svh-300px-10.9vw)*0.736))] lg:w-[min(26vw,calc((100svh-300px-10.9vw)*0.736))]";
 
   if (!project.spreads) {
-    return (
-      <article className={shell} aria-label={`${project.name} — ${pendingLabel}`}>
-        {body}
-      </article>
-    );
+    return <article className={shell}>{body}</article>;
   }
 
   return (
@@ -260,24 +265,27 @@ export default function ProjectRail({ projects, lobby }: ProjectRailProps) {
       >
         <div className="flex items-baseline gap-6">
           <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">
-            {String(active).padStart(2, "0")}{" "}
-            <span className="text-lab-ink-muted">
+            {String(active).padStart(2, "0")}
+            <span>
+              {" "}
               / {String(projects.length).padStart(2, "0")} {lobby.counterLabel}
             </span>
           </p>
-          <p className="hidden font-mono text-[11px] uppercase tracking-[0.28em] text-lab-ink-muted sm:block">
+          <p className="hidden font-mono text-[11px] uppercase tracking-[0.28em] text-accent sm:block">
             {lobby.location}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Bare glyphs at reading scale, not bordered chrome buttons —
+              the boxes were the most timid thing on the screen. */}
           {scrollable && (
             <>
               <button
                 type="button"
                 onClick={() => step(-1)}
                 aria-label="Previous project"
-                className="flex h-9 w-9 items-center justify-center border border-lab-rule text-lab-ink-muted transition-colors hover:border-accent hover:text-accent focus-visible:border-accent focus-visible:text-accent focus-visible:outline-none"
+                className="px-1 text-2xl leading-none text-accent transition-colors hover:text-lab-ink focus-visible:text-lab-ink focus-visible:outline-none"
               >
                 <span aria-hidden="true">←</span>
               </button>
@@ -285,7 +293,7 @@ export default function ProjectRail({ projects, lobby }: ProjectRailProps) {
                 type="button"
                 onClick={() => step(1)}
                 aria-label="Next project"
-                className="flex h-9 w-9 items-center justify-center border border-lab-rule text-lab-ink-muted transition-colors hover:border-accent hover:text-accent focus-visible:border-accent focus-visible:text-accent focus-visible:outline-none"
+                className="px-1 text-2xl leading-none text-accent transition-colors hover:text-lab-ink focus-visible:text-lab-ink focus-visible:outline-none"
               >
                 <span aria-hidden="true">→</span>
               </button>
@@ -294,7 +302,7 @@ export default function ProjectRail({ projects, lobby }: ProjectRailProps) {
 
           <a
             href="#services"
-            className="group ml-4 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-lab-ink-muted transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline-none"
+            className="group ml-5 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.28em] text-accent transition-colors hover:text-lab-ink focus-visible:text-lab-ink focus-visible:outline-none"
           >
             {lobby.scrollLabel}
             <span

@@ -1,29 +1,43 @@
 import type { LabContent } from "@/data/lab";
 
 /**
- * Deliberately quiet chrome. In a visual-first portfolio the navigation
- * is the least interesting thing on screen and should behave that way —
- * a wordmark, three destinations, no border, no pill, no shadow. The
- * composition underneath is what is doing the selling.
+ * The thin bar at the top: what this is on the left, where to go on the
+ * right, and the orange rule underneath.
+ *
+ * Everything here renders in the accent, not in muted grey. Committing
+ * the whole interface layer to one saturated colour — and leaving
+ * full-colour imagery as the only exception — is what stops restraint
+ * from reading as timidity. The covers are the only thing on the page
+ * allowed to be photographic.
  */
 export default function LabHeader({ content }: { content: LabContent }) {
   return (
-    <header
-      data-hero-chrome
-      className="flex items-center justify-between gap-6 px-6 pt-6 sm:px-10 sm:pt-8"
-    >
-      <p className="text-sm font-semibold tracking-tight text-lab-ink">{content.identity}</p>
-      <nav aria-label="Primary" className="flex items-center gap-6 sm:gap-9">
-        {content.navLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            className="font-mono text-[11px] uppercase tracking-[0.28em] text-lab-ink-muted transition-colors hover:text-lab-ink focus-visible:text-lab-ink focus-visible:outline-none focus-visible:underline focus-visible:underline-offset-4 focus-visible:decoration-accent"
-          >
-            {link.label}
-          </a>
-        ))}
-      </nav>
-    </header>
+    <div className="px-6">
+      <div
+        data-hero-chrome
+        className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 pt-6 sm:pt-7"
+      >
+        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">
+          {content.descriptor}
+        </p>
+        <nav aria-label="Primary" className="flex items-center gap-6 sm:gap-8">
+          {content.navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent transition-colors hover:text-lab-ink focus-visible:text-lab-ink focus-visible:outline-none"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      <span
+        data-lobby-rule
+        style={{ transform: "scaleX(0)" }}
+        className="mt-4 block h-px w-full origin-left bg-accent sm:mt-5"
+      />
+    </div>
   );
 }

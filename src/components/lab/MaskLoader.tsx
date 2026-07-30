@@ -118,14 +118,20 @@ export default function MaskLoader({ loader }: MaskLoaderProps) {
       aria-hidden="true"
       className="fixed inset-0 z-50 flex items-center justify-center bg-lab-ground"
     >
-      <div data-loader-block className="w-full max-w-5xl px-6 sm:px-8">
+      {/*
+        Full bleed, not a centred card. The three words fill the measure
+        the way the masthead they hand over to does — same device, same
+        confidence, so the loader reads as the page arriving rather than
+        as a screen in front of it.
+      */}
+      <div data-loader-block className="w-full px-6">
         <div className="flex flex-col items-start">
           {loader.words.map((word) => (
             <span key={word} className="block overflow-hidden">
               <span
                 data-loader-word
                 style={{ transform: "translateY(100%)" }}
-                className="relative block text-[clamp(2.5rem,11vw,8rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-lab-ink"
+                className="relative block text-[clamp(3rem,17vw,15rem)] font-semibold leading-[0.86] tracking-[-0.05em] text-accent"
               >
                 {word}
                 {/*
@@ -151,7 +157,7 @@ export default function MaskLoader({ loader }: MaskLoaderProps) {
         <span
           data-loader-rule
           style={{ transform: "scaleX(0)" }}
-          className="mt-8 block h-px w-full origin-left bg-accent"
+          className="mt-7 block h-1 w-full origin-left bg-accent sm:h-1.5"
         />
       </div>
     </div>

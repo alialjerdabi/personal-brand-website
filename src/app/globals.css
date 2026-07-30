@@ -366,6 +366,29 @@ body {
 }
 
 /*
+ * Hovering one cover drops the rest back. The point is commitment: the
+ * page decides what you are looking at instead of presenting a polite
+ * row of equals. Written as plain CSS rather than Tailwind variants
+ * because the two rules have identical specificity and the winner has to
+ * be decided by source order, which utility generation does not
+ * guarantee. Gated on a real hover device so a touch tap can never leave
+ * the rail stuck at 35%.
+ */
+.lab-rail > * {
+  transition: opacity 400ms ease-out;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .lab-rail:hover > * {
+    opacity: 0.35;
+  }
+
+  .lab-rail > *:hover {
+    opacity: 1;
+  }
+}
+
+/*
  * Loader failsafe. The overlay is server-rendered so there is no flash of
  * hero before it mounts — which means it must be able to clear itself
  * without JavaScript ever running. This animation is the only thing

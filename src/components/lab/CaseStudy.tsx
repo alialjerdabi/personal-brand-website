@@ -3,6 +3,7 @@ import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import ApertureText from "@/components/lab/ApertureText";
 import LabHeader from "@/components/lab/LabHeader";
+import Masthead from "@/components/lab/Masthead";
 import type { LabAsset, LabContent, LabProject, LabSpread } from "@/data/lab";
 
 /**
@@ -142,7 +143,7 @@ export default function CaseStudy({ content, project, next }: CaseStudyProps) {
     <main id="main" className="bg-lab-ground text-lab-ink">
       <LabHeader content={content} />
 
-      <div className="px-6 pt-16 sm:px-10 sm:pt-24">
+      <div className="px-6 pt-20 sm:px-10 sm:pt-28">
         <Reveal mask duration={600} className="pb-[0.06em]">
           <h1 className="text-[clamp(3rem,12vw,11rem)] font-semibold leading-[0.88] tracking-[-0.05em]">
             {project.name}
@@ -187,12 +188,12 @@ export default function CaseStudy({ content, project, next }: CaseStudyProps) {
         ))}
       </div>
 
-      <div className="mt-28 px-6 pb-16 sm:mt-40 sm:px-10 sm:pb-24">
+      <div className="mt-28 px-6 sm:mt-40 sm:px-10">
         <Reveal>
-          <div className="flex flex-col gap-6 border-t border-lab-rule pt-8 sm:flex-row sm:items-baseline sm:justify-between">
+          <div className="flex flex-col gap-6 border-t border-accent pt-8 sm:flex-row sm:items-baseline sm:justify-between">
             <Link
               href="/lab"
-              className="font-mono text-[11px] uppercase tracking-[0.28em] text-lab-ink-muted transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline-none"
+              className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent transition-colors hover:text-lab-ink focus-visible:text-lab-ink focus-visible:outline-none"
             >
               ← All work
             </Link>
@@ -218,6 +219,11 @@ export default function CaseStudy({ content, project, next }: CaseStudyProps) {
             )}
           </div>
         </Reveal>
+      </div>
+
+      {/* The same signature closes every page, and here it is the way back. */}
+      <div className="mt-16 sm:mt-24">
+        <Masthead content={content} href="/lab" />
       </div>
     </main>
   );

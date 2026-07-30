@@ -1,4 +1,5 @@
 import Reveal from "@/components/ui/Reveal";
+import Masthead from "@/components/lab/Masthead";
 import type { LabContent } from "@/data/lab";
 
 /**
@@ -10,7 +11,7 @@ import type { LabContent } from "@/data/lab";
  * rather than two stacked sections with a rule between them.
  */
 export default function ContactClose({ content }: { content: LabContent }) {
-  const { contact, identity, lobby } = content;
+  const { contact, lobby } = content;
 
   return (
     <section
@@ -19,7 +20,7 @@ export default function ContactClose({ content }: { content: LabContent }) {
       className="scroll-mt-8 bg-lab-ground px-6 pb-12 pt-24 text-lab-ink sm:px-10 sm:pb-16 sm:pt-32"
     >
       <Reveal>
-        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-lab-ink-muted">
+        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">
           {contact.label}
         </p>
       </Reveal>
@@ -46,12 +47,21 @@ export default function ContactClose({ content }: { content: LabContent }) {
         <p className="mt-10 max-w-xl text-lg leading-8 text-lab-ink-muted">{contact.body}</p>
       </Reveal>
 
-      <div className="mt-24 flex flex-col gap-6 border-t border-lab-rule pt-8 sm:mt-32 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm font-semibold tracking-tight">{identity}</p>
-        <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-lab-ink-muted">
+      <div className="mt-20 flex flex-col gap-6 border-t border-accent pt-6 sm:mt-28 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">
+          {lobby.location}
+        </p>
+        {/* The one non-accent signal on the page, and it earns it: this is
+            a live availability state, not another label. */}
+        <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-lab-ink">
           <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
           {lobby.availability}
         </p>
+      </div>
+
+      {/* The page signs itself the same way the lobby does. */}
+      <div className="-mx-6 mt-16 sm:-mx-10 sm:mt-20">
+        <Masthead content={content} href="/lab#work" />
       </div>
     </section>
   );
