@@ -60,6 +60,19 @@
   --lab-ink-muted: #8b8b90;
   --lab-rule: rgb(255 255 255 / 0.14);
 
+  /*
+   * The project palette. Each project owns a colour, so colour carries
+   * identity rather than decoration — which is what keeps a five-colour
+   * page from reading as a swatch test. Flat fields only: no gradients,
+   * no glows. Every pairing below clears 4.5:1 against its own ink
+   * (measured: orange 6.7, blue 7.4, violet 5.6, lime and cream >12).
+   */
+  --lab-orange: #ff5a1f;
+  --lab-blue: #1b3fe0;
+  --lab-lime: #c6f24e;
+  --lab-violet: #6e3bff;
+  --lab-cream: #efede4;
+
   --lab-paper: #f2f2ef;
   --lab-paper-ink: #0b0b0d;
   --lab-paper-muted: #6b6b70;
@@ -99,6 +112,11 @@
   --color-lab-ink: var(--lab-ink);
   --color-lab-ink-muted: var(--lab-ink-muted);
   --color-lab-rule: var(--lab-rule);
+  --color-lab-orange: var(--lab-orange);
+  --color-lab-blue: var(--lab-blue);
+  --color-lab-lime: var(--lab-lime);
+  --color-lab-violet: var(--lab-violet);
+  --color-lab-cream: var(--lab-cream);
   --color-lab-paper: var(--lab-paper);
   --color-lab-paper-ink: var(--lab-paper-ink);
   --color-lab-paper-muted: var(--lab-paper-muted);
@@ -351,39 +369,27 @@ body {
 }
 
 /*
- * The work rail scrolls horizontally on its own; a permanent scrollbar
- * under a row of covers reads as a bug rather than an affordance. The
- * arrow controls and the counter carry the affordance instead, and the
- * container stays keyboard-focusable, so nothing is hidden from anyone
- * who isn't using a mouse.
+ * Hovering one tile pushes the rest of the mosaic back. The point is
+ * commitment: the page decides what you are looking at instead of
+ * presenting a wall of equals.
+ *
+ * Written as plain CSS rather than Tailwind variants because the two
+ * rules have identical specificity, so the winner is decided by source
+ * order — which utility generation does not guarantee. Gated on a real
+ * hover device so a touch tap can never leave a tile stuck dimmed, and
+ * on motion preference so it never flickers for anyone who asked for
+ * stillness.
  */
-.lab-rail {
-  scrollbar-width: none;
-}
-
-.lab-rail::-webkit-scrollbar {
-  display: none;
-}
-
-/*
- * Hovering one cover drops the rest back. The point is commitment: the
- * page decides what you are looking at instead of presenting a polite
- * row of equals. Written as plain CSS rather than Tailwind variants
- * because the two rules have identical specificity and the winner has to
- * be decided by source order, which utility generation does not
- * guarantee. Gated on a real hover device so a touch tap can never leave
- * the rail stuck at 35%.
- */
-.lab-rail > * {
-  transition: opacity 400ms ease-out;
-}
-
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .lab-rail:hover > * {
-    opacity: 0.35;
+  .lab-mosaic [data-tile] {
+    transition: opacity 350ms ease-out;
   }
 
-  .lab-rail > *:hover {
+  .lab-mosaic:hover [data-tile] {
+    opacity: 0.3;
+  }
+
+  .lab-mosaic [data-tile]:hover {
     opacity: 1;
   }
 }

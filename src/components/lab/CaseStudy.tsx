@@ -4,7 +4,23 @@ import Reveal from "@/components/ui/Reveal";
 import ApertureText from "@/components/lab/ApertureText";
 import LabHeader from "@/components/lab/LabHeader";
 import Masthead from "@/components/lab/Masthead";
-import type { LabAsset, LabContent, LabProject, LabSpread } from "@/data/lab";
+import type { LabAsset, LabContent, LabPalette, LabProject, LabSpread } from "@/data/lab";
+
+/**
+ * The project's own colour, carried from the tile the visitor clicked.
+ * Whole class strings, not interpolated fragments, so Tailwind sees them.
+ *
+ * Used as a FIELD rather than as text: blue and violet measure under
+ * 3:1 against black, so they can ground a block but must never be the
+ * ink on one.
+ */
+const FIELD: Record<LabPalette, string> = {
+  orange: "bg-lab-orange text-black",
+  blue: "bg-lab-blue text-white",
+  lime: "bg-lab-lime text-black",
+  violet: "bg-lab-violet text-white",
+  cream: "bg-lab-cream text-black",
+};
 
 /**
  * A designed artefact — a poster, a guidelines page — presented as an
@@ -143,41 +159,41 @@ export default function CaseStudy({ content, project, next }: CaseStudyProps) {
     <main id="main" className="bg-lab-ground text-lab-ink">
       <LabHeader content={content} />
 
-      <div className="px-6 pt-20 sm:px-10 sm:pt-28">
-        <Reveal mask duration={600} className="pb-[0.06em]">
-          <h1 className="text-[clamp(3rem,12vw,11rem)] font-semibold leading-[0.88] tracking-[-0.05em]">
-            {project.name}
-          </h1>
-        </Reveal>
+      {/*
+        The case study opens on the project's own colour — the same field
+        as the tile that was clicked to get here. The handoff is what
+        makes colour read as identity rather than decoration, and it
+        gives the page a ground bold enough to answer the mosaic.
+      */}
+      <div className={`mt-6 px-6 py-12 sm:py-16 ${FIELD[project.palette]}`}>
+        <h1 className="text-[clamp(3rem,13vw,12rem)] font-semibold uppercase leading-[0.86] tracking-[-0.05em]">
+          {project.name}
+        </h1>
 
-        <div className="mt-10 grid gap-8 border-t border-lab-rule pt-8 sm:mt-14 lg:grid-cols-12 lg:gap-10">
-          <Reveal className="lg:col-span-4">
-            <dl className="space-y-3 font-mono text-[11px] uppercase tracking-[0.28em]">
+        <div className="mt-10 grid gap-8 border-t border-current/25 pt-8 sm:mt-14 lg:grid-cols-12 lg:gap-10">
+          <dl className="space-y-3 font-mono text-[11px] uppercase tracking-[0.28em] lg:col-span-4">
+            <div className="flex gap-4">
+              <dt className="w-20 shrink-0 opacity-60">Year</dt>
+              <dd>{project.year}</dd>
+            </div>
+            {project.sector && (
               <div className="flex gap-4">
-                <dt className="w-20 shrink-0 text-lab-ink-muted">Year</dt>
-                <dd className="text-lab-ink">{project.year}</dd>
+                <dt className="w-20 shrink-0 opacity-60">Sector</dt>
+                <dd>{project.sector}</dd>
               </div>
-              {project.sector && (
-                <div className="flex gap-4">
-                  <dt className="w-20 shrink-0 text-lab-ink-muted">Sector</dt>
-                  <dd className="text-lab-ink">{project.sector}</dd>
-                </div>
-              )}
-              {project.disciplines.length > 0 && (
-                <div className="flex gap-4">
-                  <dt className="w-20 shrink-0 text-lab-ink-muted">Role</dt>
-                  <dd className="text-accent">{project.disciplines.join(", ")}</dd>
-                </div>
-              )}
-            </dl>
-          </Reveal>
+            )}
+            {project.disciplines.length > 0 && (
+              <div className="flex gap-4">
+                <dt className="w-20 shrink-0 opacity-60">Role</dt>
+                <dd>{project.disciplines.join(", ")}</dd>
+              </div>
+            )}
+          </dl>
 
           {project.summary && (
-            <Reveal delay={80} className="lg:col-span-7 lg:col-start-6">
-              <p className="max-w-2xl text-xl leading-9 text-lab-ink/85 sm:text-2xl sm:leading-10">
-                {project.summary}
-              </p>
-            </Reveal>
+            <p className="max-w-2xl text-xl leading-9 lg:col-span-7 lg:col-start-6 sm:text-2xl sm:leading-10">
+              {project.summary}
+            </p>
           )}
         </div>
       </div>

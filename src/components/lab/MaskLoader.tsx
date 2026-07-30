@@ -2,11 +2,24 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { LabContent } from "@/data/lab";
+import type { LabContent, LabPalette } from "@/data/lab";
 
 interface MaskLoaderProps {
   loader: LabContent["loader"];
 }
+
+/**
+ * Each word arrives in its own colour, so the palette is established
+ * before the mosaic is ever seen. Whole class strings, not interpolated
+ * fragments, so Tailwind can see them.
+ */
+const INK: Record<LabPalette, string> = {
+  orange: "text-lab-orange",
+  blue: "text-lab-blue",
+  lime: "text-lab-lime",
+  violet: "text-lab-violet",
+  cream: "text-lab-cream",
+};
 
 /**
  * Loading-to-landing sequence (~2.5s).
@@ -127,13 +140,13 @@ export default function MaskLoader({ loader }: MaskLoaderProps) {
       <div data-loader-block className="w-full px-6">
         <div className="flex flex-col items-start">
           {loader.words.map((word) => (
-            <span key={word} className="block overflow-hidden">
+            <span key={word.text} className="block overflow-hidden">
               <span
                 data-loader-word
                 style={{ transform: "translateY(100%)" }}
-                className="relative block text-[clamp(3rem,17vw,15rem)] font-semibold leading-[0.86] tracking-[-0.05em] text-accent"
+                className={`relative block text-[clamp(3rem,17vw,15rem)] font-semibold leading-[0.86] tracking-[-0.05em] ${INK[word.palette]}`}
               >
-                {word}
+                {word.text}
                 {/*
                   The aperture layer sits exactly on top of the ink layer,
                   so the fragment beat is a change of fill, not of position.
@@ -147,7 +160,7 @@ export default function MaskLoader({ loader }: MaskLoaderProps) {
                   className="aperture absolute inset-0 opacity-0"
                   style={{ "--aperture-position": "50% 45%" } as React.CSSProperties}
                 >
-                  {word}
+                  {word.text}
                 </span>
               </span>
             </span>

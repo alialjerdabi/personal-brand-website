@@ -66,9 +66,18 @@ export interface LabSpread {
   assets: LabAsset[];
 }
 
+/**
+ * Which field colour a project owns. Colour is identity here, not
+ * decoration: the same value marks the project on the lobby mosaic and
+ * anywhere else it appears, so a visitor learns the projects by colour
+ * before they have read a single name.
+ */
+export type LabPalette = "orange" | "blue" | "lime" | "violet" | "cream";
+
 export interface LabProject {
   slug: string;
   name: string;
+  palette: LabPalette;
   /**
    * Real disciplines only. Empty means "Ali hasn't confirmed these yet" —
    * the card renders without tags rather than guessing at them.
@@ -87,6 +96,8 @@ export interface LabProject {
 export interface LabService {
   index: string;
   name: string;
+  /** Each service owns a field colour too, carrying the mosaic downward. */
+  palette: LabPalette;
   /** The business outcome, in the client's own words — not the deliverable. */
   outcome: string;
   scope: string[];
@@ -100,7 +111,7 @@ export interface LabContent {
 
   loader: {
     /** The three words that arrive independently, then align on the rule. */
-    words: string[];
+    words: { text: string; palette: LabPalette }[];
     /** Fragments that flash through the letterforms mid-sequence. */
     fragments: string[];
   };
@@ -144,7 +155,11 @@ export const labContent: LabContent = {
   ],
 
   loader: {
-    words: ["BRAND", "WEB", "PRODUCT"],
+    words: [
+      { text: "BRAND", palette: "orange" },
+      { text: "WEB", palette: "lime" },
+      { text: "PRODUCT", palette: "violet" },
+    ],
     fragments: [
       "/hero/petrolas-branding.jpg",
       "/work/petrolas/hoarding-wide.jpg",
@@ -172,6 +187,7 @@ export const labContent: LabContent = {
     {
       slug: "petrolas",
       name: "Petrolas",
+      palette: "blue",
       disciplines: ["Branding", "Websites"],
       year: "2026",
       sector: "Energy & sustainability",
@@ -275,9 +291,9 @@ export const labContent: LabContent = {
         },
       ],
     },
-    { slug: "delivery-point", name: "Delivery Point", disciplines: [], year: "—" },
-    { slug: "kids-island", name: "Kids Island", disciplines: [], year: "—" },
-    { slug: "qobban", name: "Qobban", disciplines: [], year: "—" },
+    { slug: "delivery-point", name: "Delivery Point", palette: "orange", disciplines: [], year: "—" },
+    { slug: "kids-island", name: "Kids Island", palette: "lime", disciplines: [], year: "—" },
+    { slug: "qobban", name: "Qobban", palette: "violet", disciplines: [], year: "—" },
   ],
 
   services: {
@@ -287,6 +303,7 @@ export const labContent: LabContent = {
       {
         index: "01",
         name: "Branding",
+        palette: "orange",
         outcome: "Look as credible as you already are.",
         scope: [
           "Brand strategy & positioning",
@@ -299,6 +316,7 @@ export const labContent: LabContent = {
       {
         index: "02",
         name: "Websites",
+        palette: "blue",
         outcome: "Turn attention into enquiries.",
         scope: [
           "Website strategy",
@@ -311,6 +329,7 @@ export const labContent: LabContent = {
       {
         index: "03",
         name: "Web & app products",
+        palette: "lime",
         outcome: "Make the product feel effortless to use.",
         scope: [
           "Web app & dashboard design",

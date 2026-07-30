@@ -10,16 +10,24 @@ import type { LabContent } from "@/data/lab";
  * from reading as timidity. The covers are the only thing on the page
  * allowed to be photographic.
  */
-export default function LabHeader({ content }: { content: LabContent }) {
+export default function LabHeader({
+  content,
+  children,
+}: {
+  content: LabContent;
+  /** Optional slot between the descriptor and the navigation. */
+  children?: React.ReactNode;
+}) {
   return (
     <div className="px-6">
       <div
         data-hero-chrome
-        className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 pt-6 sm:pt-7"
+        className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 pt-5 sm:pt-6"
       >
         <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">
           {content.descriptor}
         </p>
+        {children}
         <nav aria-label="Primary" className="flex items-center gap-6 sm:gap-8">
           {content.navLinks.map((link) => (
             <a
@@ -36,7 +44,7 @@ export default function LabHeader({ content }: { content: LabContent }) {
       <span
         data-lobby-rule
         style={{ transform: "scaleX(0)" }}
-        className="mt-4 block h-px w-full origin-left bg-accent sm:mt-5"
+        className="mt-3 block h-px w-full origin-left bg-accent sm:mt-4"
       />
     </div>
   );
