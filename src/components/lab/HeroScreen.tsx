@@ -197,7 +197,7 @@ export default function HeroScreen({ content }: { content: LabContent }) {
       <div className="flex flex-1 flex-col px-5 pb-8 pt-[13vh] sm:px-8 sm:pt-[15vh]">
         <h1
           id="lab-hero-heading"
-          className="w-full max-w-[1560px] font-display text-[clamp(2.6rem,9.4vw,10rem)] font-bold leading-[1.02] tracking-[-0.045em]"
+          className="w-full max-w-[1560px] font-display text-[clamp(2.6rem,9.1vw,9.5rem)] font-bold leading-[1.02] tracking-[-0.045em]"
         >
           <HeroSentence tokens={content.hero.tokens} />
         </h1>

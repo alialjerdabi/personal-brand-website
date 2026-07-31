@@ -97,7 +97,7 @@ function DrawnArrow() {
   return (
     <span
       data-hero-arrow-slot
-      className="inline-block h-[0.56em] w-[1.9em] align-[0.04em] text-accent"
+      className="inline-block h-[0.52em] w-[1.6em] align-[0.04em] text-accent"
     >
       {/*
         `pathLength="1"` normalises each path so the draw-on is expressed

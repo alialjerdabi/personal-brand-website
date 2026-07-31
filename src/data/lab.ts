@@ -115,10 +115,11 @@ export type HeroToken =
   | { kind: "arrow" }
   /**
    * A hand-placed line break, honoured from `lg` up and ignored below.
-   * Left to wrap on its own the sentence breaks wherever it happens to
-   * run out of room, and every line comes out roughly the same length —
-   * which is what makes a statement look set by a machine rather than
-   * composed. Each line here is given a deliberate shape.
+   *
+   * Two rules, learned the hard way: never leave a line holding a single
+   * word (it reads as a mistake, not a shape), and never break inside a
+   * noun phrase — "small / businesses" splits a unit the eye expects
+   * whole. Each line below is a complete phrase.
    */
   | { kind: "break" };
 
@@ -261,14 +262,8 @@ export const labContent: LabContent = {
           },
         ],
       },
-      { kind: "text", value: "small" },
       { kind: "break" },
-      { kind: "text", value: "businesses" },
-      { kind: "arrow" },
-      { kind: "break" },
-      { kind: "text", value: "look as good as" },
-      { kind: "break" },
-      { kind: "text", value: "they" },
+      { kind: "text", value: "small businesses" },
       {
         kind: "chips",
         images: [
@@ -279,7 +274,12 @@ export const labContent: LabContent = {
           },
         ],
       },
-      { kind: "text", value: "already are." },
+      { kind: "break" },
+      { kind: "text", value: "look" },
+      { kind: "arrow" },
+      { kind: "text", value: "as good as" },
+      { kind: "break" },
+      { kind: "text", value: "they already are." },
     ],
     sub: "Brand identity, websites, and digital products — designed and built by one person, end to end.",
     cta: { label: "Start a project", href: "#contact" },
