@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { Canvas, extend, useFrame, type ThreeElement } from "@react-three/fiber";
-import { Environment, Lightformer, RoundedBox } from "@react-three/drei";
+import { RoundedBox } from "@react-three/drei";
 import {
   BallCollider,
   CuboidCollider,
@@ -349,22 +349,20 @@ function Band({
           >
             {/* Front face */}
             <RoundedBox args={[1.6, 2.25, 0.04]} radius={0.07} smoothness={4}>
-              <meshPhysicalMaterial
+              <meshStandardMaterial
                 map={textures?.front ?? null}
-                clearcoat={1}
-                clearcoatRoughness={0.15}
-                roughness={0.55}
-                metalness={0.1}
+                color={textures ? "#ffffff" : ground}
+                roughness={0.62}
+                metalness={0.05}
               />
             </RoundedBox>
             {/* Reverse, a hair behind so both faces read while it spins */}
             <mesh position={[0, 0, -0.023]} rotation={[0, Math.PI, 0]}>
               <planeGeometry args={[1.6, 2.25]} />
-              <meshPhysicalMaterial
+              <meshStandardMaterial
                 map={textures?.back ?? null}
-                clearcoat={1}
-                clearcoatRoughness={0.2}
-                roughness={0.6}
+                color={textures ? "#ffffff" : ground}
+                roughness={0.66}
               />
             </mesh>
             {/* The clip */}
@@ -421,13 +419,17 @@ export default function Lanyard({
   ink = "#1a1713",
   bandGround = "#945d00",
   className = "",
+  onReady,
 }: {
   identity: LanyardIdentity;
   ground?: string;
   ink?: string;
   bandGround?: string;
   className?: string;
+  /** Fired once WebGL is up, so a caller can retire a static fallback. */
+  onReady?: () => void;
 }) {
+  const [generation, setGeneration] = useState(0);
   const allowed = useSyncExternalStore(
     subscribe,
     () => !window.matchMedia(REDUCED).matches,
@@ -442,44 +444,51 @@ export default function Lanyard({
        stage — which is why the badge looked blank. */
     <div className={`relative h-full w-full ${className}`.trim()}>
       <Canvas
+        key={generation}
         camera={{ position: [0, 0, 13], fov: 25 }}
-        dpr={[1, 2]}
-        gl={{ alpha: true, antialias: true }}
+        dpr={[1, 1.5]}
+        gl={{ alpha: true, antialias: true, powerPreference: "default" }}
+        onCreated={({ gl }) => {
+          /*
+           * WebGL contexts are a finite, shared resource — the browser
+           * evicts the oldest when it runs short, and a lost context
+           * renders nothing at all while throwing no error a component
+           * can catch. Measured on this page: `isContextLost()` true and
+           * zero painted pixels. Remounting on loss is the only reliable
+           * recovery; `preventDefault` on the loss event is what makes
+           * the browser willing to restore one.
+           */
+          onReady?.();
+          const canvas = gl.domElement;
+          const onLost = (event: Event) => {
+            event.preventDefault();
+            setGeneration((value) => value + 1);
+          };
+          canvas.addEventListener("webglcontextlost", onLost);
+        }}
       >
-        <ambientLight intensity={Math.PI} />
-        <Physics gravity={[0, -40, 0]} timeStep={1 / 60}>
-          <Band identity={identity} ground={ground} ink={ink} bandGround={bandGround} />
-        </Physics>
-        <Environment blur={0.75}>
-          <Lightformer
-            intensity={2}
-            color="white"
-            position={[0, -1, 5]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={3}
-            color="white"
-            position={[-1, -1, 1]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={3}
-            color="white"
-            position={[1, 1, 1]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={10}
-            color="white"
-            position={[-10, 0, 14]}
-            rotation={[0, Math.PI / 2, Math.PI / 3]}
-            scale={[100, 10, 1]}
-          />
-        </Environment>
+        {/*
+          Plain lights instead of drei's <Environment> with lightformers.
+          That rig renders a cube map into its own targets every frame to
+          light one card — memory and GPU work this scene does not need,
+          on a page already asking the browser for a context it was
+          reluctant to give.
+        */}
+        <ambientLight intensity={1.6} />
+        <directionalLight position={[3, 6, 8]} intensity={2.2} />
+        <directionalLight position={[-5, -2, 4]} intensity={0.8} />
+        {/*
+          <Physics> loads Rapier's WASM asynchronously and SUSPENDS while
+          it does. Without a boundary the suspension propagates up through
+          the Canvas and the whole subtree renders nothing at all — which
+          looks identical to a broken component and is almost certainly
+          why the badge appeared dead rather than merely mis-sized.
+        */}
+        <Suspense fallback={null}>
+          <Physics gravity={[0, -40, 0]} timeStep={1 / 60}>
+            <Band identity={identity} ground={ground} ink={ink} bandGround={bandGround} />
+          </Physics>
+        </Suspense>
       </Canvas>
     </div>
   );

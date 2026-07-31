@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import HeroScreen from "@/components/lab/HeroScreen";
 import StackShowcase from "@/components/lab/StackShowcase";
-import Antigravity from "@/components/lab/Antigravity";
 import FloatingNav from "@/components/lab/FloatingNav";
 import StatsBand from "@/components/lab/StatsBand";
 import ProjectMosaic from "@/components/lab/ProjectMosaic";
@@ -37,15 +36,6 @@ export const metadata: Metadata = {
 export default function LabPage() {
   return (
     <main id="main">
-      <Antigravity
-        color="#ff5a1f"
-        count={205}
-        magnetRadius={8}
-        ringRadius={6.5}
-        particleSize={1.05}
-        lerpSpeed={0.06}
-        autoAnimate
-      />
       <FloatingNav content={labContent} />
       <HeroScreen content={labContent} />
       <StackShowcase content={labContent} />

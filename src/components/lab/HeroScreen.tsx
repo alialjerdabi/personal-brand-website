@@ -192,27 +192,27 @@ export default function HeroScreen({ content }: { content: LabContent }) {
         - No `text-balance`: balancing evens lines by shortening all of
           them and held the statement to 68% of the viewport. The breaks
           are hand-placed in the content instead.
-        - Space above and below is deliberately unequal, and the block is
-          not centred in its measure. Even margins around a centred column
-          is the tell of a layout that was specified rather than composed.
+        - Centred, per Ali's direction. Left-aligned the ragged right edge
+          left a visible gap on wide screens that read as dead margin
+          rather than as rag; centring balances it against both gutters.
       */}
-      <div className="flex flex-1 flex-col px-4 pb-8 pt-[7vh] sm:px-6 sm:pt-[8vh]">
+      <div className="flex flex-1 flex-col px-4 pb-8 pt-[3vh] sm:px-6 sm:pt-[4vh]">
         <h1
           id="lab-hero-heading"
-          className="mx-auto w-full max-w-[1760px] font-display text-[clamp(2.6rem,10.4vw,12rem)] font-bold leading-[0.98] tracking-[-0.048em]"
+          className="mx-auto w-full max-w-[1760px] text-center font-display text-[clamp(2.6rem,10.4vw,12rem)] font-bold leading-[0.98] tracking-[-0.048em]"
         >
           <HeroSentence tokens={content.hero.tokens} />
         </h1>
 
-        <div className="mx-auto mt-auto flex w-full max-w-[1760px] flex-col gap-7 pt-12 sm:pt-16 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mx-auto mt-auto flex w-full max-w-[1760px] flex-col items-center gap-5 pt-8 text-center sm:gap-6 sm:pt-10">
           <p
             data-hero-tail
-            className="max-w-md font-display text-[clamp(1rem,1.35vw,1.2rem)] leading-relaxed text-lab-ink-soft"
+            className="max-w-xl font-display text-[clamp(1rem,1.35vw,1.2rem)] leading-relaxed text-lab-ink-soft"
           >
             {content.hero.sub}
           </p>
 
-          <div data-hero-tail className="flex flex-wrap items-center gap-3">
+          <div data-hero-tail className="flex flex-wrap items-center justify-center gap-3">
             <a
               href={content.hero.cta.href}
               className="rounded-full bg-lab-ink-warm px-7 py-3.5 font-display text-[15px] font-bold text-white transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-2"
