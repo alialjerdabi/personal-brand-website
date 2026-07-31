@@ -6,19 +6,15 @@ import type { HeroToken, LabAsset } from "@/data/lab";
  * side of them. Sized in `em` rather than pixels so they stay locked to
  * the type as it scales — the whole effect collapses the moment the
  * images stop being the same height as the letters beside them.
- *
- * `align-[-0.14em]` rather than `align-middle`: middle aligns to the
- * x-height midpoint and leaves the cluster floating high against a line
- * this large.
  */
 function ChipCluster({ images }: { images: LabAsset[] }) {
   return (
-    <span className="inline-flex translate-y-[0.06em] gap-[0.08em] align-[-0.14em]">
+    <span className="inline-flex translate-y-[0.06em] gap-[0.07em] align-[-0.16em]">
       {images.map((image, index) => (
         <span
           key={image.src}
           data-hero-chip
-          className="relative inline-block h-[0.82em] w-[0.98em] origin-bottom overflow-hidden rounded-[0.14em] bg-lab-haze shadow-[0_2px_10px_rgb(19_23_30/0.10)] ring-1 ring-lab-hairline"
+          className="relative inline-block h-[0.86em] w-[1.02em] origin-bottom overflow-hidden rounded-[0.16em] bg-lab-haze shadow-[0_3px_14px_rgb(19_23_30/0.14)] ring-1 ring-lab-hairline"
           style={{
             // A hand-placed feel without any of the tilt the brief rules
             // out — a fraction of a degree, alternating, is enough.
@@ -30,7 +26,7 @@ function ChipCluster({ images }: { images: LabAsset[] }) {
             alt=""
             aria-hidden="true"
             fill
-            sizes="120px"
+            sizes="160px"
             className="object-cover"
           />
         </span>
@@ -46,10 +42,7 @@ function ChipCluster({ images }: { images: LabAsset[] }) {
  */
 function DrawnArrow() {
   return (
-    <span
-      aria-hidden="true"
-      className="inline-block h-[0.5em] w-[1.5em] align-[0.06em] text-accent"
-    >
+    <span className="inline-block h-[0.5em] w-[1.5em] align-[0.08em] text-accent">
       {/*
         `pathLength="1"` normalises each path so the draw-on can be
         expressed as dasharray/dashoffset of 1 regardless of the real
@@ -82,14 +75,19 @@ function DrawnArrow() {
 /**
  * The headline, spoken rather than declared.
  *
- * The sentence runs as continuous inline content — text, image clusters
+ * The sentence runs as continuous inline content — words, image clusters
  * and the arrow all in one flow — so it wraps like a sentence instead of
- * being assembled from rigid lines. That is what makes the images read as
- * interruptions in speech rather than as a decorated layout, and it is
- * the whole personality of this direction.
+ * being assembled from rigid lines.
  *
- * Every non-text token is aria-hidden and the chips carry empty alt, so
- * assistive technology reads one clean sentence.
+ * Every element is emitted as a numbered `[data-hero-unit]` in reading
+ * order, which is what lets the entrance animate as one left-to-right
+ * pass instead of five unrelated effects firing at once (see
+ * HeroScreen.tsx). The index lives in the markup rather than being
+ * derived in the effect, because only this component knows the true
+ * order once text has been split into words.
+ *
+ * Non-text units are aria-hidden and chips carry empty alt, so assistive
+ * technology reads one clean sentence.
  */
 export default function HeroSentence({
   tokens,
@@ -98,22 +96,36 @@ export default function HeroSentence({
   tokens: HeroToken[];
   className?: string;
 }) {
+  let unit = 0;
+
   return (
     <span className={className}>
-      {tokens.map((token, index) => {
+      {tokens.map((token, tokenIndex) => {
         if (token.kind === "text") {
-          return <span key={index}>{token.value} </span>;
+          return token.value.split(" ").map((word) => (
+            <span key={`${tokenIndex}-${word}-${unit}`}>
+              <span data-hero-unit="word" data-unit-index={unit++} className="inline-block">
+                {word}
+              </span>{" "}
+            </span>
+          ));
         }
+
         if (token.kind === "arrow") {
           return (
-            <span key={index}>
-              <DrawnArrow />{" "}
+            <span key={tokenIndex} aria-hidden="true">
+              <span data-hero-unit="arrow" data-unit-index={unit++} className="inline-block">
+                <DrawnArrow />
+              </span>{" "}
             </span>
           );
         }
+
         return (
-          <span key={index} aria-hidden="true">
-            <ChipCluster images={token.images} />{" "}
+          <span key={tokenIndex} aria-hidden="true">
+            <span data-hero-unit="chips" data-unit-index={unit++} className="inline-block">
+              <ChipCluster images={token.images} />
+            </span>{" "}
           </span>
         );
       })}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
@@ -8,129 +8,147 @@ import type { LabContent } from "@/data/lab";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const CYCLE_MS = 3200;
+
 /**
- * The showcase panel: one large frame under the hero that steps through
- * project stills as the page is scrolled.
+ * The showcase: one poster-scale panel that fills the screen.
  *
- * Scroll-scrubbed rather than autoplaying — the visitor drives it, so it
- * can never play before they arrive or loop at them while they read. The
- * panel pins for the length of the sequence and releases; each frame
- * crossfades and drifts a few percent so the change reads as a cut in a
- * film rather than a slideshow tick.
+ * Two behaviours, deliberately separated:
  *
- * Opacity and transform only. Under reduced motion the pin and the scrub
- * are never created at all: the panel renders as a plain grid of stills
- * (see the fallback markup), which says the same thing without moving.
+ * 1. THE HANDOFF. The panel does not simply appear — it grows out of the
+ *    hero. It starts small and low, roughly where the stills sit inside
+ *    the headline, and scroll drives it up to full size, so the poster
+ *    the visitor saw inside the sentence becomes the thing they are now
+ *    looking at. Done as scale and translate on the panel itself rather
+ *    than as a separate flying element measured against two bounding
+ *    boxes: no layout maths, nothing to resynchronise on resize, and it
+ *    cannot desynchronise from the element it is pretending to be.
+ *
+ * 2. THE CONTENT. The frames change on their own, on a timer — the work
+ *    plays whether or not the visitor keeps scrolling. Cycling pauses
+ *    when the panel is off screen so it is never animating unseen, and
+ *    never starts at all under reduced motion.
+ *
+ * Transform and opacity only.
  */
 export default function ProjectShowcase({ content }: { content: LabContent }) {
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const [visible, setVisible] = useState(false);
   const { showcase } = content;
 
+  // The handoff.
   useLayoutEffect(() => {
     const context = gsap.context(() => {
-      const media = gsap.matchMedia();
-
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        const frames = gsap.utils.toArray<HTMLElement>("[data-frame]");
-        const captions = gsap.utils.toArray<HTMLElement>("[data-caption]");
-        if (frames.length < 2) return;
-
-        // Everything but the first frame starts hidden and slightly
-        // enlarged, so each arrival settles rather than snaps.
-        gsap.set(frames.slice(1), { opacity: 0, scale: 1.06 });
-        gsap.set(captions.slice(1), { opacity: 0, y: 14 });
-
-        /*
-         * The stage is held by CSS `position: sticky`, not by GSAP's pin.
-         * Using both fights: GSAP's pin switches the element to fixed and
-         * inserts a spacer, which a sticky element is already handling.
-         * Native sticky is free, survives resize without a refresh, and
-         * leaves ScrollTrigger with one job — scrubbing the crossfade.
-         */
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: "[data-showcase-runway]",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.6,
-          },
-        });
-
-        frames.forEach((frame, index) => {
-          if (index === 0) return;
-          timeline
-            .to(frames[index - 1], { opacity: 0, scale: 0.98, duration: 1 }, index - 1)
-            .to(frame, { opacity: 1, scale: 1, duration: 1 }, index - 1)
-            .to(captions[index - 1], { opacity: 0, y: -14, duration: 0.5 }, index - 1)
-            .to(captions[index], { opacity: 1, y: 0, duration: 0.5 }, index - 0.5);
-        });
+      gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          "[data-showcase-panel]",
+          { scale: 0.34, yPercent: -14, opacity: 0.55 },
+          {
+            scale: 1,
+            yPercent: 0,
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: "[data-showcase-root]",
+              start: "top bottom",
+              end: "top 12%",
+              scrub: 0.5,
+            },
+          }
+        );
       });
-
-      return () => media.revert();
     }, rootRef);
 
     return () => context.revert();
   }, []);
 
+  // Only cycle while the panel is actually on screen.
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.25 }
+    );
+    observer.observe(panel);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    if (showcase.frames.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const interval = setInterval(
+      () => setActive((current) => (current + 1) % showcase.frames.length),
+      CYCLE_MS
+    );
+    return () => clearInterval(interval);
+  }, [visible, showcase.frames.length]);
+
+  const current = showcase.frames[active];
+
   return (
     <section
       ref={rootRef}
+      data-showcase-root
       aria-labelledby="lab-showcase-heading"
-      className="bg-lab-air px-5 pb-20 pt-4 sm:px-8 sm:pb-28"
+      className="bg-lab-air px-3 pb-16 pt-2 sm:px-5 sm:pb-24"
     >
-      <div className="mx-auto max-w-6xl">
-        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-2">
-          <h2
-            id="lab-showcase-heading"
-            className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-bold leading-[1.1] tracking-[-0.03em] text-lab-ink-warm"
-          >
-            {showcase.heading}
-          </h2>
-          <p className="font-display text-[15px] text-lab-ink-soft">{showcase.label}</p>
-        </div>
-      </div>
+      <h2 id="lab-showcase-heading" className="sr-only">
+        {showcase.heading}
+      </h2>
 
-      {/*
-        The runway is the scroll distance the sequence consumes; the stage
-        is what pins inside it. Separating them is what lets the panel
-        hold still while the page keeps moving — a single element cannot
-        be both the thing that scrolls and the thing that stays.
-      */}
       <div
-        data-showcase-runway
-        className="mx-auto mt-8 max-w-6xl"
-        style={{ height: `${showcase.frames.length * 70}vh` }}
+        ref={panelRef}
+        data-showcase-panel
+        className="relative mx-auto h-[calc(100svh-6rem)] w-full max-w-[1720px] origin-top overflow-hidden rounded-[2rem] bg-lab-haze shadow-[0_50px_120px_-60px_rgb(19_23_30/0.6)] ring-1 ring-lab-hairline sm:rounded-[2.5rem]"
       >
-        <div data-showcase-stage className="sticky top-24">
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[2rem] bg-lab-haze shadow-[0_40px_100px_-50px_rgb(19_23_30/0.55)] ring-1 ring-lab-hairline sm:aspect-[16/9]">
-            {showcase.frames.map((frame, index) => (
-              <div key={frame.image.src} data-frame className="absolute inset-0">
-                <Image
-                  src={frame.image.src}
-                  alt={frame.image.alt}
-                  fill
-                  preload={index === 0}
-                  sizes="(max-width: 1024px) 92vw, 1100px"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end p-5 sm:p-8">
-              <div className="relative h-12 w-full">
-                {showcase.frames.map((frame) => (
-                  <p
-                    key={frame.caption}
-                    data-caption
-                    className="absolute inset-x-0 bottom-0 flex flex-wrap items-baseline gap-x-3 rounded-full bg-black/45 px-5 py-2.5 font-display text-[15px] text-white backdrop-blur-md sm:w-fit"
-                  >
-                    <span className="font-bold">{frame.project}</span>
-                    <span className="text-white/70">{frame.caption}</span>
-                  </p>
-                ))}
-              </div>
-            </div>
+        {showcase.frames.map((frame, index) => (
+          <div
+            key={frame.image.src}
+            aria-hidden={index !== active}
+            className={`absolute inset-0 motion-safe:transition-[opacity,transform] motion-safe:duration-[1100ms] motion-safe:ease-out ${
+              index === active ? "scale-100 opacity-100" : "scale-[1.05] opacity-0"
+            }`}
+          >
+            <Image
+              src={frame.image.src}
+              alt={frame.image.alt}
+              fill
+              preload={index === 0}
+              sizes="100vw"
+              className="object-cover"
+            />
           </div>
+        ))}
+
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-4 bg-gradient-to-t from-black/65 to-transparent p-5 sm:p-8">
+          <p
+            aria-live="polite"
+            className="flex flex-wrap items-baseline gap-x-3 font-display text-white"
+          >
+            <span className="text-[clamp(1.25rem,2.6vw,2rem)] font-bold tracking-[-0.03em]">
+              {current.project}
+            </span>
+            <span className="text-[15px] text-white/75">{current.caption}</span>
+          </p>
+
+          {/* Where you are in the sequence, without a control to operate. */}
+          <span className="flex items-center gap-1.5">
+            {showcase.frames.map((frame, index) => (
+              <span
+                key={frame.image.src}
+                aria-hidden="true"
+                className={`h-1 rounded-full transition-all duration-500 ${
+                  index === active ? "w-7 bg-white" : "w-3 bg-white/40"
+                }`}
+              />
+            ))}
+          </span>
         </div>
       </div>
     </section>

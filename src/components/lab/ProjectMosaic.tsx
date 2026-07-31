@@ -1,6 +1,9 @@
+"use client";
+
+import { useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
+import ProjectModal from "@/components/lab/ProjectModal";
 import type { LabContent, LabPalette, LabProject } from "@/data/lab";
 
 /**
@@ -21,78 +24,64 @@ function ProjectCard({
   pendingLabel,
   wide,
   priority,
+  onOpen,
 }: {
   project: LabProject;
   pendingLabel: string;
   wide: boolean;
   priority: boolean;
+  onOpen: (element: HTMLButtonElement) => void;
 }) {
   const hasCover = Boolean(project.cover);
-
-  const media = (
-    <span
-      className={`relative block w-full overflow-hidden rounded-[1.6rem] ${
-        wide ? "aspect-[16/11]" : "aspect-[16/12]"
-      } ${hasCover ? "bg-lab-haze" : FIELD[project.palette]}`}
-    >
-      {project.cover ? (
-        <Image
-          src={project.cover.src}
-          alt={project.cover.alt}
-          fill
-          preload={priority}
-          sizes="(max-width: 1024px) 92vw, 55vw"
-          className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-        />
-      ) : (
-        /*
-         * A real engagement whose cover art does not exist yet — never a
-         * borrowed image, which would misrepresent one client's work as
-         * another's. A filled colour panel reads as a decision; an
-         * outlined grey box reads as a hole in the portfolio.
-         */
-        <span
-          aria-hidden="true"
-          className="flex h-full w-full items-center justify-center p-8"
-        >
-          <span className="font-display text-[clamp(1.75rem,4vw,3.5rem)] font-semibold leading-none tracking-[-0.04em]">
-            {project.name}
-          </span>
-        </span>
-      )}
-    </span>
-  );
-
-  const caption = (
-    <span className="mt-4 flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1">
-      <span className="font-display text-xl font-bold tracking-[-0.02em] text-lab-ink-warm sm:text-2xl">
-        {project.name}
-      </span>
-      <span className="font-display text-[15px] text-lab-ink-soft">
-        {hasCover
-          ? [project.disciplines.join(", "), project.year].filter(Boolean).join(" · ")
-          : pendingLabel}
-      </span>
-    </span>
-  );
-
-  if (!project.spreads) {
-    return (
-      <div className="group block">
-        {media}
-        {caption}
-      </div>
-    );
-  }
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <Link
-      href={`/lab/${project.slug}`}
-      className="group block rounded-[1.6rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-4"
+    <button
+      ref={buttonRef}
+      type="button"
+      onClick={() => buttonRef.current && onOpen(buttonRef.current)}
+      className="group block w-full rounded-[1.6rem] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-4"
     >
-      {media}
-      {caption}
-    </Link>
+      <span
+        className={`relative block w-full overflow-hidden rounded-[1.6rem] ${
+          wide ? "aspect-[16/11]" : "aspect-[16/12]"
+        } ${hasCover ? "bg-lab-haze" : FIELD[project.palette]}`}
+      >
+        {project.cover ? (
+          <Image
+            src={project.cover.src}
+            alt={project.cover.alt}
+            fill
+            preload={priority}
+            sizes="(max-width: 1024px) 92vw, 55vw"
+            className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+          />
+        ) : (
+          /*
+           * A real engagement whose cover art does not exist yet — never
+           * a borrowed image, which would misrepresent one client's work
+           * as another's. A filled colour panel reads as a decision; an
+           * outlined grey box reads as a hole in the portfolio.
+           */
+          <span aria-hidden="true" className="flex h-full w-full items-center justify-center p-8">
+            <span className="font-display text-[clamp(1.75rem,4vw,3.5rem)] font-bold leading-none tracking-[-0.04em]">
+              {project.name}
+            </span>
+          </span>
+        )}
+      </span>
+
+      <span className="mt-4 flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1">
+        <span className="font-display text-xl font-bold tracking-[-0.02em] text-lab-ink-warm sm:text-2xl">
+          {project.name}
+        </span>
+        <span className="font-display text-[15px] text-lab-ink-soft">
+          {hasCover
+            ? [project.disciplines.join(", "), project.year].filter(Boolean).join(" · ")
+            : pendingLabel}
+        </span>
+      </span>
+    </button>
   );
 }
 
@@ -103,8 +92,17 @@ function ProjectCard({
  * lopsided, and the lopsidedness flips each time, so the section reads
  * as composed instead of poured. The rule holds for any number of
  * projects without a spans table — the widths come from the index.
+ *
+ * Cards open a popup rather than navigating: a visitor deciding whether
+ * a project is worth their time should not have to spend a page load to
+ * find out. The card that opened it gets focus back on close, which is
+ * the part of a dialog that is invisible when right and disorienting
+ * when missing.
  */
 export default function ProjectMosaic({ content }: { content: LabContent }) {
+  const [openProject, setOpenProject] = useState<LabProject | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+
   return (
     <section
       id="work"
@@ -121,8 +119,7 @@ export default function ProjectMosaic({ content }: { content: LabContent }) {
               A few things I&rsquo;ve made.
             </h2>
             <p className="font-display text-[15px] text-lab-ink-soft">
-              {String(content.projects.length).padStart(2, "0")}{" "}
-              {content.lobby.counterLabel}
+              {String(content.projects.length).padStart(2, "0")} {content.lobby.counterLabel}
             </p>
           </div>
         </Reveal>
@@ -142,12 +139,25 @@ export default function ProjectMosaic({ content }: { content: LabContent }) {
                   pendingLabel={content.lobby.pendingLabel}
                   wide={wide}
                   priority={index === 0}
+                  onOpen={(element) => {
+                    triggerRef.current = element;
+                    setOpenProject(project);
+                  }}
                 />
               </Reveal>
             );
           })}
         </div>
       </div>
+
+      <ProjectModal
+        project={openProject}
+        content={content}
+        onClose={() => {
+          setOpenProject(null);
+          triggerRef.current?.focus();
+        }}
+      />
     </section>
   );
 }
