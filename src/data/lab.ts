@@ -112,7 +112,15 @@ export interface LabService {
 export type HeroToken =
   | { kind: "text"; value: string }
   | { kind: "chips"; images: LabAsset[] }
-  | { kind: "arrow" };
+  | { kind: "arrow" }
+  /**
+   * A hand-placed line break, honoured from `lg` up and ignored below.
+   * Left to wrap on its own the sentence breaks wherever it happens to
+   * run out of room, and every line comes out roughly the same length —
+   * which is what makes a statement look set by a machine rather than
+   * composed. Each line here is given a deliberate shape.
+   */
+  | { kind: "break" };
 
 export interface LabContent {
   identity: string;
@@ -234,9 +242,14 @@ export const labContent: LabContent = {
           },
         ],
       },
-      { kind: "text", value: "small businesses look" },
+      { kind: "text", value: "small" },
+      { kind: "break" },
+      { kind: "text", value: "businesses" },
       { kind: "arrow" },
-      { kind: "text", value: "as good as they" },
+      { kind: "break" },
+      { kind: "text", value: "look as good as" },
+      { kind: "break" },
+      { kind: "text", value: "they" },
       {
         kind: "chips",
         images: [

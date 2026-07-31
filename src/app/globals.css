@@ -84,12 +84,24 @@
    * The page is one continuous gradient, so these are the stops, not
    * flat section fills.
    */
-  --lab-sky: #dfeaf5;
-  --lab-air: #f7f9fb;
-  --lab-haze: #eceef0;
-  --lab-ink-warm: #16181c;
-  --lab-ink-soft: #5c626c;
-  --lab-hairline: rgb(19 23 30 / 0.09);
+  /*
+   * Warm cream ground (2026-07-31, Ali's palette). Off-white and
+   * paper-like rather than the cool blue wash it replaces: relaxed and
+   * personal without tipping into beige. --lab-air is the page, --lab-haze
+   * the recessed sections, --lab-sky the lift at the top of the hero, and
+   * cards sit on the near-white so sections separate by warmth instead of
+   * by borders.
+   */
+  --lab-sky: #ece5d4;
+  --lab-air: #f2eee0;
+  --lab-haze: #ebe6d6;
+  --lab-card: #fcf9f4;
+  --lab-ink-warm: #1a1713;
+  --lab-ink-soft: #6b6459;
+  --lab-hairline: rgb(26 23 19 / 0.10);
+  /* Rich brown-gold for the cursor field — reads against cream where the
+     orange accent would compete with it. */
+  --lab-gold: #945d00;
 }
 
 :root[data-theme="dark"] {
@@ -136,6 +148,8 @@
   --color-lab-ink-warm: var(--lab-ink-warm);
   --color-lab-ink-soft: var(--lab-ink-soft);
   --color-lab-hairline: var(--lab-hairline);
+  --color-lab-card: var(--lab-card);
+  --color-lab-gold: var(--lab-gold);
   --font-display: var(--font-rounded);
   --color-lab-paper: var(--lab-paper);
   --color-lab-paper-ink: var(--lab-paper-ink);

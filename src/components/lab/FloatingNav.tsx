@@ -12,11 +12,14 @@ import type { LabContent } from "@/data/lab";
  */
 export default function FloatingNav({ content }: { content: LabContent }) {
   return (
-    <div
-      data-hero-chrome
-      className="sticky top-3 z-40 px-3 sm:top-5 sm:px-5"
-    >
-      <header className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-[1.35rem] border border-white/70 bg-white/70 py-2.5 pl-5 pr-2.5 shadow-[0_10px_40px_-16px_rgb(19_23_30/0.30)] backdrop-blur-xl sm:py-3 sm:pl-7 sm:pr-3">
+    /*
+      Fixed, not sticky, and rendered at page level rather than inside the
+      hero. A sticky element only sticks within its own containing block,
+      so living inside the hero section meant it released the moment that
+      section ended — the nav vanished for the rest of the page.
+    */
+    <div data-hero-chrome className="fixed inset-x-0 top-3 z-40 px-3 sm:top-5 sm:px-5">
+      <header className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-[1.35rem] border border-white/70 bg-lab-card/75 py-2.5 pl-5 pr-2.5 shadow-[0_10px_40px_-16px_rgb(19_23_30/0.30)] backdrop-blur-xl sm:py-3 sm:pl-7 sm:pr-3">
         <Link
           href="/lab"
           className="flex items-center gap-2.5 focus-visible:outline-none"

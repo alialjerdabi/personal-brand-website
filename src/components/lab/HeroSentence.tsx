@@ -1,34 +1,85 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
 import type { HeroToken, LabAsset } from "@/data/lab";
 
 /**
+ * Resting transform per position in a cluster. Uneven on purpose: equal
+ * spacing and matching angles are what make a row of images look placed
+ * by a script rather than by a hand.
+ */
+const REST = ["rotate(-2.4deg)", "rotate(1.6deg)", "rotate(-1deg)", "rotate(2.2deg)"];
+
+/**
  * A cluster of work stills set inline, at the scale of the words either
- * side of them. Sized in `em` rather than pixels so they stay locked to
- * the type as it scales — the whole effect collapses the moment the
- * images stop being the same height as the letters beside them.
+ * side of them. Sized in `em` so they stay locked to the type as it
+ * scales — the effect collapses the moment the images stop being the same
+ * height as the letters beside them.
+ *
+ * Behaviour is React Bits' BounceCards, adapted from a fixed-size
+ * absolute container to inline content: the cards spring up from nothing
+ * on a stagger, and hovering one flattens its rotation while pushing its
+ * siblings aside. The push is in `em` rather than the component's fixed
+ * 160px, because these cards are a fraction of the headline and a
+ * pixel offset that works at 137px would throw them off the line at 42px.
+ *
+ * gsap was already a dependency, so this costs nothing new.
  */
 function ChipCluster({ images }: { images: LabAsset[] }) {
+  const rootRef = useRef<HTMLSpanElement>(null);
+
+  const cards = () =>
+    rootRef.current ? Array.from(rootRef.current.querySelectorAll<HTMLElement>("[data-hero-chip]")) : [];
+
+  const push = (hovered: number) => {
+    cards().forEach((card, index) => {
+      gsap.killTweensOf(card);
+      if (index === hovered) {
+        gsap.to(card, { rotate: 0, scale: 1.08, duration: 0.4, ease: "back.out(1.4)", overwrite: "auto" });
+        return;
+      }
+      const offset = index < hovered ? -0.3 : 0.3;
+      gsap.to(card, {
+        x: `${offset}em`,
+        duration: 0.4,
+        delay: Math.abs(hovered - index) * 0.05,
+        ease: "back.out(1.4)",
+        overwrite: "auto",
+      });
+    });
+  };
+
+  const reset = () => {
+    cards().forEach((card, index) => {
+      gsap.killTweensOf(card);
+      gsap.to(card, {
+        x: 0,
+        scale: 1,
+        rotate: parseFloat(REST[index % REST.length].replace(/[^-\d.]/g, "")),
+        duration: 0.4,
+        ease: "back.out(1.4)",
+        overwrite: "auto",
+      });
+    });
+  };
+
   return (
-    <span className="inline-flex translate-y-[0.06em] gap-[0.07em] align-[-0.16em]">
+    <span
+      ref={rootRef}
+      className="inline-flex translate-y-[0.06em] gap-[0.06em] align-[-0.16em]"
+      onMouseLeave={reset}
+    >
       {images.map((image, index) => (
         <span
           key={image.src}
           data-hero-chip
-          className="relative inline-block h-[0.86em] w-[1.02em] origin-bottom overflow-hidden rounded-[0.16em] bg-lab-haze shadow-[0_3px_14px_rgb(19_23_30/0.14)] ring-1 ring-lab-hairline"
-          style={{
-            // A hand-placed feel without any of the tilt the brief rules
-            // out — a fraction of a degree, alternating, is enough.
-            transform: `rotate(${index % 2 === 0 ? -1.2 : 1.4}deg)`,
-          }}
+          onMouseEnter={() => push(index)}
+          className="relative inline-block h-[0.86em] w-[1.02em] origin-bottom overflow-hidden rounded-[0.14em] bg-lab-haze shadow-[0_4px_18px_rgb(26_23_19/0.18)] ring-1 ring-white/70"
+          style={{ transform: REST[index % REST.length] }}
         >
-          <Image
-            src={image.src}
-            alt=""
-            aria-hidden="true"
-            fill
-            sizes="160px"
-            className="object-cover"
-          />
+          <Image src={image.src} alt="" aria-hidden="true" fill sizes="200px" className="object-cover" />
         </span>
       ))}
     </span>
@@ -36,37 +87,39 @@ function ChipCluster({ images }: { images: LabAsset[] }) {
 }
 
 /**
- * The drawn arrow. Deliberately a single open curve rather than a loop:
- * it reads as a hand gesture at any size, and it is the one element on
- * the page allowed to look like it was not set by a machine.
+ * The drawn arrow — a loose gesture with a loop in it, not a geometric
+ * arc. The clean curve it replaces was the most machine-made mark on the
+ * page: an arrow drawn by hand doubles back on itself and does not have a
+ * constant radius, and that irregularity is the entire point of having a
+ * drawn element at all.
  */
 function DrawnArrow() {
   return (
     <span
       data-hero-arrow-slot
-      className="inline-block h-[0.5em] w-[1.5em] align-[0.08em] text-accent"
+      className="inline-block h-[0.56em] w-[1.9em] align-[0.04em] text-accent"
     >
       {/*
-        `pathLength="1"` normalises each path so the draw-on can be
-        expressed as dasharray/dashoffset of 1 regardless of the real
-        geometry — no measuring the path in JS, and the arrowhead stays
-        in step with the stroke it belongs to.
+        `pathLength="1"` normalises each path so the draw-on is expressed
+        as dasharray/dashoffset of 1 regardless of the real geometry — no
+        measuring in JS, and the head stays in step with its stroke.
       */}
-      <svg viewBox="0 0 200 64" fill="none" className="h-full w-full overflow-visible">
+      <svg viewBox="0 0 230 86" fill="none" className="h-full w-full overflow-visible">
         <path
           data-hero-arrow
           pathLength="1"
-          d="M6 50C48 12 118 4 176 28"
+          d="M7 60C36 26 78 10 116 22c17 5 25 21 13 30-11 8-25-2-19-16 8-18 38-25 66-18 20 5 38 16 50 28"
           stroke="currentColor"
-          strokeWidth="9"
+          strokeWidth="8"
           strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           data-hero-arrow
           pathLength="1"
-          d="M156 10L180 29L154 42"
+          d="M203 34l24 12-9 24"
           stroke="currentColor"
-          strokeWidth="9"
+          strokeWidth="8"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -78,16 +131,15 @@ function DrawnArrow() {
 /**
  * The headline, spoken rather than declared.
  *
- * The sentence runs as continuous inline content — words, image clusters
- * and the arrow all in one flow — so it wraps like a sentence instead of
- * being assembled from rigid lines.
+ * The sentence runs as continuous inline content — words, image clusters,
+ * the arrow and hand-placed breaks all in one flow — so it reads like
+ * speech rather than a stack of rows.
  *
  * Every element is emitted as a numbered `[data-hero-unit]` in reading
  * order, which is what lets the entrance animate as one left-to-right
- * pass instead of five unrelated effects firing at once (see
- * HeroScreen.tsx). The index lives in the markup rather than being
- * derived in the effect, because only this component knows the true
- * order once text has been split into words.
+ * pass rather than several unrelated effects firing at once (see
+ * HeroScreen.tsx). The index lives in the markup because only this
+ * component knows the true order once text is split into words.
  *
  * Non-text units are aria-hidden and chips carry empty alt, so assistive
  * technology reads one clean sentence.
@@ -104,6 +156,12 @@ export default function HeroSentence({
   return (
     <span className={className}>
       {tokens.map((token, tokenIndex) => {
+        if (token.kind === "break") {
+          // Ignored below `lg`, where the measure is too narrow for the
+          // desktop composition and natural wrapping is the better shape.
+          return <br key={tokenIndex} className="hidden lg:block" />;
+        }
+
         if (token.kind === "text") {
           return token.value.split(" ").map((word) => (
             <span key={`${tokenIndex}-${word}-${unit}`}>

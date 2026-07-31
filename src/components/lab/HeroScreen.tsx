@@ -3,7 +3,6 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import FloatingNav from "@/components/lab/FloatingNav";
 import HeroSentence from "@/components/lab/HeroSentence";
 import { HERO_ENTRANCE_DELAY_S, HERO_UNIT_STEP_S } from "@/components/lab/timing";
 import type { LabContent } from "@/data/lab";
@@ -130,17 +129,33 @@ export default function HeroScreen({ content }: { content: LabContent }) {
         const clusters = gsap.utils.toArray<HTMLElement>('[data-hero-unit="chips"]');
         const last = clusters[clusters.length - 1];
         if (last) {
-          gsap.to(last, {
-            scale: 3.4,
-            opacity: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: rootRef.current,
-              start: "bottom 92%",
-              end: "bottom 38%",
-              scrub: 0.4,
-            },
-          });
+          /*
+           * `fromTo` with `immediateRender: false`, not `to`.
+           *
+           * A plain `to` records its start values the moment it renders,
+           * which for a scrubbed trigger is when it is created — and at
+           * that point the entrance has just set every unit to opacity 0.
+           * So the tween became "from invisible to invisible": nothing
+           * happened scrolling down, and scrolling back up restored it to
+           * invisible, leaving a hole in the sentence. Stating the start
+           * explicitly and deferring the first render fixes both.
+           */
+          gsap.fromTo(
+            last,
+            { scale: 1, opacity: 1 },
+            {
+              scale: 3.4,
+              opacity: 0,
+              ease: "none",
+              immediateRender: false,
+              scrollTrigger: {
+                trigger: rootRef.current,
+                start: "bottom 92%",
+                end: "bottom 38%",
+                scrub: 0.4,
+              },
+            }
+          );
         }
       });
     }, rootRef);
@@ -162,34 +177,32 @@ export default function HeroScreen({ content }: { content: LabContent }) {
       */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_15%_-10%,var(--lab-sky)_0%,transparent_60%),radial-gradient(100%_80%_at_100%_0%,#e8eef6_0%,transparent_55%),linear-gradient(180deg,#f4f8fb_0%,var(--lab-air)_45%,var(--lab-haze)_100%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_12%_-12%,var(--lab-sky)_0%,transparent_62%),radial-gradient(90%_70%_at_100%_4%,#f6f1e2_0%,transparent_58%),linear-gradient(180deg,#f6f2e6_0%,var(--lab-air)_48%,var(--lab-haze)_100%)]"
       />
 
-      <FloatingNav content={content} />
-
       {/*
-        The statement is the page. It runs to a 1440px measure at ~8vw
-        rather than sitting in a 1152px column at 6vw — the earlier
-        version left a third of the screen empty above and below the
-        line, which is what made it read as a small headline on a big
-        page instead of a poster.
+        The statement is the page.
+        - 9.4vw on a 1560px measure: ~135px at 1440, ~180px at 1920.
+        - It starts just under the nav rather than sitting centred; the
+          tail is pushed to the bottom edge with `mt-auto`. Centring left
+          a third of the viewport empty above AND below, which is what
+          made a large headline read as a small one on a big page.
+        - No `text-balance`: balancing evens lines by shortening all of
+          them and held the statement to 68% of the viewport. The breaks
+          are hand-placed in the content instead.
+        - Space above and below is deliberately unequal, and the block is
+          not centred in its measure. Even margins around a centred column
+          is the tell of a layout that was specified rather than composed.
       */}
-      <div className="flex flex-1 flex-col justify-center px-5 pb-10 pt-8 sm:px-8 sm:pb-14">
+      <div className="flex flex-1 flex-col px-5 pb-8 pt-[13vh] sm:px-8 sm:pt-[15vh]">
         <h1
           id="lab-hero-heading"
-          /*
-            No `text-balance` here. Balancing evens the lines by making
-            every one of them shorter — measured, it held the statement to
-            68% of the viewport and pushed it to four lines. Greedy
-            wrapping is what fills the measure, which is the entire point
-            of setting it this large.
-          */
-          className="mx-auto w-full max-w-[1500px] font-display text-[clamp(2.6rem,8.4vw,8rem)] font-bold leading-[1.06] tracking-[-0.042em]"
+          className="w-full max-w-[1560px] font-display text-[clamp(2.6rem,9.4vw,10rem)] font-bold leading-[1.02] tracking-[-0.045em]"
         >
           <HeroSentence tokens={content.hero.tokens} />
         </h1>
 
-        <div className="mx-auto mt-12 flex w-full max-w-[1440px] flex-col gap-7 sm:mt-16 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-auto flex w-full max-w-[1560px] flex-col gap-7 pt-12 sm:pt-16 lg:flex-row lg:items-end lg:justify-between">
           <p
             data-hero-tail
             className="max-w-md font-display text-[clamp(1rem,1.35vw,1.2rem)] leading-relaxed text-lab-ink-soft"

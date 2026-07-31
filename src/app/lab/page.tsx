@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import HeroScreen from "@/components/lab/HeroScreen";
 import StackShowcase from "@/components/lab/StackShowcase";
-import PixelTrail from "@/components/lab/PixelTrail";
+import Antigravity from "@/components/lab/Antigravity";
+import FloatingNav from "@/components/lab/FloatingNav";
 import StatsBand from "@/components/lab/StatsBand";
 import ProjectMosaic from "@/components/lab/ProjectMosaic";
 import ServiceIndex from "@/components/lab/ServiceIndex";
@@ -36,7 +37,8 @@ export const metadata: Metadata = {
 export default function LabPage() {
   return (
     <main id="main">
-      <PixelTrail />
+      <Antigravity color="#945d00" count={320} magnetRadius={9} ringRadius={7} particleSize={1.5} lerpSpeed={0.06} autoAnimate />
+      <FloatingNav content={labContent} />
       <HeroScreen content={labContent} />
       <StackShowcase content={labContent} />
       <ProjectMosaic content={labContent} />

@@ -113,22 +113,29 @@ export default function ProjectModal({
         // the backdrop; anything inside the panel stops here.
         if (event.target === dialogRef.current) dialogRef.current?.close();
       }}
-      className="m-auto w-[min(92vw,64rem)] rounded-[1.75rem] bg-transparent p-0 backdrop:bg-lab-ink-warm/25 backdrop:backdrop-blur-sm"
+      className="m-auto w-[min(92vw,62rem)] rounded-[1.5rem] bg-transparent p-0 backdrop:bg-lab-air/70 backdrop:backdrop-blur-md"
     >
       {project && (
-        <div className="relative grid overflow-hidden rounded-[1.75rem] bg-white text-lab-ink-warm shadow-[0_50px_120px_-50px_rgb(19_23_30/0.55)] sm:grid-cols-[1.15fr_1fr]">
+        /*
+          Matched to the reference popup: the image is INSET inside the
+          panel with white showing on all four sides rather than bleeding
+          to the edge, and the text column sits low against it instead of
+          being vertically centred. Those two things are what make it read
+          as a mounted print rather than a split-screen banner.
+        */
+        <div className="relative grid gap-6 overflow-hidden rounded-[1.5rem] bg-white p-5 text-lab-ink-warm shadow-[0_50px_120px_-50px_rgb(26_23_19/0.5)] sm:grid-cols-[1.05fr_1fr] sm:gap-8 sm:p-6">
           <button
             type="button"
             onClick={() => dialogRef.current?.close()}
             aria-label="Close"
-            className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-lab-hairline bg-white/90 text-lab-ink-warm transition-colors hover:bg-lab-haze focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm"
+            className="absolute right-5 top-5 z-10 flex h-12 w-12 items-center justify-center rounded-[0.85rem] border border-lab-hairline bg-white text-lab-ink-warm transition-colors hover:bg-lab-haze focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm sm:right-6 sm:top-6"
           >
             <span aria-hidden="true" className="text-lg leading-none">
               ✕
             </span>
           </button>
 
-          <div className="relative aspect-[4/3] w-full overflow-hidden bg-lab-haze sm:aspect-auto sm:min-h-[26rem]">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1rem] bg-lab-haze sm:aspect-[5/4]">
             {gallery.length > 0 ? (
               gallery.map((asset, index) => (
                 <div
@@ -160,7 +167,7 @@ export default function ProjectModal({
             )}
           </div>
 
-          <div className="flex flex-col justify-center gap-5 p-7 sm:p-10">
+          <div className="flex flex-col justify-end gap-4 pb-2 pr-1 sm:pb-6 sm:pr-4">
             <p className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-lab-ink-soft">
               {project.disciplines.length > 0
                 ? project.disciplines.join(" · ")
