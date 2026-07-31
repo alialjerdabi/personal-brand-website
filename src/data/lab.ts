@@ -155,6 +155,35 @@ export interface LabContent {
     items: LabService[];
   };
 
+  /** Scroll-scrubbed panel of project stills under the hero. */
+  showcase: {
+    label: string;
+    heading: string;
+    frames: { image: LabAsset; caption: string; project: string }[];
+  };
+
+  /**
+   * Honest counts only. EMPTY BY DESIGN — the band does not render until
+   * Ali supplies real figures. Never populate this with plausible-looking
+   * numbers; a stats band is the one section on the page whose entire job
+   * is to be believed.
+   */
+  stats: { value: string; label: string }[];
+
+  /**
+   * Real, publishable client quotes only. EMPTY BY DESIGN — the section
+   * does not render until Ali supplies quotes he has permission to use,
+   * attributed to real people. Never write these.
+   */
+  testimonials: { quote: string; name: string; role: string }[];
+
+  /** Point of view, not a blog index — no dates, no links to nowhere. */
+  notes: {
+    label: string;
+    heading: string;
+    items: { title: string; dek: string; tag: string }[];
+  };
+
   contact: {
     label: string;
     heading: string;
@@ -409,6 +438,77 @@ export const labContent: LabContent = {
           "Design systems",
           "Front-end implementation",
         ],
+      },
+    ],
+  },
+
+  showcase: {
+    label: "Selected work",
+    heading: "Proof, one frame at a time.",
+    frames: [
+      {
+        image: {
+          src: "/work/petrolas/booth.jpg",
+          alt: "Petrolas exhibition booth with the full identity applied at trade-show scale",
+          form: "bleed",
+        },
+        caption: "Identity, applied at trade-show scale",
+        project: "Petrolas",
+      },
+      {
+        image: {
+          src: "/work/petrolas/hoarding-wide.jpg",
+          alt: "Petrolas construction hoarding with connected circuit-line graphics",
+          form: "bleed",
+        },
+        caption: "Environmental graphics, on site",
+        project: "Petrolas",
+      },
+      {
+        image: {
+          src: "/work/petrolas/dashboard.jpg",
+          alt: "Petrolas operations dashboard showing live production data",
+          form: "bleed",
+        },
+        caption: "Operations dashboard, built in the identity",
+        project: "Petrolas",
+      },
+      {
+        image: {
+          src: "/hero/petrolas-digital.jpg",
+          alt: "Phone on a stone plinth showing Petrolas social content",
+          form: "bleed",
+        },
+        caption: "Social and digital, same language",
+        project: "Petrolas",
+      },
+    ],
+  },
+
+  /* See the interface comment: both arrays stay empty until Ali supplies
+     real content. The sections self-hide, so the page is never padded
+     with invented proof. */
+  stats: [],
+  testimonials: [],
+
+  notes: {
+    label: "Point of view",
+    heading: "What I actually believe about this.",
+    items: [
+      {
+        tag: "Branding",
+        title: "Most businesses look worse than they are.",
+        dek: "The gap between how good a business actually is and how good it looks is the cheapest gap in business to close — and the one that costs the most while it stays open.",
+      },
+      {
+        tag: "Websites",
+        title: "A website's job is to remove doubt.",
+        dek: "Nobody reads a homepage. They scan it for reasons to leave. Design is mostly the work of removing those reasons one at a time.",
+      },
+      {
+        tag: "Products",
+        title: "Motion should explain, not perform.",
+        dek: "The best interface animation is invisible until you take it away. If it's asking to be noticed, it's costing you attention you needed elsewhere.",
       },
     ],
   },

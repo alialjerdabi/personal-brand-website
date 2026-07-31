@@ -31,7 +31,7 @@ export default function ContactClose({ content }: { content: LabContent }) {
 
             <h2
               id="lab-contact-heading"
-              className="mt-7 max-w-2xl font-display text-[clamp(1.9rem,4.6vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.035em]"
+              className="mt-7 max-w-2xl font-display text-[clamp(1.9rem,4.6vw,3.5rem)] font-bold leading-[1.08] tracking-[-0.035em]"
             >
               {contact.heading}
             </h2>
@@ -42,7 +42,7 @@ export default function ContactClose({ content }: { content: LabContent }) {
 
             <a
               href={`mailto:${contact.email}`}
-              className="mt-10 inline-block font-display text-[clamp(1.25rem,3.4vw,2.5rem)] font-medium tracking-[-0.03em] text-white underline decoration-white/25 decoration-1 underline-offset-[0.2em] transition-colors hover:decoration-accent focus-visible:outline-none focus-visible:decoration-accent"
+              className="mt-10 inline-block font-display text-[clamp(1.25rem,3.4vw,2.5rem)] font-bold tracking-[-0.03em] text-white underline decoration-white/25 decoration-1 underline-offset-[0.2em] transition-colors hover:decoration-accent focus-visible:outline-none focus-visible:decoration-accent"
             >
               {contact.email}
             </a>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, Geist_Mono, Outfit } from "next/font/google";
+import { Schibsted_Grotesk, Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 
 const schibstedGrotesk = Schibsted_Grotesk({
@@ -9,13 +9,14 @@ const schibstedGrotesk = Schibsted_Grotesk({
 
 /*
  * Display face for the /lab prototype only — the shipped site keeps
- * Schibsted Grotesk everywhere. Outfit is geometric and round where
- * Schibsted is neutral, and on a page whose brief is "personality" the
- * typeface is doing most of that work; nothing else moves the register
- * as far for as little.
+ * Schibsted Grotesk everywhere. Nunito's rounded terminals are the
+ * closest usable match to the SF Pro Rounded the reference site leans
+ * on, and it carries a full weight range where most rounded faces on
+ * Google Fonts ship one or two. On a page whose brief is "personality"
+ * the typeface does most of that work.
  */
-const outfit = Outfit({
-  variable: "--font-outfit",
+const nunito = Nunito({
+  variable: "--font-rounded",
   subsets: ["latin"],
 });
 
@@ -52,7 +53,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${schibstedGrotesk.variable} ${geistMono.variable} ${outfit.variable} h-full antialiased`}
+      className={`${schibstedGrotesk.variable} ${geistMono.variable} ${nunito.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />

@@ -136,7 +136,7 @@
   --color-lab-ink-warm: var(--lab-ink-warm);
   --color-lab-ink-soft: var(--lab-ink-soft);
   --color-lab-hairline: var(--lab-hairline);
-  --font-display: var(--font-outfit);
+  --font-display: var(--font-rounded);
   --color-lab-paper: var(--lab-paper);
   --color-lab-paper-ink: var(--lab-paper-ink);
   --color-lab-paper-muted: var(--lab-paper-muted);

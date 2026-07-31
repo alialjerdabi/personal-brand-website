@@ -30,7 +30,7 @@ export default function ServiceIndex({ services }: { services: LabContent["servi
         <Reveal>
           <h2
             id="lab-services-heading"
-            className="max-w-2xl font-display text-[clamp(1.9rem,4.2vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-lab-ink-warm"
+            className="max-w-2xl font-display text-[clamp(1.9rem,4.2vw,3.25rem)] font-bold leading-[1.1] tracking-[-0.035em] text-lab-ink-warm"
           >
             Three things, done properly.
           </h2>
@@ -50,7 +50,7 @@ export default function ServiceIndex({ services }: { services: LabContent["servi
                   </span>
                 </span>
 
-                <h3 className="mt-6 font-display text-[clamp(1.5rem,2.4vw,2rem)] font-medium leading-[1.1] tracking-[-0.03em] text-lab-ink-warm">
+                <h3 className="mt-6 font-display text-[clamp(1.5rem,2.4vw,2rem)] font-bold leading-[1.1] tracking-[-0.03em] text-lab-ink-warm">
                   {service.name}
                 </h3>
 

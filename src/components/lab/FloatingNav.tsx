@@ -48,7 +48,7 @@ export default function FloatingNav({ content }: { content: LabContent }) {
               strokeLinecap="round"
             />
           </svg>
-          <span className="font-display text-[15px] font-semibold tracking-[-0.01em] text-lab-ink-warm">
+          <span className="font-display text-[15px] font-bold tracking-[-0.01em] text-lab-ink-warm">
             {content.identity}
           </span>
         </Link>
@@ -67,7 +67,7 @@ export default function FloatingNav({ content }: { content: LabContent }) {
 
         <a
           href={content.navCta.href}
-          className="rounded-full bg-lab-ink-warm px-5 py-2.5 font-display text-[14px] font-medium text-white transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-2 sm:px-6"
+          className="rounded-full bg-lab-ink-warm px-5 py-2.5 font-display text-[14px] font-bold text-white transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-2 sm:px-6"
         >
           {content.navCta.label}
         </a>

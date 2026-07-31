@@ -161,7 +161,7 @@ export default function CaseStudy({ content, project, next }: CaseStudyProps) {
           what makes colour read as identity rather than decoration.
         */}
         <div className={`rounded-[2rem] px-7 py-14 sm:px-12 sm:py-20 ${FIELD[project.palette]}`}>
-          <h1 className="font-display text-[clamp(2.5rem,9vw,7rem)] font-medium leading-[0.95] tracking-[-0.04em]">
+          <h1 className="font-display text-[clamp(2.5rem,9vw,7rem)] font-bold leading-[0.95] tracking-[-0.04em]">
             {project.name}
           </h1>
 

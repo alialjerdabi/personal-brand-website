@@ -29,6 +29,11 @@ export default function HeroScreen({ content }: { content: LabContent }) {
         gsap.set("[data-hero-chrome]", { opacity: 0, y: -12 });
         gsap.set("[data-hero-line]", { opacity: 0, y: 22 });
         gsap.set("[data-hero-tail]", { opacity: 0, y: 16 });
+        // The chips drop into the sentence rather than fading with it,
+        // and the arrow draws itself — the two moments that make the
+        // line feel written instead of typeset.
+        gsap.set("[data-hero-chip]", { opacity: 0, scale: 0.55, yPercent: -22 });
+        gsap.set("[data-hero-arrow]", { strokeDasharray: 1, strokeDashoffset: 1 });
 
         const timeline = gsap.timeline({
           delay: HERO_ENTRANCE_DELAY_S,
@@ -38,7 +43,17 @@ export default function HeroScreen({ content }: { content: LabContent }) {
         timeline
           .to("[data-hero-chrome]", { opacity: 1, y: 0, duration: 0.6 })
           .to("[data-hero-line]", { opacity: 1, y: 0, duration: 0.9 }, 0.1)
-          .to("[data-hero-tail]", { opacity: 1, y: 0, duration: 0.7, stagger: 0.08 }, 0.5);
+          .to(
+            "[data-hero-chip]",
+            { opacity: 1, scale: 1, yPercent: 0, duration: 0.65, stagger: 0.07, ease: "back.out(1.6)" },
+            0.45
+          )
+          .to(
+            "[data-hero-arrow]",
+            { strokeDashoffset: 0, duration: 0.5, stagger: 0.18, ease: "power2.inOut" },
+            0.75
+          )
+          .to("[data-hero-tail]", { opacity: 1, y: 0, duration: 0.7, stagger: 0.08 }, 0.9);
       });
     }, rootRef);
 
@@ -68,7 +83,7 @@ export default function HeroScreen({ content }: { content: LabContent }) {
         <h1
           id="lab-hero-heading"
           data-hero-line
-          className="mx-auto max-w-6xl text-balance font-display text-[clamp(2.25rem,6.2vw,5.75rem)] font-medium leading-[1.14] tracking-[-0.035em]"
+          className="mx-auto max-w-6xl text-balance font-display text-[clamp(2.25rem,6.2vw,5.75rem)] font-bold leading-[1.14] tracking-[-0.035em]"
         >
           <HeroSentence tokens={content.hero.tokens} />
         </h1>
@@ -84,13 +99,13 @@ export default function HeroScreen({ content }: { content: LabContent }) {
           <div data-hero-tail className="flex flex-wrap items-center gap-3">
             <a
               href={content.hero.cta.href}
-              className="rounded-full bg-lab-ink-warm px-7 py-3.5 font-display text-[15px] font-medium text-white transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-2"
+              className="rounded-full bg-lab-ink-warm px-7 py-3.5 font-display text-[15px] font-bold text-white transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-2"
             >
               {content.hero.cta.label}
             </a>
             <a
               href={content.hero.secondary.href}
-              className="group flex items-center gap-2 rounded-full border border-lab-hairline bg-white/60 px-7 py-3.5 font-display text-[15px] font-medium text-lab-ink-warm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-2"
+              className="group flex items-center gap-2 rounded-full border border-lab-hairline bg-white/60 px-7 py-3.5 font-display text-[15px] font-bold text-lab-ink-warm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-2"
             >
               {content.hero.secondary.label}
               <span

@@ -17,7 +17,8 @@ function ChipCluster({ images }: { images: LabAsset[] }) {
       {images.map((image, index) => (
         <span
           key={image.src}
-          className="relative inline-block h-[0.82em] w-[0.98em] overflow-hidden rounded-[0.14em] bg-lab-haze shadow-[0_2px_10px_rgb(19_23_30/0.10)] ring-1 ring-lab-hairline"
+          data-hero-chip
+          className="relative inline-block h-[0.82em] w-[0.98em] origin-bottom overflow-hidden rounded-[0.14em] bg-lab-haze shadow-[0_2px_10px_rgb(19_23_30/0.10)] ring-1 ring-lab-hairline"
           style={{
             // A hand-placed feel without any of the tilt the brief rules
             // out — a fraction of a degree, alternating, is enough.
@@ -49,14 +50,24 @@ function DrawnArrow() {
       aria-hidden="true"
       className="inline-block h-[0.5em] w-[1.5em] align-[0.06em] text-accent"
     >
+      {/*
+        `pathLength="1"` normalises each path so the draw-on can be
+        expressed as dasharray/dashoffset of 1 regardless of the real
+        geometry — no measuring the path in JS, and the arrowhead stays
+        in step with the stroke it belongs to.
+      */}
       <svg viewBox="0 0 200 64" fill="none" className="h-full w-full overflow-visible">
         <path
+          data-hero-arrow
+          pathLength="1"
           d="M6 50C48 12 118 4 176 28"
           stroke="currentColor"
           strokeWidth="9"
           strokeLinecap="round"
         />
         <path
+          data-hero-arrow
+          pathLength="1"
           d="M156 10L180 29L154 42"
           stroke="currentColor"
           strokeWidth="9"

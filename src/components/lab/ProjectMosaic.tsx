@@ -65,7 +65,7 @@ function ProjectCard({
 
   const caption = (
     <span className="mt-4 flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1">
-      <span className="font-display text-xl font-medium tracking-[-0.02em] text-lab-ink-warm sm:text-2xl">
+      <span className="font-display text-xl font-bold tracking-[-0.02em] text-lab-ink-warm sm:text-2xl">
         {project.name}
       </span>
       <span className="font-display text-[15px] text-lab-ink-soft">
@@ -116,7 +116,7 @@ export default function ProjectMosaic({ content }: { content: LabContent }) {
           <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
             <h2
               id="lab-work-heading"
-              className="max-w-xl font-display text-[clamp(1.9rem,4.2vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-lab-ink-warm"
+              className="max-w-xl font-display text-[clamp(1.9rem,4.2vw,3.25rem)] font-bold leading-[1.1] tracking-[-0.035em] text-lab-ink-warm"
             >
               A few things I&rsquo;ve made.
             </h2>
