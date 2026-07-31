@@ -1,9 +1,21 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, Geist_Mono } from "next/font/google";
+import { Schibsted_Grotesk, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 
 const schibstedGrotesk = Schibsted_Grotesk({
   variable: "--font-schibsted",
+  subsets: ["latin"],
+});
+
+/*
+ * Display face for the /lab prototype only — the shipped site keeps
+ * Schibsted Grotesk everywhere. Outfit is geometric and round where
+ * Schibsted is neutral, and on a page whose brief is "personality" the
+ * typeface is doing most of that work; nothing else moves the register
+ * as far for as little.
+ */
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
 });
 
@@ -40,7 +52,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${schibstedGrotesk.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${schibstedGrotesk.variable} ${geistMono.variable} ${outfit.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />

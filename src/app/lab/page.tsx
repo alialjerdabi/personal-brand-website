@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import MaskLoader from "@/components/lab/MaskLoader";
-import LobbyScreen from "@/components/lab/LobbyScreen";
+import HeroScreen from "@/components/lab/HeroScreen";
+import ProjectMosaic from "@/components/lab/ProjectMosaic";
 import ServiceIndex from "@/components/lab/ServiceIndex";
 import ContactClose from "@/components/lab/ContactClose";
 import { labContent } from "@/data/lab";
@@ -25,13 +25,11 @@ export const metadata: Metadata = {
  */
 export default function LabPage() {
   return (
-    <>
-      <MaskLoader loader={labContent.loader} />
-      <main id="main">
-        <LobbyScreen content={labContent} />
-        <ServiceIndex services={labContent.services} />
-        <ContactClose content={labContent} />
-      </main>
-    </>
+    <main id="main">
+      <HeroScreen content={labContent} />
+      <ProjectMosaic content={labContent} />
+      <ServiceIndex services={labContent.services} />
+      <ContactClose content={labContent} />
+    </main>
   );
 }

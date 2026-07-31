@@ -103,11 +103,31 @@ export interface LabService {
   scope: string[];
 }
 
+/**
+ * One piece of the spoken headline. The sentence is data, not markup,
+ * because its personality comes from what interrupts it — a cluster of
+ * work stills, a drawn arrow — and those interruptions have to be
+ * positioned by whoever is writing the line, not by a component.
+ */
+export type HeroToken =
+  | { kind: "text"; value: string }
+  | { kind: "chips"; images: LabAsset[] }
+  | { kind: "arrow" };
+
 export interface LabContent {
   identity: string;
   /** The single line that says what this is. Nothing more on the lobby. */
   descriptor: string;
   navLinks: { label: string; href: string }[];
+  navCta: { label: string; href: string };
+
+  hero: {
+    /** Read in order; the tokens compose one continuous sentence. */
+    tokens: HeroToken[];
+    sub: string;
+    cta: { label: string; href: string };
+    secondary: { label: string; href: string };
+  };
 
   loader: {
     /** The three words that arrive independently, then align on the rule. */
@@ -153,6 +173,57 @@ export const labContent: LabContent = {
     { label: "Services", href: "/lab#services" },
     { label: "Contact", href: "/lab#contact" },
   ],
+  navCta: { label: "Start a project", href: "/lab#contact" },
+
+  /*
+   * Written in the first person and said out loud. Ali is one person,
+   * not a "we", and the sentence carries an actual argument rather than
+   * a category claim: the business is already good, its presentation is
+   * what is lagging. That is the thing a small business owner recognises
+   * about themselves in the first two seconds.
+   */
+  hero: {
+    tokens: [
+      { kind: "text", value: "I make" },
+      {
+        kind: "chips",
+        images: [
+          {
+            src: "/work/petrolas/campaign-plastic.jpg",
+            alt: "Petrolas campaign poster",
+            form: "plate",
+          },
+          {
+            src: "/work/petrolas/dashboard.jpg",
+            alt: "Petrolas operations dashboard",
+            form: "bleed",
+          },
+          {
+            src: "/work/petrolas/ev-charging.jpg",
+            alt: "Petrolas EV charging station",
+            form: "bleed",
+          },
+        ],
+      },
+      { kind: "text", value: "small businesses look" },
+      { kind: "arrow" },
+      { kind: "text", value: "as good as they" },
+      {
+        kind: "chips",
+        images: [
+          {
+            src: "/work/petrolas/booth.jpg",
+            alt: "Petrolas exhibition booth",
+            form: "bleed",
+          },
+        ],
+      },
+      { kind: "text", value: "already are." },
+    ],
+    sub: "Brand identity, websites, and digital products — designed and built by one person, end to end.",
+    cta: { label: "Start a project", href: "#contact" },
+    secondary: { label: "See the work", href: "#work" },
+  },
 
   loader: {
     words: [

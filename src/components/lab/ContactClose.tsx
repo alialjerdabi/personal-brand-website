@@ -1,67 +1,70 @@
 import Reveal from "@/components/ui/Reveal";
-import Masthead from "@/components/lab/Masthead";
 import type { LabContent } from "@/data/lab";
 
 /**
- * The close. One address, set at display scale, because on a portfolio
- * the email IS the conversion — a form would add a step to the one
+ * The close. One address, set large, because on a portfolio the email
+ * IS the conversion — a contact form only adds a step to the single
  * action the whole page exists to produce.
  *
- * The page ends once: contact and footer are a single composed block
- * rather than two stacked sections with a rule between them.
+ * Contact and footer are one composed block rather than two stacked
+ * sections, so the page ends once.
  */
 export default function ContactClose({ content }: { content: LabContent }) {
-  const { contact, lobby } = content;
+  const { contact, identity, lobby, navLinks } = content;
 
   return (
     <section
       id="contact"
       aria-labelledby="lab-contact-heading"
-      className="scroll-mt-8 bg-lab-ground px-6 pb-12 pt-24 text-lab-ink sm:px-10 sm:pb-16 sm:pt-32"
+      className="scroll-mt-24 bg-lab-haze px-5 pb-10 pt-20 sm:px-8 sm:pb-12 sm:pt-28"
     >
-      <Reveal>
-        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">
-          {contact.label}
-        </p>
-      </Reveal>
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <div className="rounded-[2rem] bg-lab-ink-warm px-7 py-14 text-white sm:px-14 sm:py-20">
+            <p className="flex items-center gap-2.5 font-display text-[15px] text-white/60">
+              <span
+                aria-hidden="true"
+                className="h-2 w-2 rounded-full bg-lab-lime"
+              />
+              {lobby.availability}
+            </p>
 
-      <Reveal delay={70}>
-        <h2
-          id="lab-contact-heading"
-          className="mt-6 max-w-3xl text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-0.035em]"
-        >
-          {contact.heading}
-        </h2>
-      </Reveal>
+            <h2
+              id="lab-contact-heading"
+              className="mt-7 max-w-2xl font-display text-[clamp(1.9rem,4.6vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.035em]"
+            >
+              {contact.heading}
+            </h2>
 
-      <Reveal delay={140} mask className="mt-10 sm:mt-14">
-        <a
-          href={`mailto:${contact.email}`}
-          className="inline-block text-[clamp(1.5rem,5.5vw,4rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-lab-ink underline decoration-lab-rule decoration-1 underline-offset-[0.18em] transition-colors hover:text-accent hover:decoration-accent focus-visible:text-accent focus-visible:outline-none"
-        >
-          {contact.email}
-        </a>
-      </Reveal>
+            <p className="mt-5 max-w-xl font-display text-[17px] leading-relaxed text-white/70">
+              {contact.body}
+            </p>
 
-      <Reveal delay={180}>
-        <p className="mt-10 max-w-xl text-lg leading-8 text-lab-ink-muted">{contact.body}</p>
-      </Reveal>
+            <a
+              href={`mailto:${contact.email}`}
+              className="mt-10 inline-block font-display text-[clamp(1.25rem,3.4vw,2.5rem)] font-medium tracking-[-0.03em] text-white underline decoration-white/25 decoration-1 underline-offset-[0.2em] transition-colors hover:decoration-accent focus-visible:outline-none focus-visible:decoration-accent"
+            >
+              {contact.email}
+            </a>
+          </div>
+        </Reveal>
 
-      <div className="mt-20 flex flex-col gap-6 border-t border-accent pt-6 sm:mt-28 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">
-          {lobby.location}
-        </p>
-        {/* The one non-accent signal on the page, and it earns it: this is
-            a live availability state, not another label. */}
-        <p className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-lab-ink">
-          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          {lobby.availability}
-        </p>
-      </div>
-
-      {/* The page signs itself the same way the lobby does. */}
-      <div className="-mx-6 mt-16 sm:-mx-10 sm:mt-20">
-        <Masthead content={content} href="/lab#work" />
+        <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-display text-[15px] text-lab-ink-soft">
+            {identity} — {lobby.location}
+          </p>
+          <nav aria-label="Footer" className="flex flex-wrap items-center gap-6">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="font-display text-[15px] text-lab-ink-soft transition-colors hover:text-lab-ink-warm focus-visible:text-lab-ink-warm focus-visible:outline-none"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
     </section>
   );

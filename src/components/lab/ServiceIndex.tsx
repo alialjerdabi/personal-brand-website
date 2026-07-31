@@ -2,74 +2,76 @@ import Reveal from "@/components/ui/Reveal";
 import type { LabContent, LabPalette } from "@/data/lab";
 
 /** Whole class strings, not interpolated fragments, so Tailwind sees them. */
-const FIELD: Record<LabPalette, string> = {
-  orange: "bg-lab-orange text-black",
-  blue: "bg-lab-blue text-white",
-  lime: "bg-lab-lime text-black",
-  violet: "bg-lab-violet text-white",
-  cream: "bg-lab-cream text-black",
+const DOT: Record<LabPalette, string> = {
+  orange: "bg-lab-orange",
+  blue: "bg-lab-blue",
+  lime: "bg-lab-lime",
+  violet: "bg-lab-violet",
+  cream: "bg-lab-cream",
 };
 
 /**
- * Three services as three full-bleed colour fields, carrying the lobby's
- * mosaic down the page.
+ * Three services, on cards, said plainly.
  *
- * Not a list with rules between the rows: each service is a ground of its
- * own, so the section reads at a glance from across a room and a visitor
- * knows there are exactly three things on offer before reading one word
- * of them. Each leads with the business outcome rather than the
- * deliverable, because the person reading is deciding whether they have a
- * problem worth paying to fix.
+ * Three and not seven: a small business owner is choosing whether they
+ * have a problem worth paying to fix, and a seven-item menu reads as
+ * "will do anything" where three reads as "does this, properly". Each
+ * leads with the outcome rather than the deliverable for the same
+ * reason — the scope list is what they read second.
  */
 export default function ServiceIndex({ services }: { services: LabContent["services"] }) {
   return (
     <section
       id="services"
       aria-labelledby="lab-services-heading"
-      className="scroll-mt-2 bg-lab-ground"
+      className="scroll-mt-24 bg-lab-air px-5 py-20 sm:px-8 sm:py-28"
     >
-      <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 px-6 pb-6 pt-16 sm:pb-8 sm:pt-24">
-        <h2
-          id="lab-services-heading"
-          className="text-[clamp(1.75rem,4.5vw,3.5rem)] font-semibold uppercase leading-[0.95] tracking-[-0.04em] text-lab-ink"
-        >
-          {services.heading}
-        </h2>
-        <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-accent">
-          {services.label}
-        </p>
-      </div>
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <h2
+            id="lab-services-heading"
+            className="max-w-2xl font-display text-[clamp(1.9rem,4.2vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-lab-ink-warm"
+          >
+            Three things, done properly.
+          </h2>
+        </Reveal>
 
-      <div className="flex flex-col gap-px bg-lab-ground">
-        {services.items.map((service, index) => (
-          <Reveal key={service.index} delay={index * 70}>
-            <article className={`${FIELD[service.palette]} px-6 py-10 sm:py-14`}>
-              <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
-                <span className="font-mono text-[11px] uppercase tracking-[0.28em]">
-                  {service.index}
+        <div className="mt-12 grid gap-5 sm:mt-16 lg:grid-cols-3">
+          {services.items.map((service, index) => (
+            <Reveal key={service.index} delay={index * 80}>
+              <article className="flex h-full flex-col rounded-[1.6rem] border border-lab-hairline bg-white/70 p-7 shadow-[0_14px_44px_-28px_rgb(19_23_30/0.45)] sm:p-9">
+                <span className="flex items-center gap-3">
+                  <span
+                    aria-hidden="true"
+                    className={`h-2.5 w-2.5 rounded-full ${DOT[service.palette]}`}
+                  />
+                  <span className="font-display text-[15px] text-lab-ink-soft">
+                    {service.index}
+                  </span>
                 </span>
-                <h3 className="text-[clamp(2rem,7vw,5.5rem)] font-semibold uppercase leading-[0.88] tracking-[-0.05em]">
+
+                <h3 className="mt-6 font-display text-[clamp(1.5rem,2.4vw,2rem)] font-medium leading-[1.1] tracking-[-0.03em] text-lab-ink-warm">
                   {service.name}
                 </h3>
-              </div>
 
-              <p className="mt-6 max-w-2xl text-[clamp(1.125rem,2.2vw,1.75rem)] font-medium leading-snug tracking-tight">
-                {service.outcome}
-              </p>
+                <p className="mt-3 font-display text-[17px] leading-relaxed text-lab-ink-soft">
+                  {service.outcome}
+                </p>
 
-              <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2">
-                {service.scope.map((item) => (
-                  <li
-                    key={item}
-                    className="font-mono text-[10px] uppercase tracking-[0.24em] sm:text-[11px]"
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          </Reveal>
-        ))}
+                <ul className="mt-7 space-y-2 border-t border-lab-hairline pt-6">
+                  {service.scope.map((item) => (
+                    <li
+                      key={item}
+                      className="font-display text-[15px] leading-relaxed text-lab-ink-soft"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

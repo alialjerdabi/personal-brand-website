@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import Reveal from "@/components/ui/Reveal";
 import type { LabContent, LabPalette, LabProject } from "@/data/lab";
 
 /**
- * Ground and ink per palette entry. Kept as whole class strings rather
- * than interpolated fragments so Tailwind can actually see them.
+ * Softened for the light register: the palette survives as a card fill
+ * rather than a full-bleed field. Whole class strings, not interpolated
+ * fragments, so Tailwind can see them.
  */
 const FIELD: Record<LabPalette, string> = {
   orange: "bg-lab-orange text-black",
@@ -14,184 +16,138 @@ const FIELD: Record<LabPalette, string> = {
   cream: "bg-lab-cream text-black",
 };
 
-function Tile({
+function ProjectCard({
   project,
   pendingLabel,
-  index,
-  className,
+  wide,
   priority,
 }: {
   project: LabProject;
   pendingLabel: string;
-  index: number;
-  className: string;
+  wide: boolean;
   priority: boolean;
 }) {
   const hasCover = Boolean(project.cover);
 
-  const inner = (
-    <>
-      {project.cover && (
-        <>
-          <Image
-            src={project.cover.src}
-            alt={project.cover.alt}
-            fill
-            preload={priority}
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.05]"
-          />
-          {/* Type sits on the photograph, so the photograph has to give
-              way for it — a single flat scrim, no blur, no gradient stack. */}
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"
-          />
-        </>
-      )}
-
-      {/*
-        Padding and name size are held down on small screens on purpose:
-        they set each tile's min-content height, and on a 667px phone an
-        over-padded tile forces the lower row taller than its flex share,
-        which squeezes the lead cover into a letterbox crop.
-      */}
-      <span className="relative flex h-full w-full flex-col justify-between p-4 sm:p-6 lg:p-7">
-        <span className="flex items-start justify-between gap-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.28em] sm:text-[11px]">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="text-right font-mono text-[10px] uppercase tracking-[0.28em] sm:text-[11px]">
-            {hasCover ? project.year : pendingLabel}
-          </span>
-        </span>
-
-        <span className="block">
-          <span className="block text-[clamp(1.15rem,4.4vw,4.5rem)] font-semibold uppercase leading-[0.9] tracking-[-0.045em]">
+  const media = (
+    <span
+      className={`relative block w-full overflow-hidden rounded-[1.6rem] ${
+        wide ? "aspect-[16/11]" : "aspect-[16/12]"
+      } ${hasCover ? "bg-lab-haze" : FIELD[project.palette]}`}
+    >
+      {project.cover ? (
+        <Image
+          src={project.cover.src}
+          alt={project.cover.alt}
+          fill
+          preload={priority}
+          sizes="(max-width: 1024px) 92vw, 55vw"
+          className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+        />
+      ) : (
+        /*
+         * A real engagement whose cover art does not exist yet — never a
+         * borrowed image, which would misrepresent one client's work as
+         * another's. A filled colour panel reads as a decision; an
+         * outlined grey box reads as a hole in the portfolio.
+         */
+        <span
+          aria-hidden="true"
+          className="flex h-full w-full items-center justify-center p-8"
+        >
+          <span className="font-display text-[clamp(1.75rem,4vw,3.5rem)] font-semibold leading-none tracking-[-0.04em]">
             {project.name}
           </span>
-          {project.disciplines.length > 0 && (
-            <span className="mt-2 block font-mono text-[10px] uppercase tracking-[0.28em] sm:text-[11px]">
-              {project.disciplines.join(" · ")}
-            </span>
-          )}
         </span>
-      </span>
-    </>
+      )}
+    </span>
   );
 
-  const shell = `group relative isolate min-h-0 overflow-hidden ${className} ${
-    hasCover ? "bg-black text-white" : FIELD[project.palette]
-  }`;
+  const caption = (
+    <span className="mt-4 flex flex-wrap items-baseline justify-between gap-x-5 gap-y-1">
+      <span className="font-display text-xl font-medium tracking-[-0.02em] text-lab-ink-warm sm:text-2xl">
+        {project.name}
+      </span>
+      <span className="font-display text-[15px] text-lab-ink-soft">
+        {hasCover
+          ? [project.disciplines.join(", "), project.year].filter(Boolean).join(" · ")
+          : pendingLabel}
+      </span>
+    </span>
+  );
 
   if (!project.spreads) {
     return (
-      <div data-tile className={shell}>
-        {inner}
+      <div className="group block">
+        {media}
+        {caption}
       </div>
     );
   }
 
   return (
     <Link
-      data-tile
       href={`/lab/${project.slug}`}
-      className={`${shell} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white`}
+      className="group block rounded-[1.6rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lab-ink-warm focus-visible:ring-offset-4"
     >
-      {inner}
+      {media}
+      {caption}
     </Link>
   );
 }
 
 /**
- * The lobby's work mosaic — flat colour fields, edge to edge, no cards.
+ * Selected work.
  *
- * A row of equal portrait cards is the most conventional layout a
- * portfolio has; this replaces it with an asymmetric wall where every
- * project owns a differently-sized field and its own colour. Nothing is
- * the same size as anything else, which is the whole point: the
- * composition itself says these are not interchangeable.
- *
- * The split is deterministic rather than a spans table — the lead project
- * takes a full column, and the rest divide between two narrower ones. It
- * holds its shape for any number of projects from three upward, with no
- * holes to fill, which a 2D span grid cannot promise once the count
- * changes.
- *
- * On smaller screens the same three groups stack, so the lead cover keeps
- * its scale and the colour fields become bands beneath it rather than a
- * cramped grid.
+ * Alternating 7/5 spans rather than a uniform grid: every row is
+ * lopsided, and the lopsidedness flips each time, so the section reads
+ * as composed instead of poured. The rule holds for any number of
+ * projects without a spans table — the widths come from the index.
  */
-export default function ProjectMosaic({
-  projects,
-  lobby,
-}: {
-  projects: LabProject[];
-  lobby: LabContent["lobby"];
-}) {
-  const [lead, ...rest] = projects;
-  const split = Math.ceil(rest.length / 2);
-  const middle = rest.slice(0, split);
-  const tail = rest.slice(split);
-
-  /*
-   * Uneven splits inside each column, offset between the two, so no two
-   * fields in the mosaic ever come out the same size. An even split reads
-   * as a grid again the moment a column holds more than one project —
-   * which is the exact thing this layout exists to avoid.
-   */
-  const weight = (offset: number, offbeat: boolean) =>
-    (offset % 2 === 0) !== offbeat ? "flex-[3]" : "flex-[2]";
-
+export default function ProjectMosaic({ content }: { content: LabContent }) {
   return (
-    <div className="lab-mosaic flex min-h-0 flex-1 flex-col gap-px bg-lab-ground lg:flex-row">
-      <Tile
-        project={lead}
-        pendingLabel={lobby.pendingLabel}
-        index={0}
-        priority
-        className="flex-[6] lg:flex-[6]"
-      />
-
-      {/*
-        On small screens the two columns sit beside each other under the
-        lead tile, so the mosaic stays a mosaic instead of collapsing into
-        four full-width letterbox bands — which crops portrait cover art
-        badly and loses the composition entirely. `lg:contents` dissolves
-        this wrapper on desktop so the columns become direct children of
-        the row again.
-      */}
-      <div className="flex min-h-0 flex-[4] gap-px lg:contents">
-        {middle.length > 0 && (
-          <div className="flex min-h-0 flex-1 flex-col gap-px lg:flex-[4]">
-            {middle.map((project, offset) => (
-              <Tile
-                key={project.slug}
-                project={project}
-                pendingLabel={lobby.pendingLabel}
-                index={offset + 1}
-                priority={false}
-                className={weight(offset, false)}
-              />
-            ))}
+    <section
+      id="work"
+      aria-labelledby="lab-work-heading"
+      className="scroll-mt-24 bg-lab-haze px-5 py-20 sm:px-8 sm:py-28"
+    >
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+            <h2
+              id="lab-work-heading"
+              className="max-w-xl font-display text-[clamp(1.9rem,4.2vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.035em] text-lab-ink-warm"
+            >
+              A few things I&rsquo;ve made.
+            </h2>
+            <p className="font-display text-[15px] text-lab-ink-soft">
+              {String(content.projects.length).padStart(2, "0")}{" "}
+              {content.lobby.counterLabel}
+            </p>
           </div>
-        )}
+        </Reveal>
 
-        {tail.length > 0 && (
-          <div className="flex min-h-0 flex-1 flex-col gap-px lg:flex-[3]">
-            {tail.map((project, offset) => (
-              <Tile
+        <div className="mt-12 grid gap-x-6 gap-y-12 sm:mt-16 lg:grid-cols-12">
+          {content.projects.map((project, index) => {
+            // Lopsided rows that flip: 7/5, then 5/7, then 7/5…
+            const wide = index % 4 === 0 || index % 4 === 3;
+            return (
+              <Reveal
                 key={project.slug}
-                project={project}
-                pendingLabel={lobby.pendingLabel}
-                index={split + offset + 1}
-                priority={false}
-                className={weight(offset, true)}
-              />
-            ))}
-          </div>
-        )}
+                delay={(index % 2) * 90}
+                className={wide ? "lg:col-span-7" : "lg:col-span-5"}
+              >
+                <ProjectCard
+                  project={project}
+                  pendingLabel={content.lobby.pendingLabel}
+                  wide={wide}
+                  priority={index === 0}
+                />
+              </Reveal>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

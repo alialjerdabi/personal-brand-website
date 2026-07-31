@@ -77,6 +77,19 @@
   --lab-paper-ink: #0b0b0d;
   --lab-paper-muted: #6b6b70;
   --lab-paper-rule: rgb(0 0 0 / 0.14);
+
+  /*
+   * Light register (2026-07-31, Ali's direction): the prototype turns
+   * warm and approachable — a pale sky wash rather than a black ground.
+   * The page is one continuous gradient, so these are the stops, not
+   * flat section fills.
+   */
+  --lab-sky: #dfeaf5;
+  --lab-air: #f7f9fb;
+  --lab-haze: #eceef0;
+  --lab-ink-warm: #16181c;
+  --lab-ink-soft: #5c626c;
+  --lab-hairline: rgb(19 23 30 / 0.09);
 }
 
 :root[data-theme="dark"] {
@@ -117,6 +130,13 @@
   --color-lab-lime: var(--lab-lime);
   --color-lab-violet: var(--lab-violet);
   --color-lab-cream: var(--lab-cream);
+  --color-lab-sky: var(--lab-sky);
+  --color-lab-air: var(--lab-air);
+  --color-lab-haze: var(--lab-haze);
+  --color-lab-ink-warm: var(--lab-ink-warm);
+  --color-lab-ink-soft: var(--lab-ink-soft);
+  --color-lab-hairline: var(--lab-hairline);
+  --font-display: var(--font-outfit);
   --color-lab-paper: var(--lab-paper);
   --color-lab-paper-ink: var(--lab-paper-ink);
   --color-lab-paper-muted: var(--lab-paper-muted);
