@@ -88,7 +88,10 @@ function ChipCluster({ images }: { images: LabAsset[] }) {
 
 /**
  * The drawn arrow — a loose gesture with a loop in it, not a geometric
- * arc. The clean curve it replaces was the most machine-made mark on the
+ * arc. The viewBox is 200x80 against a 1.1em x 0.44em box, matching
+ * aspect ratios exactly: mismatched ones let `preserveAspectRatio`
+ * letterbox the drawing and the arrowhead fell outside the visible area,
+ * which is why the arrow rendered as a curve going nowhere. The clean curve it replaces was the most machine-made mark on the
  * page: an arrow drawn by hand doubles back on itself and does not have a
  * constant radius, and that irregularity is the entire point of having a
  * drawn element at all.
@@ -97,29 +100,29 @@ function DrawnArrow() {
   return (
     <span
       data-hero-arrow-slot
-      className="inline-block h-[0.52em] w-[1.6em] align-[0.04em] text-accent"
+      className="inline-block h-[0.44em] w-[1.1em] align-[0.02em] text-accent"
     >
       {/*
         `pathLength="1"` normalises each path so the draw-on is expressed
         as dasharray/dashoffset of 1 regardless of the real geometry — no
         measuring in JS, and the head stays in step with its stroke.
       */}
-      <svg viewBox="0 0 230 86" fill="none" className="h-full w-full overflow-visible">
+      <svg viewBox="0 0 200 80" fill="none" className="h-full w-full">
         <path
           data-hero-arrow
           pathLength="1"
-          d="M7 60C36 26 78 10 116 22c17 5 25 21 13 30-11 8-25-2-19-16 8-18 38-25 66-18 20 5 38 16 50 28"
+          d="M6 56C28 22 66 12 100 26c13 6 15 23 1 27-11 3-17-10-7-17 12-9 39-11 60-2 12 5 22 12 30 20"
           stroke="currentColor"
-          strokeWidth="8"
+          strokeWidth="9"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           data-hero-arrow
           pathLength="1"
-          d="M203 34l24 12-9 24"
+          d="M170 36L192 55L166 66"
           stroke="currentColor"
-          strokeWidth="8"
+          strokeWidth="9"
           strokeLinecap="round"
           strokeLinejoin="round"
         />

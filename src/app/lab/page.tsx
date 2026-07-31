@@ -37,7 +37,15 @@ export const metadata: Metadata = {
 export default function LabPage() {
   return (
     <main id="main">
-      <Antigravity color="#945d00" count={320} magnetRadius={9} ringRadius={7} particleSize={1.5} lerpSpeed={0.06} autoAnimate />
+      <Antigravity
+        color="#ff5a1f"
+        count={205}
+        magnetRadius={8}
+        ringRadius={6.5}
+        particleSize={1.05}
+        lerpSpeed={0.06}
+        autoAnimate
+      />
       <FloatingNav content={labContent} />
       <HeroScreen content={labContent} />
       <StackShowcase content={labContent} />

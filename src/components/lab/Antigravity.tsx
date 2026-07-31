@@ -217,7 +217,9 @@ function Field({
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
       <capsuleGeometry args={[0.1, 0.4, 4, 8]} />
-      <meshBasicMaterial color={color} />
+      {/* Transparent so the field sits under the page rather than on it —
+          part of dialling the effect back per Ali's note. */}
+      <meshBasicMaterial color={color} transparent opacity={0.62} />
     </instancedMesh>
   );
 }
@@ -252,10 +254,25 @@ export default function Antigravity(props: AntigravityProps) {
       z-40.
     */
     <div
+      data-cursor-field
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-20 mix-blend-multiply"
     >
+      {/*
+        pointer-events is set INLINE, on both the wrapper and the canvas
+        element itself. It inherits, so `none` on the fixed parent ought to
+        be enough — but React Three Fiber re-enables it on its own div and
+        on the canvas, which turned this into a full-page click-eater at
+        z-20: measured, elementFromPoint over the hero's call to action
+        returned CANVAS instead of the link. Inline beats any stylesheet,
+        and the field reads the pointer from `window`, so it never needed
+        events of its own.
+      */}
       <Canvas
+        style={{ pointerEvents: "none" }}
+        onCreated={({ gl }) => {
+          gl.domElement.style.pointerEvents = "none";
+        }}
         camera={{ position: [0, 0, 50], fov: 35 }}
         gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
       >

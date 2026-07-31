@@ -182,7 +182,9 @@ export default function HeroScreen({ content }: { content: LabContent }) {
 
       {/*
         The statement is the page.
-        - 9.4vw on a 1560px measure: ~135px at 1440, ~180px at 1920.
+        - 10.2vw on a 1760px measure, centred with a narrow gutter. It was
+          left-aligned inside a 1560px cap, which on a wide screen left a
+          quarter of the viewport empty down the right-hand side.
         - It starts just under the nav rather than sitting centred; the
           tail is pushed to the bottom edge with `mt-auto`. Centring left
           a third of the viewport empty above AND below, which is what
@@ -194,15 +196,15 @@ export default function HeroScreen({ content }: { content: LabContent }) {
           not centred in its measure. Even margins around a centred column
           is the tell of a layout that was specified rather than composed.
       */}
-      <div className="flex flex-1 flex-col px-5 pb-8 pt-[13vh] sm:px-8 sm:pt-[15vh]">
+      <div className="flex flex-1 flex-col px-4 pb-8 pt-[7vh] sm:px-6 sm:pt-[8vh]">
         <h1
           id="lab-hero-heading"
-          className="w-full max-w-[1560px] font-display text-[clamp(2.6rem,9.1vw,9.5rem)] font-bold leading-[1.02] tracking-[-0.045em]"
+          className="mx-auto w-full max-w-[1760px] font-display text-[clamp(2.6rem,10.4vw,12rem)] font-bold leading-[0.98] tracking-[-0.048em]"
         >
           <HeroSentence tokens={content.hero.tokens} />
         </h1>
 
-        <div className="mt-auto flex w-full max-w-[1560px] flex-col gap-7 pt-12 sm:pt-16 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mx-auto mt-auto flex w-full max-w-[1760px] flex-col gap-7 pt-12 sm:pt-16 lg:flex-row lg:items-end lg:justify-between">
           <p
             data-hero-tail
             className="max-w-md font-display text-[clamp(1rem,1.35vw,1.2rem)] leading-relaxed text-lab-ink-soft"

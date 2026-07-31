@@ -437,7 +437,10 @@ export default function Lanyard({
   if (!allowed) return null;
 
   return (
-    <div className={`relative w-full ${className}`.trim()}>
+    /* h-full matters: R3F sizes its canvas to this element, and with no
+       height it collapsed to the canvas default of 150px inside a 558px
+       stage — which is why the badge looked blank. */
+    <div className={`relative h-full w-full ${className}`.trim()}>
       <Canvas
         camera={{ position: [0, 0, 13], fov: 25 }}
         dpr={[1, 2]}

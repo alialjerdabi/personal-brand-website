@@ -403,6 +403,23 @@ body {
 }
 
 /*
+ * The cursor field must never intercept a click.
+ *
+ * `pointer-events` inherits, so `none` on the wrapper ought to be enough —
+ * but React Three Fiber re-enables it on its own container div and on the
+ * canvas element, which puts a full-page click-eater at z-20 over every
+ * button on the site. Measured: elementFromPoint over the hero's call to
+ * action returned CANVAS, not the link.
+ *
+ * `!important` on the subtree is the reliable fix; the field reads the
+ * pointer from `window`, so it never needed events of its own.
+ */
+[data-cursor-field],
+[data-cursor-field] * {
+  pointer-events: none !important;
+}
+
+/*
  * Hovering one tile pushes the rest of the mosaic back. The point is
  * commitment: the page decides what you are looking at instead of
  * presenting a wall of equals.
