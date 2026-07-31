@@ -311,7 +311,13 @@ function Band({
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      {/*
+        The anchor sits at y=2.7, not y=4. At fov 25 from z=19 the visible
+        height at the origin is about 8.4 units; anchored at 4 the card
+        hung above the top of that frustum, which is why it was cropped
+        out of frame however large the container got.
+      */}
+      <group position={[0, 2.7, 0]}>
         <RigidBody ref={fixed} {...segment} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segment}>
           <BallCollider args={[0.1]} />
@@ -330,7 +336,7 @@ function Band({
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            scale={2.25}
+            scale={1.8}
             position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
@@ -445,7 +451,7 @@ export default function Lanyard({
     <div className={`relative h-full w-full ${className}`.trim()}>
       <Canvas
         key={generation}
-        camera={{ position: [0, 0, 13], fov: 25 }}
+        camera={{ position: [0, 0, 19], fov: 25 }}
         dpr={[1, 1.5]}
         gl={{ alpha: true, antialias: true, powerPreference: "default" }}
         onCreated={({ gl }) => {

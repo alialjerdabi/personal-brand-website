@@ -59,7 +59,12 @@ export default function LanyardStage({
   const [live, setLive] = useState(false);
 
   return (
-    <div className="relative h-[62svh] min-h-[26rem] overflow-hidden rounded-[1.5rem] bg-lab-card/60 ring-1 ring-lab-hairline">
+    /*
+      No panel. The badge hangs in the page itself — boxing it inside a
+      framed card cropped the lanyard and left no room to swing it, which
+      is the whole point of the thing. Taller, unbounded, transparent.
+    */
+    <div className="relative h-[82svh] min-h-[32rem] w-full">
       {!live && (
         <div className="absolute inset-0">
           <StaticCard identity={identity} />

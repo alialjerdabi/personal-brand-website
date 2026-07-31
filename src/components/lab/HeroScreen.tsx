@@ -182,10 +182,11 @@ export default function HeroScreen({ content }: { content: LabContent }) {
 
       {/*
         The statement is the page.
-        - 10.2vw on a 1760px measure, centred with a narrow gutter. It was
-          left-aligned inside a 1560px cap, which on a wide screen left a
-          quarter of the viewport empty down the right-hand side.
-        - It starts just under the nav rather than sitting centred; the
+        - 9.2vw on a 1760px measure, centred. Sized so the statement, the
+          supporting line and the buttons all fit inside the inset with
+          the nav cleared — the type is as large as a consistent margin
+          allows, rather than as large as the viewport allows.
+        - It starts below the nav rather than under it; the
           tail is pushed to the bottom edge with `mt-auto`. Centring left
           a third of the viewport empty above AND below, which is what
           made a large headline read as a small one on a big page.
@@ -196,18 +197,28 @@ export default function HeroScreen({ content }: { content: LabContent }) {
           left a visible gap on wide screens that read as dead margin
           rather than as rag; centring balances it against both gutters.
       */}
-      <div className="flex flex-1 flex-col px-4 pb-8 pt-[3vh] sm:px-6 sm:pt-[4vh]">
+      {/*
+        One inset, equal on every side.
+
+        The nav is FIXED, so it is out of flow and does not push anything
+        down — at 3vh of top padding the first line of the statement was
+        rendering underneath it and getting clipped. The top padding has
+        to clear the nav's own offset plus its height, and then match the
+        gutter used left, right and bottom so the whole block sits in a
+        consistent margin.
+      */}
+      <div className="flex flex-1 flex-col px-6 pb-6 pt-[6.5rem] sm:px-10 sm:pb-10 sm:pt-[7.5rem]">
         <h1
           id="lab-hero-heading"
-          className="mx-auto w-full max-w-[1760px] text-center font-display text-[clamp(2.6rem,10.4vw,12rem)] font-bold leading-[0.98] tracking-[-0.048em]"
+          className="mx-auto w-full max-w-[1760px] text-center font-display text-[clamp(2.4rem,10vw,12rem)] font-bold leading-[0.98] tracking-[-0.048em]"
         >
           <HeroSentence tokens={content.hero.tokens} />
         </h1>
 
-        <div className="mx-auto mt-auto flex w-full max-w-[1760px] flex-col items-center gap-5 pt-8 text-center sm:gap-6 sm:pt-10">
+        <div className="mx-auto mt-auto flex w-full max-w-[1760px] flex-col items-center justify-center gap-5 pt-8 text-center sm:flex-row sm:gap-10 sm:pt-9 sm:text-left">
           <p
             data-hero-tail
-            className="max-w-xl font-display text-[clamp(1rem,1.35vw,1.2rem)] leading-relaxed text-lab-ink-soft"
+            className="max-w-sm font-display text-[clamp(0.95rem,1.15vw,1.1rem)] leading-relaxed text-lab-ink-soft"
           >
             {content.hero.sub}
           </p>
