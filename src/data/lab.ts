@@ -192,6 +192,24 @@ export interface LabContent {
     items: { title: string; dek: string; tag: string }[];
   };
 
+  /**
+   * The about page. Bio is written only from what this project already
+   * establishes — independent, Manama, three disciplines, end to end. No
+   * invented years of experience, employers or education.
+   *
+   * The process steps describe a PROPOSED engagement and need Ali's
+   * confirmation that it is how he actually works before this ships.
+   */
+  studio: {
+    eyebrow: string;
+    heading: string;
+    bio: string[];
+    badge: { name: string; role: string; location: string; photo?: string; mark?: string };
+    hint: string;
+    process: { step: string; title: string; body: string }[];
+    cta: { label: string; href: string };
+  };
+
   contact: {
     label: string;
     heading: string;
@@ -208,6 +226,7 @@ export const labContent: LabContent = {
   navLinks: [
     { label: "Work", href: "/lab#work" },
     { label: "Services", href: "/lab#services" },
+    { label: "Studio", href: "/lab/studio" },
     { label: "Contact", href: "/lab#contact" },
   ],
   navCta: { label: "Start a project", href: "/lab#contact" },
@@ -524,6 +543,49 @@ export const labContent: LabContent = {
         dek: "The best interface animation is invisible until you take it away. If it's asking to be noticed, it's costing you attention you needed elsewhere.",
       },
     ],
+  },
+
+  studio: {
+    eyebrow: "Studio",
+    heading: "You'd be working with me. Just me.",
+    bio: [
+      "I'm Ali. I design brands, websites and digital products for small and growing businesses, from Manama, Bahrain.",
+      "I work on my own, end to end. The person you brief is the person who designs it and the person who builds it — nothing is handed down to a junior, and nothing gets lost in translation between a designer and a developer.",
+      "That's the whole reason to hire one person instead of a studio: fewer people between the idea and the thing, and one person who is accountable for whether it actually works.",
+    ],
+    badge: {
+      name: "Ali Aljardabi",
+      role: "Brand, Web & Product",
+      location: "Manama, Bahrain",
+      /* photo and mark are intentionally absent until Ali supplies the
+         files — the card draws a labelled empty frame rather than a
+         stock face, and falls back to the drawn mark on the reverse. */
+    },
+    hint: "Grab the card",
+    /* PROPOSED — needs Ali's confirmation that this is how he works. */
+    process: [
+      {
+        step: "01",
+        title: "A conversation",
+        body: "A call about the business — where it's going, who it's for, and what's getting in the way. Not a pitch.",
+      },
+      {
+        step: "02",
+        title: "Direction",
+        body: "Positioning and visual direction agreed before anything is designed, so the work is judged against a decision rather than a taste.",
+      },
+      {
+        step: "03",
+        title: "Design and build",
+        body: "Designed and built together rather than thrown over a wall — which is why it ends up looking like the design instead of an approximation of it.",
+      },
+      {
+        step: "04",
+        title: "Launch and after",
+        body: "Handover, and a period of support while it settles. You own everything.",
+      },
+    ],
+    cta: { label: "Start a conversation", href: "/lab#contact" },
   },
 
   contact: {
