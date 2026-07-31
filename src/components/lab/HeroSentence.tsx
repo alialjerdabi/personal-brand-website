@@ -42,7 +42,10 @@ function ChipCluster({ images }: { images: LabAsset[] }) {
  */
 function DrawnArrow() {
   return (
-    <span className="inline-block h-[0.5em] w-[1.5em] align-[0.08em] text-accent">
+    <span
+      data-hero-arrow-slot
+      className="inline-block h-[0.5em] w-[1.5em] align-[0.08em] text-accent"
+    >
       {/*
         `pathLength="1"` normalises each path so the draw-on can be
         expressed as dasharray/dashoffset of 1 regardless of the real

@@ -2,10 +2,13 @@
 
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import FloatingNav from "@/components/lab/FloatingNav";
 import HeroSentence from "@/components/lab/HeroSentence";
 import { HERO_ENTRANCE_DELAY_S, HERO_UNIT_STEP_S } from "@/components/lab/timing";
 import type { LabContent } from "@/data/lab";
+
+gsap.registerPlugin(ScrollTrigger);
 
 /**
  * The opening: a pale wash, a floating nav, and one sentence said in the
@@ -80,23 +83,65 @@ export default function HeroScreen({ content }: { content: LabContent }) {
             );
           }
 
-          if (kind === "arrow") {
-            timeline.to(
-              element.querySelectorAll("[data-hero-arrow]"),
-              { strokeDashoffset: 0, duration: 0.42, stagger: 0.14, ease: "power2.inOut" },
-              at + 0.1
-            );
-          }
         });
 
-        // The tail follows the last word rather than a fixed offset, so
-        // it stays in sequence if the sentence is ever rewritten.
-        const tailAt = 0.12 + units.length * HERO_UNIT_STEP_S + 0.1;
+        const settled = 0.12 + units.length * HERO_UNIT_STEP_S;
+
+        /*
+         * The arrow draws LAST, after the sentence has finished arriving
+         * and a beat of silence has passed.
+         *
+         * Its slot opens with the rest of the line — the gap is reserved
+         * in reading order — but the stroke stays undrawn until there is
+         * nothing else moving. An arrow is a pointing gesture, so it only
+         * reads as one when it is the only thing in motion; drawn in the
+         * middle of the sequence (which is where it was) it was buried
+         * under the seven words still landing behind it, and looked like
+         * it appeared from nowhere.
+         *
+         * It then leans once toward what it points at, and stays there.
+         */
+        timeline
+          .to(
+            "[data-hero-arrow]",
+            { strokeDashoffset: 0, duration: 0.62, stagger: 0.16, ease: "power2.inOut" },
+            settled + 0.22
+          )
+          .to(
+            "[data-hero-arrow-slot]",
+            { x: 9, duration: 0.5, ease: "power2.out" },
+            settled + 0.95
+          );
+
         timeline.to(
           "[data-hero-tail]",
           { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 },
-          tailAt
+          settled + 0.35
         );
+
+        /*
+         * The handoff into the deck below: the last cluster of stills in
+         * the sentence swells and dissolves as the hero leaves, so the
+         * card the visitor saw inside the line becomes the card that
+         * arrives. Driven by scroll, and applied to the chip rather than
+         * to the deck — a transform on the deck's ancestor would make it
+         * the containing block for its sticky cards and break the stack.
+         */
+        const clusters = gsap.utils.toArray<HTMLElement>('[data-hero-unit="chips"]');
+        const last = clusters[clusters.length - 1];
+        if (last) {
+          gsap.to(last, {
+            scale: 3.4,
+            opacity: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: rootRef.current,
+              start: "bottom 92%",
+              end: "bottom 38%",
+              scrub: 0.4,
+            },
+          });
+        }
       });
     }, rootRef);
 

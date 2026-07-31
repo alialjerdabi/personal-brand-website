@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HeroScreen from "@/components/lab/HeroScreen";
-import ProjectShowcase from "@/components/lab/ProjectShowcase";
+import StackShowcase from "@/components/lab/StackShowcase";
+import PixelTrail from "@/components/lab/PixelTrail";
 import StatsBand from "@/components/lab/StatsBand";
 import ProjectMosaic from "@/components/lab/ProjectMosaic";
 import ServiceIndex from "@/components/lab/ServiceIndex";
@@ -35,8 +36,9 @@ export const metadata: Metadata = {
 export default function LabPage() {
   return (
     <main id="main">
+      <PixelTrail />
       <HeroScreen content={labContent} />
-      <ProjectShowcase content={labContent} />
+      <StackShowcase content={labContent} />
       <ProjectMosaic content={labContent} />
       <StatsBand stats={labContent.stats} />
       <Testimonials testimonials={labContent.testimonials} />
