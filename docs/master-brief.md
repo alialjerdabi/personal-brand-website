@@ -89,10 +89,11 @@ Measured facts about the reference, for calibration:
 | **Project palette** | orange / blue `#1B3FE0` / lime `#C6F24E` / violet `#6E3BFF` / cream — each project owns one; it marks its card and its case-study header |
 | **Register** | Warm, spoken, first person. Editorial, not corporate. |
 
-**Open item:** the cream ground `#F2EEE0` fights the cold navy Petrolas
-imagery. Decision taken to **cool the ground**, not warm the images.
-Target a neutral warm-grey that keeps the register but drops the yellow
-so blue imagery belongs. Verify by screenshot before committing.
+**DECIDED 2026-08-01:** the cream `#F2EEE0` fights the cold navy Petrolas
+imagery. Cool the ground toward a **neutral warm-grey** — keeps the
+personal, relaxed register but drops the yellow that clashes with blue.
+Not plain white (loses the warmth), not warming the images (makes real
+work look filtered). Verify by screenshot before committing.
 
 ### Honesty rules — non-negotiable
 
@@ -121,9 +122,22 @@ deep Petrolas story, and an explicit promise instead.
 | 3 | Work grid + popup | Trust | Built |
 | 4 | Stats band | Trust | Built, **empty** |
 | 5 | Services — three cards | Trust | Built |
-| 6 | Promise — what he guarantees to fix | Convert | **Not built** |
+| 6 | Promise — three outcomes | Convert | **Not built** |
 | 7 | Testimonials | Convert | Built, **empty** |
 | 8 | Contact close | Convert | Built |
+
+**The Promise section (DECIDED 2026-08-01):** outcomes, not deliverables.
+Three plain statements of what changes for the visitor's business —
+credible, findable, converting. No guarantee, no pricing, no invented
+numbers. It works today with no new content from Ali, and it is the piece
+that turns "nice work" into an email.
+
+**The headline (DECIDED 2026-08-01):** rewrite around converting — lead
+with the business outcome rather than the perception one, carrying both
+promises (memorable brand, converting site).
+
+> **Trap:** "brands people remember" is UpSunday's own headline. Do not
+> use that phrase or a near-copy of it. Same promises, Ali's words.
 
 ### `/work/[slug]` — case study
 
@@ -232,12 +246,17 @@ Live reference for the Petrolas brand: https://petrolas-v2.vercel.app/
 
 ## 9. Immediate next steps
 
+Work these **one at a time**, with a screenshot review and Ali's yes
+before moving to the next (decided 2026-08-01 — gating is what stops
+another six-round loop).
+
 1. Full-screen mobile menu.
-2. Cool the ground; rebuild the hero stills as two larger images; fix the
-   mobile hero's dead space and the bottom row's balance.
-3. Build the **Promise** section — the convert stage's missing piece.
+2. New headline, then the hero rebuild: cool the ground, two larger
+   stills instead of four, fix the mobile dead space and the bottom row.
+3. Build the **Promise** section.
 4. Park the badge properly; drop the unreferenced 3D dependencies.
-5. Screenshot-review every one of the above before calling it done.
+
+Screenshot-review every one before calling it done.
 
 ---
 
